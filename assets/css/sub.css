@@ -1,0 +1,2 @@
+.my_img {    filter: brightness(1);    transition: 2s;} 
+.my_img:hover {    filter: brightness(0.2);}
