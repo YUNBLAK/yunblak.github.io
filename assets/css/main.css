@@ -1719,6 +1719,87 @@ h12{
 		font-weight: 0;
 }
 
+kx1_head{
+	color: #ffffff;
+	font-weight: 300;
+	line-height: 1.5;
+	margin: 0 0 1em 0;
+	font-size: 2.5em;
+	font-weight: 0;
+	font-family: 'Times New Roman', Times, serif;
+}
+
+kx2_head1{
+	color: #7da2a6;
+	font-weight: 300;
+	line-height: 0.9;
+	margin: 0 0 1em 0;
+	font-size: 1.7em;
+	font-weight: 0;
+	font-family: 'Times New Roman', Times, serif;
+}
+
+kx2_head0{
+	color: #47b2be;
+	font-weight: 300;
+	line-height: 1.5;
+	margin: 0 0 1em 0;
+	font-size: 2.0em;
+	font-weight: 0;
+	font-family: 'Times New Roman', Times, serif;
+}
+
+kx2_head{
+	color: #fff;
+	font-weight: 300;
+	line-height: 2.0;
+	margin: 0 0 1em 0;
+	font-size: 1.5em;
+	font-weight: 0;
+	font-family: 'Times New Roman', Times, serif;
+}
+
+kx2_sub{
+	color: #cccccc;
+	font-weight: 300;
+	line-height: 1.5;
+	margin: 0 0 1em 0;
+	font-size: 1.2em;
+	font-weight: 0;
+	font-family: 'Times New Roman', Times, serif;
+}
+
+kx3_sub{
+	color: rgb(168, 162, 162);
+	font-weight: 300;
+	line-height: 1.5;
+	margin: 0 0 1em 0;
+	font-size: 1.0em;
+	font-weight: 0;
+	font-family: 'Times New Roman', Times, serif;
+}
+
+kx2_btn{
+	color: #cccccc;
+	font-weight: 300;
+	line-height: 1.5;
+	margin: 0 0 1em 0;
+	font-size: 0.9em;
+	font-weight: 0;
+	font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+
+kx1{
+	color: #ffffff;
+	font-weight: 300;
+	line-height: 1.1;
+	margin: 0 0 1em 0;
+	font-size: 1.3em;
+	font-weight: 0;
+	font-family: 'Times New Roman', Times, serif;
+}
+
 
 	h1, h2, h3, h4, h5, h6, jx1, jx2{
 		color: #D1D1D1;
@@ -1802,6 +1883,12 @@ h12{
 	jx2_sub2{
 		font-size: 1.0em;
 		font-family: 'Times New Roman', Times, serif;
+	}
+
+	jx2_sub3{
+		font-size: 1.0em;
+		font-family: 'Times New Roman', Times, serif;
+		color: #5385c1;
 	}
 
 	jx3{
