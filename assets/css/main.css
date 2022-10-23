@@ -1747,6 +1747,7 @@ kx2_head0{
 	font-size: 2.0em;
 	font-weight: 0;
 	font-family: 'Times New Roman', Times, serif;
+	text-align: left;
 }
 
 	@media screen and (max-width: 1280px) {
@@ -1787,6 +1788,7 @@ kx2_sub{
 	margin: 0 0 1em 0;
 	font-size: 1.2em;
 	font-weight: 0;
+	text-align: left;
 	font-family: 'Times New Roman', Times, serif;
 }
 
@@ -1797,6 +1799,7 @@ kx3_sub{
 	margin: 0 0 1em 0;
 	font-size: 1.0em;
 	font-weight: 0;
+	text-align: left;
 	font-family: 'Times New Roman', Times, serif;
 }
 
