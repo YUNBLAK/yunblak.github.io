@@ -9,7 +9,46 @@
 /* Reset */
 
 
+.image-container {
+    position: relative;
+    width: 576px; /* 이미지의 폭에 맞춤 */
+    height: auto; /* 이미지의 높이에 맞춤, 필요에 따라 조절 */
+}
 
+.contact-info a {
+    display: inline-block;
+    margin: 2px 0;
+   
+    text-decoration: none; /* Removes underline from hyperlinks */
+}
+
+.contact-info i {
+    margin-right: 6px; /* Adds space between the icon and text */
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* 반투명 검은색 배경 */
+    color: #f1f1f1; /* 글자 색상 */
+    width: 100%;
+    transition: .5s ease;
+    opacity:0;
+    color: white;
+    font-size: 20px; /* 글자 크기 */
+    padding: 20px;
+    text-align: center;
+    -webkit-transform: translateY(100%);
+    -ms-transform: translateY(100%);
+    transform: translateY(100%);
+}
+
+.image-container:hover .overlay {
+    opacity: 1;
+    -webkit-transform: translateY(0%);
+    -ms-transform: translateY(0%);
+    transform: translateY(0%);
+}
 
 
 	html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, a2, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, outputsub, ruby, section, summary, time, mark, audio, video {
