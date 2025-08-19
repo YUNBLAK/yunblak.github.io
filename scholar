@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Redirecting to Google Scholar…</title>
+
+  <!-- 메타 리다이렉트 -->
+  <meta http-equiv="refresh" content="0; url=https://scholar.google.com/citations?user=mlfYKfgAAAAJ&hl=en" />
+
+  <!-- 정규 URL -->
+  <link rel="canonical" href="https://scholar.google.com/citations?user=mlfYKfgAAAAJ&hl=en" />
+
+  <script>
+    // 자바스크립트 리다이렉트
+    window.location.replace("https://scholar.google.com/citations?user=mlfYKfgAAAAJ&hl=en");
+  </script>
+</head>
+<body>
+  <p>Scholar 페이지로 이동 중입니다… 
+     <a href="https://scholar.google.com/citations?user=mlfYKfgAAAAJ&hl=en">여기를 클릭</a>해도 됩니다.</p>
+</body>
+</html>
