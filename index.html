@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link 
+  rel="stylesheet" 
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    >
+  <title>Seorabeol</title>
+  <style>
+    :root{
+      --bg: #ffffff;
+      --text: #1a1a1a;
+      --muted: #5b5b5b;
+      --link: #0a66c2;
+      --card: #f6f7f9;
+      --border: #e6e8eb;
+      --maxw: 1100px;
+      --radius: 14px;
+    }
+    html,body{height:100%}
+    body{
+      margin:0;
+      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background: var(--bg);
+    }
+    a{color:var(--link); text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .site-header{
+      position: sticky; top:0; z-index:10;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: saturate(180%) blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav{
+      max-width: var(--maxw);
+      margin:0 auto; padding: 12px 20px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:16px;
+    }
+    .brand{display:flex; align-items:center; gap:14px}
+    .icon-row{display:flex; gap:12px; justify-content:center;}
+    .icon{width:22px; height:22px; display:inline-block; color:var(--text)}
+    .links{display:flex; gap:18px; align-items:center}
+    .links a{color:var(--text)}
+
+    .wrap{max-width: var(--maxw); margin: 32px auto; padding: 0 20px}
+    .grid{
+      display:grid; grid-template-columns: 1.4fr .9fr; gap: 36px;
+    }
+
+    h1{font-size: 42px; line-height:1.15; margin: 10px 0 8px}
+    .tagline{color:var(--muted); margin: 0 0 20px}
+    .lead{margin: 0 0 18px}
+    .affil{margin: 10px 0 22px}
+    .affil li{margin: 6px 0}
+
+    .card{background:var(--card); border:1px solid var(--border); border-radius: var(--radius); overflow:hidden; text-align:center;}
+    .card img{display:block; width:100%; height:auto}
+    .card .caption{padding:14px 0;}
+
+    .news{margin-top: 40px}
+    .news h2{font-size: 28px; margin: 0 0 16px}
+    .news-item{display:flex; gap:18px; padding:14px 0; border-top:1px solid var(--border)}
+    .news-item:first-child{border-top:0}
+    .news-date{min-width: 120px; color:var(--muted); font-weight:600}
+    .news { margin-top: 40px; }
+    
+
+    h2{font-size: 15px; line-height:1.15; margin: 0px 0 0px}
+    .tagline{color:var(--muted); margin: 0 0 18px}
+    .lead{margin: 0 0 18px}
+    .affil{margin: 10px 0 22px}
+    .affil li{margin: 6px 0}
+
+    .card{background:var(--card); border:1px solid var(--border); border-radius: var(--radius); overflow:hidden; text-align:center;}
+    .card img{display:block; width:100%; height:auto}
+    .card .caption{padding:14px 0;}
+
+    .news{margin-top: 40px}
+    .news h2{font-size: 28px; margin: 0 0 16px}
+    .news-item{display:flex; gap:18px; padding:14px 0; border-top:1px solid var(--border)}
+    .news-item:first-child{border-top:0}
+    .news-date{min-width: 120px; color:var(--muted); font-weight:600}
+
+    footer{height:48px}
+
+    @media (max-width: 880px){
+      .grid{grid-template-columns: 1fr; gap: 22px}
+      aside{order:-1}
+      aside .card{max-width: 320px; margin: 0 auto 8px}
+      h1{font-size: 34px; text-align:center}
+      .tagline{text-align:center}
+      .news-date{min-width: 100px}
+      h2{font-size: 15px; text-align:center}
+      .tagline{text-align:center}
+      .news-date{min-width: 100px}
+    }
+    @media (max-width: 520px){
+      .links{gap:12px}
+      .nav{padding:10px 14px}
+      h1{font-size: 30px}
+      .news-date{min-width: 88px}
+      h2{font-size: 14px}
+      .news-date{min-width: 88px}
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav" aria-label="Primary">
+      <div class="brand">
+        <div class="icon-row" aria-label="Social">
+          <strong>Vincent-Daniel Yun</strong>
+        </div>
+      </div>
+      <div class="links">
+        <a href="#about">Publications</a>
+        <a href="#about">CV</a>
+        <a href="#about">Projects</a>
+      </div>
+    </nav>
+  </header>
+
+
+
+
+
+
+
+
+
+  <main class="wrap">
+    <section class="grid">
+      <div>
+        <h1>Vincent-Daniel Yun</h1>
+        <h2>Graduate Research Assistant at USC</h2>
+        <p class="tagline">MSCS student at University of Southern California</p>
+        <p class="lead">This is Daniel, a first-year MSAI student at the University of Southern California researching 
+          <strong>Deep Learning Foundation & LLM Optimization</strong>. I’m fortunately supervised by <a href="#">Prof. Sai Praneeth Karimireddy</a> and <a href="#">Prof. Vatsal Sharan</a>
+          from USC. I am also closely working with <a href="#">Prof. Sunwoo Lee</a> from Inha University. 
+          
+          <br><br>
+          
+          My research focuses on improving optimization, generalization, and model compression techniques to make neural networks lighter, 
+          faster, and more efficient in learning from data. 
+      </p>
+
+      <p style="margin-top:18px; font-weight:600">My current research interests:</p>
+      <ul class="affil">
+        <li>Efficient and Effective optimization and training dynamics of neural networks</li>
+        <li>Model pruning, quantization, and compression techniques</li>
+        <li>Deep learning foundation</li>
+      </ul>
+
+
+
+      <p style="margin-top:18px; font-weight:600">My current affiliations include:</p>
+      <ul class="affil">
+        <li>Theory Group at University of Southern California (<a href="https://viterbi-web.usc.edu/~cstheory/">CS Theory</a>)</li>
+        <li>Large-Scale Machine Learning Systems Lab at Inha University (<a href="https://sites.google.com/view/lmls-lab">LMLS</a>)</li>
+        <li>Open Neural Network Research Lab at MODULABS (<a href="https://www.open-nn.com/">OpenNN</a>)</li>
+      </ul>
+
+      <p class="lead">Prior to joining USC, 
+          I completed my undergraduate studies in Computer Science and Applied Mathematics at Stony Brook University 
+          where I was supervised by <a href="#">Prof. Chao Chen</a>.
+      </p>
+
+
+        <div>
+          <img src="img/usc.png" alt="" style="width:100%; height:auto; display:block;">
+        </div>
+        
+        <br><br>
+        
+      </div>
+
+      <aside>
+        <figure class="card">
+          <img src="img/daniel.jpeg" alt="Portrait at a garden" />
+          <figcaption class="caption">
+            <div class="icon-row">
+                <!-- LinkedIn -->
+                <a class="icon" href="https://www.linkedin.com/in/your-profile" 
+                   aria-label="LinkedIn" title="LinkedIn" target="_blank">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                       stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-14h4v2.1C14.5 8.4 15.2 8 16 8Z"/>
+                    <rect x="2" y="9" width="4" height="12"/>
+                    <circle cx="4" cy="4" r="2"/>
+                  </svg>
+                </a>
+              
+                <!-- Email -->
+                <a class="icon" href="mailto:thomas.bourke@cam.ac.uk" 
+                   aria-label="Email" title="Email">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                       stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 5h18v14H3z"/><path d="m3 6 9 7 9-7"/>
+                  </svg>
+                </a>
+              
+                <!-- Google Scholar -->
+                <a class="icon" href="https://scholar.google.com/citations?user=thisworldisasimulation&user=mlfYKfgAAAAJ" 
+                   aria-label="Scholar" title="Google Scholar" target="_blank">
+                  <i class="fa-solid fa-graduation-cap"></i>
+                </a>
+              </div>
+              
+          </figcaption>
+        </figure>
+      </aside>
+    </section>
+
+    
+    <section class="news" aria-labelledby="news-heading">
+        <h2 id="news-heading">Recent news</h2>
+
+        <article class="news-item">
+          <div class="news-date">Nov, 2025</div>
+          <div>Two papers were submitted to the top cv conference.
+          </div>
+        </article>
+
+        <article class="news-item">
+          <div class="news-date">Sep, 2025</div>
+          <div>Our paper entitled <strong>
+              "MedCLM: Learning to Localize and Reason via a CoT-Curriculum in Medical Vision-Language Models"
+              </strong>
+              is submitted to the NLP Conference.
+              <br>
+              <a href="https://arxiv.org/pdf/2510.04477">[Paper]</a>
+          </div>
+        </article>
+
+        <article class="news-item">
+          <div class="news-date">Sep, 2025</div>
+          <div><strong>[NeurIPS 2025 OPT]</strong> <br>Congratulations! Our paper entitled <strong>
+              "Sharpness-Aware Minimization with Z-Score Gradient Filtering"
+              </strong>
+              is accepted at Conference on Neural Information Processing Systems (NeurIPS) 2025 OPT Workshop.
+              <br>
+              <a href="https://arxiv.org/abs/2505.02369">[Paper]</a> <a href="https://opt-ml.org/">[Workshop]</a>
+          </div>
+        </article>
+
+        <article class="news-item">
+          <div class="news-date">Sep, 2025</div>
+          <div><strong>[NeurIPS 2025 OPT]</strong> <br>Congratulations! Our paper entitled<strong>
+              "SGD Convergence under Stepsize Shrinkage in Low-Precision Training"
+              </strong>
+              is accepted at Conference on Neural Information Processing Systems (NeurIPS) 2025 OPT Workshop.
+              <br>
+              <a href="https://arxiv.org/pdf/2508.07142?">[Paper]</a> <a href="https://opt-ml.org/">[Workshop]</a>
+          </div>
+        </article>
+
+        <article class="news-item">
+          <div class="news-date">Sep, 2025</div>
+          <div><strong>[NeurIPS 2025 OPT]</strong> <br>Congratulations! Our paper entitled<strong>
+              "Insights from Gradient Dynamics: Gradient Autoscaled Normalization"
+              </strong>
+              is accepted at Conference on Neural Information Processing Systems (NeurIPS) 2025 OPT Workshop.
+              <br>
+              <a href="https://arxiv.org/pdf/2509.03677">[Paper]</a> <a href="https://opt-ml.org/">[Workshop]</a>
+          </div>
+        </article>
+
+        <article class="news-item">
+          <div class="news-date">Sep, 2025</div>
+          <div><strong>[CIKM 2025 HCAI]<br></strong> Congratulations! Our paper entitled <strong>
+              "Fast Fourier Transform-Based Spectral and Temporal Gradient Filtering for Differential Privacy"
+              </strong>
+              is accepted at CIKM 2025 Human-Centric AI Workshop.
+              <br>
+              <a href="https://arxiv.org/abs/2505.04468">[Paper]</a> <a href="https://xai.kaist.ac.kr/Workshop/hcai2025/#call">[Workshop]</a>
+          </div>
+        </article>
+
+        <article class="news-item">
+          <div class="news-date">Jul, 2025</div>
+          <div><strong>[ICONIP 2025]<br></strong> Congratulations! Our paper entitled <strong>
+              "Revisiting 16-bit Neural Network Training: A Practical Approach for Resource-Limited Learning"
+              </strong>
+              has been accepted as an oral presentation at International Conference on Neural Information Processing (ICONIP) 2025 (top 8% acceptance rate).
+              <br>
+              <a href="https://arxiv.org/abs/2305.10947">[Paper]</a>
+          </div>
+        </article>
+
+        <article class="news-item">
+          <div class="news-date">Nov, 2024</div>
+          <div><strong>[AAAIW 2025]<br></strong> Congratulations! Our paper entitled <strong>
+              "ZNorm: Z-Score Gradient Normalization Accelerating Skip-Connected Network Training Without Architectural Modification"
+              </strong>
+              is accepted at AAAI 2025 Workshops: AI for Research and Scalable, Efficient Systems.
+              <br>
+              <a href="https://link.springer.com/chapter/10.1007/978-981-96-8912-5_12">[Paper]</a> <a href="https://seasworkshop.github.io/aaai25/">[Workshop]</a>
+          </div>
+        </article>
+
+        <article class="news-item">
+          <div class="news-date">Nov, 2024</div>
+          <div><strong>[IEEE BigDataW 2024]<br></strong> Congratulations! Our paper entitled <strong>
+              "Mitigating gradient overlap in deep residual networks with gradient normalization for improved non-convex optimization"
+              </strong>
+              is accepted at IEEE International Conference on Big Data (BigData) Optimization Workshop, BPOD.
+              <br>
+              <a href="https://ieeexplore.ieee.org/abstract/document/10825094">[Paper]</a> <a href="https://bdal.umbc.edu/bpod-2024/">[Workshop]</a>
+          </div>
+        </article>
+
+        <article class="news-item">
+          <div class="news-date">Sep, 2024</div>
+          <div><strong>[ESA SPAICE 2024]<br></strong> Congratulations! Our paper entitled <strong>
+              "Analysis and Predictive Modeling of Solar Coronal Holes Using Computer Vision and ARIMA-LSTM Networks"
+              </strong>
+              is accepted at SPAICE2024: The First Joint European Space Agency / IAA Conference on AI in and for Space.
+              <br>
+              <a href="https://arxiv.org/pdf/2405.09802">[Paper]</a> <a href="https://spaice.esa.int/2024/">[Conference]</a>
+          </div>
+        </article>
+
+        <article class="news-item">
+          <div class="news-date">Mar, 2024</div>
+          <div><strong>[IJCNN 2024]<br></strong> Congratulations! Our paper entitled <strong>
+              "Robust Neural Pruning with Gradient Sampling Optimization for Residual Neural Networks"
+              </strong>
+              is accepted at International Joint Conference on Neural Networks (IJCNN) (Oral).
+              <br>
+              <a href="https://ieeexplore.ieee.org/abstract/document/10650301">[Paper]</a>
+          </div>
+        </article>
+
+        <article class="news-item">
+          <div class="news-date">Mar, 2024</div>
+          <div><strong>[CVPRW 2024]<br></strong> Congratulations! Our paper entitled <strong>
+              "Uncertainty Estimation for Tumor Prediction with Unlabeled data"
+              </strong>
+              is accepted at IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshop.
+              <br>
+              <a href="https://openaccess.thecvf.com/content/CVPR2024W/CVMI/papers/Yun_Uncertainty_Estimation_for_Tumor_Prediction_with_Unlabeled_Data_CVPRW_2024_paper.pdf">[Paper]</a>
+          </div>
+        </article>
+
+
+      </section>
+
+  </main>
+  
+
+  <footer></footer>
+  
+</body>
+</html>
