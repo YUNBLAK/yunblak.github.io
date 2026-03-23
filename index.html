@@ -280,9 +280,26 @@
       <section class="news" aria-labelledby="news-heading">
   <h2 id="news-heading">Recent news</h2>
 
+  <article class="news-item">
+    <div class="news-date">Mar, 2025</div>
+    <div>
+      <strong>
+        [Travel Grant for <span style="color:#1e6cff;">ICASSP 2026</span>]<br>
+      </strong>
+      Recipient of the USC GSG Travel Grant for ICASSP 2026 (Spain)
+      <br>
+    </div>
+  </article>
+
+  <article class="news-item">
+    <div class="news-date">Feb, 2025</div>
+    <div>One paper was submitted to the ECCV 2026 conference. [Optimization]
+    </div>
+  </article>
+
 <article class="news-item">
     <div class="news-date">Jan, 2026</div>
-    <div>Two papers were submitted to the ICML 2026 conference.
+    <div>Two papers were submitted to the ICML 2026 conference. [Pruning] [Eff-ML]
     </div>
   </article>
         
@@ -322,12 +339,6 @@
     </div>
   </article>
   
-
-  <article class="news-item">
-    <div class="news-date">Nov, 2025</div>
-    <div>One paper was submitted to the CVPR 2026 conference.
-    </div>
-  </article>
 
   <!-- <article class="news-item">
     <div class="news-date">Oct, 2025</div>
@@ -500,7 +511,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const items = document.querySelectorAll(".news .news-item");
   const btn = document.getElementById("news-toggle");
-  const VISIBLE_COUNT = 6;
+  const VISIBLE_COUNT = 7;
 
   if (!btn || items.length <= VISIBLE_COUNT) {
     items.forEach(item => item.classList.add("visible"));
