@@ -7,7 +7,7 @@
   rel="stylesheet" 
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     >
-  <title>Daniel .Com</title>
+  <title>Daniel Yun</title>
   <style>
     :root{
       --bg: #ffffff;
@@ -116,7 +116,7 @@
     <nav class="nav" aria-label="Primary">
       <div class="brand">
         <div class="icon-row" aria-label="Social">
-          <strong>Vincent-Daniel Yun</strong>
+          <strong>Vincent-Daniel Yun | USC</strong>
         </div>
       </div>
       <div class="links">
@@ -139,22 +139,28 @@
     <section class="grid">
       <div>
         <h1>Vincent-Daniel Yun</h1>
-        <h2>Graduate Research Assistant at USC</h2>
-        <p class="tagline">MSCS student at University of Southern California</p>
+        <!-- <h2>Graduate Research Assistant at USC</h2> -->
+        <!-- <p class="tagline">MSCS student at University of Southern California</p> -->
+         <br>
         <p class="lead">This is Daniel, a first-year MSAI student at the University of Southern California researching 
-          <strong>Deep Learning Foundation & LLM Optimization</strong>. I’m fortunately supervised by <a href="#">Prof. Sai Praneeth Karimireddy</a> and <a href="#">Prof. Vatsal Sharan</a>
-          from USC. I am also closely working with <a href="#">Prof. Sunwoo Lee</a> from Inha University. 
+          <strong>Deep Learning Foundation & LLM Optimization</strong>. I’m fortunately supervised by <a href="https://spkreddy.org/">Prof. Sai Praneeth Karimireddy</a> and <a href="https://vatsalsharan.github.io/">Prof. Vatsal Sharan</a>
+          from USC. I am also closely working with <a href="https://sites.google.com/view/sunwoolee/home">Prof. Sunwoo Lee</a> from Inha University (Republic of Korea). 
           
           <br><br>
           
-          My research focuses on improving optimization, generalization, and model compression techniques to make neural networks lighter, 
-          faster, and more efficient in learning from data. 
+          Recent progress in AI such as large language models has been driven largely by scaling, but this comes with significant computational and memory costs. This motivates a broader question at the core of my research:
       </p>
 
+      <blockquote class="research-question">
+        Are modern neural networks inherently overparameterized, and far from structurally optimal?
+      </blockquote>
+
+      Therefore, my research focuses on improving optimization, generalization, and model compression techniques to make neural networks lighter, 
+      faster, and more efficient in learning from data.  
       <p style="margin-top:18px; font-weight:600">My current research interests:</p>
       <ul class="affil">
         <li>LLM Optimization & Reasoning</li>
-        <li>Efficient and Effective optimization/training dynamics of neural networks</li>
+        <li>Efficient & Effective optimization/training dynamics of neural networks</li>
         <li>Model pruning, quantization, and compression techniques</li>
         <li>Deep learning foundation</li>
         
@@ -164,14 +170,14 @@
 
       <p style="margin-top:18px; font-weight:600">My current affiliations include:</p>
       <ul class="affil">
-        <li>Theory Group at University of Southern California (<a href="https://viterbi-web.usc.edu/~cstheory/">CS Theory</a>)</li>
+        <li>Theory Group at University of Southern California (<a href="https://viterbi-web.usc.edu/~cstheory/">USC CS Theory Group</a>)</li>
         <li>Large-Scale Machine Learning Systems Lab at Inha University (<a href="https://sites.google.com/view/lmls-lab">LMLS</a>)</li>
         <li>Neural Superintelligence at MODULABS (<a href="https://www.open-nn.com/">Previously OpenNN</a>)</li>
       </ul>
 
       <p class="lead">Prior to joining USC, 
-          I completed my undergraduate studies in Computer Science and Applied Mathematics at Stony Brook University 
-          where I was supervised by <a href="#">Prof. Chao Chen</a>.
+          I completed my undergraduate studies in Computer Science (Major 1) and Applied Mathematics (Major 2) at Stony Brook University 
+          where I was supervised by <a href="https://chaochen.github.io/index.html">Prof. Chao Chen</a>.
       </p>
 
 
@@ -244,6 +250,11 @@
     <h2 id="news-heading">Education</h2>
      <article class="news-item">
     <div>
+      <h3 style="margin-top:18px; font-weight:600">[PhD] Actively Looking for Fall 2027 Admission PhD Program</h3>
+      <ul class="affil">
+        <li>Computer Science, Electrical Engineering, Computer Engineering</li>
+        <li>Potential Research Fields: Deep Learning (AI) Foundation, Model Compression, Optimization</li>
+      </ul>
 
       <h3 style="margin-top:18px; font-weight:600">[MS] University of Southern California, Los Angeles, CA (08.2025 - 05.2027)</h3>
       <ul class="affil">
@@ -286,7 +297,7 @@
       <strong>
         [Travel Grant for <span style="color:#1e6cff;">ICASSP 2026</span>]<br>
       </strong>
-      Recipient of the USC GSG Travel Grant for ICASSP 2026 (Spain)
+      Congratulations! Recipient of the USC GSG Travel Grant for ICASSP 2026
       <br>
     </div>
   </article>
@@ -501,6 +512,30 @@
   cursor: pointer;
 }
 
+.research-question{
+  margin: 22px 0 26px;
+  padding: 8px 0 8px 22px;
+  border-left: 8px solid #000;
+  font-size: 1.1rem;
+  line-height: 1.35;
+  font-weight: 700;
+  max-width: 1000px;
+}
+
+@media (max-width: 880px){
+  .research-question{
+    font-size: 1.6rem;
+    padding-left: 16px;
+    border-left: 6px solid #000;
+  }
+}
+
+@media (max-width: 520px){
+  .research-question{
+    font-size: 1.3rem;
+  }
+}
+
 .news-toggle:hover {
   text-decoration: underline;
 }
@@ -546,6 +581,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       <section class="news" aria-labelledby="news-heading2">
         <h2 id="news-heading2">Awards</h2>
+        <article class="news-item2">
+          <div class="news-date">Mar, 2026</div>
+          <div>
+            USC GSG Travel Award for ICASSP 2026<br>
+          </div>
+        </article>
 
         <article class="news-item2">
           <div class="news-date">Nov, 2025</div>
@@ -601,6 +642,31 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </article>
       </section>
+
+ <section class="news" aria-labelledby="news-heading2">
+        <h2 id="news-heading2">Academic Services</h2>
+        <article class="news-item2">
+          <div class="news-date">2026</div>
+          <div>
+            Reviewer, <br>
+          </div>
+        </article>
+        <article class="news-item2">
+          <div class="news-date">2025</div>
+          <div>
+            Reviewer, Conference on Parsimony and Learning (CPAL)<br>
+          </div>
+        </article>
+        <article class="news-item2">
+          <div class="news-date">2025</div>
+          <div>
+            Reviewer, International Joint Conference on Neural Networks (IJCNN)<br>
+          </div>
+        </article>
+
+        
+      </section>
+
   </main>
   
 
