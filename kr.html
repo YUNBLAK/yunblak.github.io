@@ -8,14 +8,14 @@
        The language choice is stored in localStorage and shared by every page. -->
   <script>
     try { localStorage.setItem("lang", "ko"); } catch (e) {}
-    location.replace("index.html");
+    location.replace("/");
   </script>
   <!-- Fallback for when JavaScript is disabled -->
-  <meta http-equiv="refresh" content="0; url=index.html" />
+  <meta http-equiv="refresh" content="0; url=/" />
 </head>
 <body>
   <p style="font-family: -apple-system, sans-serif; padding: 24px; color: #555;">
-    한국어 페이지로 이동 중입니다… <a href="index.html">계속하기</a>
+    한국어 페이지로 이동 중입니다… <a href="/">계속하기</a>
   </p>
 </body>
 </html>
