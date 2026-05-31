@@ -4,8 +4,9 @@
      innerHTML from the dictionary below when lang = "ko".
    - The English version is the original HTML already in the
      page, cached on first load (so we only maintain Korean here).
-   - Selected language is stored in localStorage and shared
-     across all pages.
+   - Selected language is kept in sessionStorage: it defaults to English
+     on every fresh visit, and a switch to Korean (via the toggle or the
+     /kr entry page) lasts only for the current browsing session.
    ========================================================= */
 (function () {
   "use strict";
@@ -130,14 +131,18 @@
 
   function init() {
     cacheOriginals();
-    const saved = localStorage.getItem(STORAGE_KEY) || "en";
+    // Language is kept per session only, so a fresh visit always defaults to
+    // English. Korean (via the toggle or the /kr entry) lasts for the current
+    // browsing session and resets to English on the next visit.
+    var saved = "en";
+    try { saved = sessionStorage.getItem(STORAGE_KEY) || "en"; } catch (e) {}
     apply(saved);
 
     const btn = document.getElementById("lang-toggle");
     if (btn) {
       btn.addEventListener("click", function () {
         const lang = getLang() === "ko" ? "en" : "ko";
-        localStorage.setItem(STORAGE_KEY, lang);
+        try { sessionStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
         apply(lang);
       });
     }

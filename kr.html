@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Daniel .Com</title>
-  <!-- Force Korean site-wide, then enter the site.
-       The language choice is stored in localStorage and shared by every page. -->
+  <!-- Force Korean for this browsing session, then enter the site.
+       Stored in sessionStorage so it lasts while browsing but resets to
+       English on the next visit. -->
   <script>
-    try { localStorage.setItem("lang", "ko"); } catch (e) {}
+    try { sessionStorage.setItem("lang", "ko"); } catch (e) {}
     location.replace("/");
   </script>
   <!-- Fallback for when JavaScript is disabled -->
