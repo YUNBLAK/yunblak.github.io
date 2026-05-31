@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -34,32 +34,214 @@
   </nav>
 
   <div class="container">
-    <section class="projects">
-      <h2 data-i18n="eai.h">E-AI Project</h2>
-      <p class="bio" style="margin-bottom: 30px;" data-i18n="eai.intro">
-        A collection of projects under <strong>E-AI</strong>. Project details and links will be added here.
+    <!-- ===== Masthead ===== -->
+    <section class="ef-mast">
+      <div class="ef-kicker" data-i18n="eai.hero_badge">E-AI &middot; Efficient AI</div>
+      <h1 class="ef-headline" data-i18n="eai.hero_title">Efficient and Robust AI System Project</h1>
+      <p class="ef-standfirst" data-i18n="eai.hero_tag">
+        Building lightweight, fast, and reliable AI that can stand beside people when seconds matter.
       </p>
+      <div class="ef-byline">Vincent-Daniel Yun &middot; University of Southern California</div>
+    </section>
 
-      <!-- ===== Project cards (edit / duplicate as needed) ===== -->
-      <div class="project-item">
-        <div class="project-title" data-i18n="eai.ptitle">Project Title</div>
-        <div class="project-desc" data-i18n="eai.pdesc">
-          A short one- to two-sentence description of the project, its goal, and your role.
+    <!-- ===== Lede / Vision ===== -->
+    <section class="ef-lede">
+      <p class="ef-dropcap" data-i18n="eai.vision_p1">
+        Modern AI is powerful but heavy. State-of-the-art models are enormous and their inference is slow &mdash;
+        still far from human intuition, and far too slow and unreliable to trust in urgent, high-stakes moments.
+      </p>
+      <p data-i18n="eai.vision_p2">
+        Two obstacles stand between today's models and AI we can trust in the field. Individually, each model is too
+        large and too slow to run where it is actually needed. Collectively, when many models or agents work together,
+        a single faulty or adversarial member can quietly derail the whole system. <strong>E-AI</strong> attacks both
+        &mdash; making every model lightweight and fast, and keeping teams of agents reliable even when some of them fail.
+      </p>
+      <p data-i18n="eai.vision_p3">
+        I started the <strong>E-AI (Efficient-AI)</strong> project to build compact yet powerful AI that can assist
+        people in disaster scenarios &mdash; responding to dangerous accidents quickly and reliably when every second counts.
+      </p>
+      <blockquote class="ef-pullquote" data-i18n="eai.vision_quote">
+        E-AI is the central theme of all my research &mdash; every project I work on is a step toward making it real.
+      </blockquote>
+    </section>
+
+    <!-- ===== Research ===== -->
+    <div class="ef-sectionlabel"><span data-i18n="eai.research_h">Research under E-AI</span></div>
+    <p class="ef-sectionintro" data-i18n="eai.research_sub">
+      The work splits into two threads: keeping teams of LLM agents robust when individual agents fail, and shrinking
+      and accelerating the models themselves &mdash; without losing what makes them powerful.
+    </p>
+
+    <!-- Track I -->
+    <div class="ef-track">
+      <span class="ef-track-no">I</span>
+      <span class="ef-track-name" data-i18n="eai.track1">Robust Multi-Agent Systems</span>
+    </div>
+
+    <!-- 01 Robust Multi-Agent LLMs -->
+    <article class="ef-feature">
+      <div class="ef-feature-media">
+        <img src="image/ef-multiagent.png" alt="Self-Anchored Consensus (SAC) pipeline overview on an (F+1)-robust network" />
+      </div>
+      <div class="ef-feature-text">
+        <div class="ef-feature-no">01</div>
+        <h3 class="ef-feature-title" data-i18n="eai.c0_t">Robust Multi-Agent LLMs under Byzantine Faults</h3>
+        <p class="ef-feature-desc" data-i18n="eai.c0_d">
+          When LLM agents collaborate over a network, a few unreliable or adversarial ("Byzantine") agents can mislead
+          the rest and corrupt the group's answer. Self-Anchored Consensus (SAC) is a fully decentralized
+          filter-and-refine protocol where agents iteratively share, evaluate, and filter each other's messages
+          &mdash; with graph conditions that guarantee honest agents keep reliable information flowing, even under
+          adversarial attacks.
+        </p>
+        <a class="ef-feature-link" href="https://arxiv.org/abs/2605.09076" target="_blank" data-i18n="eai.readpaper">Read the paper &rarr;</a>
+      </div>
+    </article>
+
+    <!-- Track II -->
+    <div class="ef-track">
+      <span class="ef-track-no">II</span>
+      <span class="ef-track-name" data-i18n="eai.track2">Efficient Models &amp; Compression</span>
+    </div>
+
+    <!-- 02 Ghosted Layers -->
+    <article class="ef-feature reverse">
+      <div class="ef-feature-media">
+        <img src="image/ef-ghosted.png" alt="Ghosted Layers architecture diagram" />
+      </div>
+      <div class="ef-feature-text">
+        <div class="ef-feature-no">02</div>
+        <h3 class="ef-feature-title" data-i18n="eai.c1_t">Ghosted Layers: Recovering Layer-Pruned LLMs</h3>
+        <p class="ef-feature-desc" data-i18n="eai.c1_d">
+          Layer pruning removes whole Transformer blocks to shrink an LLM, but creates a mismatch at the pruning
+          boundary that hurts accuracy. Ghosted Layers is a training-free module that solves a closed-form
+          activation-alignment problem to recover the lost information &mdash; keeping the speedup of pruning
+          while restoring quality.
+        </p>
+        <a class="ef-feature-link" href="https://arxiv.org/abs/2605.15491" target="_blank" data-i18n="eai.readpaper">Read the paper &rarr;</a>
+      </div>
+    </article>
+
+    <!-- 03 LoRP -->
+    <article class="ef-feature">
+      <div class="ef-feature-media">
+        <img src="image/ef-lorp.png" alt="Inter-layer similarity heatmaps across LLM architectures" />
+      </div>
+      <div class="ef-feature-text">
+        <div class="ef-feature-no">03</div>
+        <h3 class="ef-feature-title" data-i18n="eai.c2_t">Locality-Aware Redundancy Pruning (LoRP)</h3>
+        <p class="ef-feature-desc" data-i18n="eai.c2_d">
+          Where redundancy lives inside an LLM depends on its architecture &mdash; it can be localized or spread
+          globally (think Llama vs. Qwen). LoRP measures inter-layer similarity to compute a Representation
+          Locality Score, then prunes each model according to its own redundancy structure instead of a
+          one-size-fits-all rule.
+        </p>
+        <a class="ef-feature-link" href="https://arxiv.org/abs/2605.27786" target="_blank" data-i18n="eai.readpaper">Read the paper &rarr;</a>
+      </div>
+    </article>
+
+    <!-- 04 WCR -->
+    <article class="ef-feature reverse">
+      <div class="ef-feature-media">
+        <img src="image/ef-wcr.png" alt="3D weight-magnitude landscape before and after concentration" />
+      </div>
+      <div class="ef-feature-text">
+        <div class="ef-feature-no">04</div>
+        <h3 class="ef-feature-title" data-i18n="eai.c3_t">Weight Concentration Regularization (WCR)</h3>
+        <p class="ef-feature-desc" data-i18n="eai.c3_d">
+          Under aggressive sparsity, naive pruning destroys accuracy because important weights are spread thin.
+          WCR is a training-time regularizer that concentrates a model's energy onto a small set of informative
+          parameters, so magnitude pruning can safely remove the rest &mdash; making models far more robust to
+          high-sparsity compression.
+        </p>
+        <a class="ef-feature-link" href="https://arxiv.org/abs/2511.14282" target="_blank" data-i18n="eai.readpaper">Read the paper &rarr;</a>
+      </div>
+    </article>
+
+    <!-- 05 Rethinking Layer Redundancy -->
+    <article class="ef-feature">
+      <div class="ef-feature-media">
+        <img src="image/ef-rethink.png" alt="Pruned layer patterns across calibration configurations" />
+      </div>
+      <div class="ef-feature-text">
+        <div class="ef-feature-no">05</div>
+        <h3 class="ef-feature-title" data-i18n="eai.c4_t">Rethinking Layer Redundancy: Calibration over Search</h3>
+        <p class="ef-feature-desc" data-i18n="eai.c4_d">
+          Most depth-pruning methods chase clever search algorithms to find removable layers. We show the opposite:
+          under a fixed calibration set, complex search barely beats simple one-shot pruning &mdash; it is the
+          calibration configuration that really shapes which layers are redundant. A call to prioritize data
+          over search.
+        </p>
+        <a class="ef-feature-link" href="https://arxiv.org/abs/2604.24938" target="_blank" data-i18n="eai.readpaper">Read the paper &rarr;</a>
+      </div>
+    </article>
+
+    <!-- ===== Cite / BibTeX ===== -->
+    <section class="ef-cite">
+      <div class="ef-sectionlabel"><span data-i18n="eai.cite_h">Cite &middot; BibTeX</span></div>
+
+      <div class="ef-bib">
+        <div class="ef-bib-head">
+          <span>Robust Multi-Agent LLMs</span>
+          <button class="ef-copy" type="button" data-i18n="eai.copy">Copy</button>
         </div>
-        <div class="pub-links" style="margin-top: 10px;">
-          <a class="pub-link" href="#" target="_blank">Code</a>
-          <a class="pub-link" href="#" target="_blank">Demo</a>
-        </div>
+        <pre>@article{lee2026robust,
+  title   = {Robust Multi-Agent LLMs under Byzantine Faults},
+  author  = {Lee, Haejoon and Yun, Vincent-Daniel and Oh, Hyeonho and Panagou, Dimitra and Karimireddy, Sai Praneeth},
+  journal = {arXiv preprint arXiv:2605.09076},
+  year    = {2026}
+}</pre>
       </div>
 
-      <div class="project-item">
-        <div class="project-title" data-i18n="eai.ptitle">Project Title</div>
-        <div class="project-desc" data-i18n="eai.pdesc">
-          A short one- to two-sentence description of the project, its goal, and your role.
+      <div class="ef-bib">
+        <div class="ef-bib-head">
+          <span>Ghosted Layers</span>
+          <button class="ef-copy" type="button" data-i18n="eai.copy">Copy</button>
         </div>
-        <div class="pub-links" style="margin-top: 10px;">
-          <a class="pub-link" href="#" target="_blank">Code</a>
+        <pre>@article{yun2026ghosted,
+  title   = {Ghosted Layers: Unconstrained Activation Alignment for Recovering Layer-Pruned LLMs},
+  author  = {Yun, Vincent-Daniel and Jo, Junhyuk and Karimireddy, Sai Praneeth and Lee, Sunwoo},
+  journal = {arXiv preprint arXiv:2605.15491},
+  year    = {2026}
+}</pre>
+      </div>
+
+      <div class="ef-bib">
+        <div class="ef-bib-head">
+          <span>Locality-Aware Redundancy Pruning (LoRP)</span>
+          <button class="ef-copy" type="button" data-i18n="eai.copy">Copy</button>
         </div>
+        <pre>@article{yun2026lorp,
+  title   = {Locality-Aware Redundancy Pruning for LLM Depth Compression},
+  author  = {Yun, Vincent-Daniel and Kim, Youngrae and Lim, Woosang and Heo, Youngjin and Kim, Minkyu and Lee, Sunwoo},
+  journal = {arXiv preprint arXiv:2605.27786},
+  year    = {2026}
+}</pre>
+      </div>
+
+      <div class="ef-bib">
+        <div class="ef-bib-head">
+          <span>Weight Concentration Regularization (WCR)</span>
+          <button class="ef-copy" type="button" data-i18n="eai.copy">Copy</button>
+        </div>
+        <pre>@article{yun2026wcr,
+  title   = {Weight Concentration Regularization for Improving Pruning Robustness Under High Sparsity},
+  author  = {Yun, Vincent-Daniel and Jo, Junhyuk and Lee, Sunwoo},
+  journal = {arXiv preprint arXiv:2511.14282},
+  year    = {2026}
+}</pre>
+      </div>
+
+      <div class="ef-bib">
+        <div class="ef-bib-head">
+          <span>Rethinking Layer Redundancy</span>
+          <button class="ef-copy" type="button" data-i18n="eai.copy">Copy</button>
+        </div>
+        <pre>@article{kim2026rethinking,
+  title   = {Rethinking Layer Redundancy: Calibration Matters More Than Search in LLM Depth Pruning},
+  author  = {Kim, Minkyu and Yun, Vincent-Daniel and Kim, Youngrae and Cho, Suin and Lim, Woosang and Lee, Sunwoo},
+  journal = {arXiv preprint arXiv:2604.24938},
+  year    = {2026}
+}</pre>
       </div>
     </section>
   </div>
@@ -99,6 +281,22 @@
         });
       });
     })();
+  </script>
+
+  <!-- ========== BibTeX copy buttons ========== -->
+  <script>
+    document.querySelectorAll(".ef-copy").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var pre = btn.closest(".ef-bib").querySelector("pre");
+        if (!pre) return;
+        var ko = window.siteLang && window.siteLang() === "ko";
+        var prev = btn.textContent;
+        navigator.clipboard.writeText(pre.innerText).then(function () {
+          btn.textContent = ko ? "복사됨!" : "Copied!";
+          setTimeout(function () { btn.textContent = prev; }, 1500);
+        });
+      });
+    });
   </script>
 
   <!-- ========== i18n (KR / EN) ========== -->

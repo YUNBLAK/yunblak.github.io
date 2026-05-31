@@ -9,6 +9,10 @@
 
 html {
   scroll-behavior: smooth;
+  /* Clip the off-canvas mobile drawer so it can't be revealed by
+     swiping/scrolling horizontally. Applied on the root so it does
+     not break the sticky navbar. */
+  overflow-x: hidden;
 }
 
 body {
@@ -691,6 +695,305 @@ section h2::after {
 }
 
 /* =========================
+   E-AI Project page (magazine / editorial)
+   ========================= */
+
+/* Masthead */
+.ef-mast {
+  text-align: center;
+  padding: 18px 0 36px;
+  border-bottom: 3px double #d9c4e1;
+  margin-bottom: 48px;
+}
+
+.ef-kicker {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #b509ac;
+  margin-bottom: 22px;
+}
+
+.ef-headline {
+  font-family: 'Roboto Slab', serif;
+  font-weight: 700;
+  font-size: 3.4rem;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: #1a1a1a;
+  margin-bottom: 22px;
+}
+
+.ef-standfirst {
+  font-family: 'Lora', Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 1.28rem;
+  line-height: 1.5;
+  color: #4b5159;
+  max-width: 620px;
+  margin: 0 auto 20px;
+}
+
+.ef-byline {
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #9098a1;
+}
+
+/* Lede / vision */
+.ef-lede {
+  max-width: 700px;
+  margin: 0 auto 60px;
+}
+
+.ef-lede p {
+  font-family: 'Lora', Georgia, 'Times New Roman', serif;
+  font-size: 1.14rem;
+  line-height: 1.9;
+  color: #2b2f36;
+  margin-bottom: 22px;
+}
+
+.ef-dropcap::first-letter {
+  float: left;
+  font-family: 'Roboto Slab', serif;
+  font-weight: 700;
+  font-size: 4.4rem;
+  line-height: 0.78;
+  padding: 6px 14px 0 0;
+  color: #b509ac;
+}
+
+.ef-pullquote {
+  font-family: 'Roboto Slab', serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1.34;
+  color: #1a1a1a;
+  text-align: center;
+  max-width: 760px;
+  margin: 46px auto 6px;
+  padding: 30px 10px;
+  border-top: 1px solid #e6e8eb;
+  border-bottom: 1px solid #e6e8eb;
+}
+
+.ef-pullquote::before { content: '\201C'; color: #b509ac; }
+.ef-pullquote::after  { content: '\201D'; color: #b509ac; }
+
+/* Section label (thin rules + centered caps) */
+.ef-sectionlabel {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 8px 0 14px;
+}
+
+.ef-sectionlabel::before,
+.ef-sectionlabel::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e3e5e9;
+}
+
+.ef-sectionlabel span {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #b509ac;
+}
+
+.ef-sectionintro {
+  font-family: 'Lora', Georgia, serif;
+  font-style: italic;
+  text-align: center;
+  color: #6c757d;
+  max-width: 640px;
+  margin: 0 auto 50px;
+  line-height: 1.7;
+}
+
+/* Feature spreads (alternating) */
+/* Sub-theme track header (editorial section break) */
+.ef-track {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin: 46px 0 6px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #1a1a1a;
+}
+
+.ef-track-no {
+  font-family: 'Roboto Slab', serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #b509ac;
+  letter-spacing: 0.05em;
+}
+
+.ef-track-name {
+  font-family: 'Roboto Slab', serif;
+  font-weight: 700;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  color: #1a1a1a;
+  letter-spacing: -0.01em;
+}
+
+.ef-feature {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 44px;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.ef-feature-media {
+  background: #ffffff;
+  border: 1px solid #ececf1;
+  padding: 14px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.07);
+}
+
+.ef-feature-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ef-feature.reverse .ef-feature-media {
+  order: 2;
+}
+
+.ef-feature-no {
+  font-family: 'Roboto Slab', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #edcef1;
+  margin-bottom: 6px;
+}
+
+.ef-feature-title {
+  font-family: 'Roboto Slab', serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.22;
+  color: #1a1a1a;
+  margin-bottom: 14px;
+}
+
+.ef-feature-desc {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.02rem;
+  line-height: 1.85;
+  color: #3b4047;
+  margin-bottom: 18px;
+}
+
+.ef-feature-link {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #b509ac;
+}
+
+.ef-feature-link:hover {
+  color: #8a0683;
+}
+
+/* Cite / BibTeX */
+.ef-cite {
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: 3px double #d9c4e1;
+}
+
+.ef-bib {
+  margin-bottom: 18px;
+  border: 1px solid #e6e8eb;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fbfafc;
+}
+
+.ef-bib-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background: #f3eef6;
+  border-bottom: 1px solid #e9e1ee;
+}
+
+.ef-bib-head span {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #7a3a86;
+}
+
+.ef-copy {
+  flex-shrink: 0;
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #b509ac;
+  background: #ffffff;
+  border: 1px solid #d8a8e6;
+  border-radius: 999px;
+  padding: 3px 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ef-copy:hover {
+  background: #b509ac;
+  color: #ffffff;
+}
+
+.ef-bib pre {
+  margin: 0;
+  padding: 14px 16px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: #2f3338;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+@media (max-width: 768px) {
+  .ef-headline {
+    font-size: 2.2rem;
+  }
+
+  .ef-standfirst {
+    font-size: 1.1rem;
+  }
+
+  .ef-pullquote {
+    font-size: 1.3rem;
+  }
+
+  .ef-feature {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .ef-feature.reverse .ef-feature-media {
+    order: 0;
+  }
+}
+
+/* =========================
    Footer
    ========================= */
 .site-footer {
@@ -752,13 +1055,15 @@ section h2::after {
     box-shadow: -6px 0 28px rgba(0, 0, 0, 0.14);
     padding: 76px 24px 24px;
     transform: translateX(100%);
-    transition: transform 0.25s ease;
+    visibility: hidden;
+    transition: transform 0.25s ease, visibility 0.25s ease;
     z-index: 1200;
     overflow-y: auto;
   }
 
   .nav-links.open {
     transform: translateX(0);
+    visibility: visible;
   }
 
   .nav-links li {
@@ -1084,6 +1389,93 @@ section h2,
   background: #e879f5;
   color: #121417;
   border-color: #e879f5;
+}
+
+/* E-AI page (magazine) — dark */
+[data-theme="dark"] .ef-mast,
+[data-theme="dark"] .ef-cite {
+  border-color: #4a3552;
+}
+
+[data-theme="dark"] .ef-headline,
+[data-theme="dark"] .ef-feature-title,
+[data-theme="dark"] .ef-pullquote {
+  color: #f1f3f5;
+}
+
+[data-theme="dark"] .ef-standfirst {
+  color: #aeb4bb;
+}
+
+[data-theme="dark"] .ef-byline {
+  color: #7c828b;
+}
+
+[data-theme="dark"] .ef-lede p,
+[data-theme="dark"] .ef-feature-desc {
+  color: #c4cad1;
+}
+
+[data-theme="dark"] .ef-pullquote {
+  border-top-color: #2a2e33;
+  border-bottom-color: #2a2e33;
+}
+
+[data-theme="dark"] .ef-sectionlabel::before,
+[data-theme="dark"] .ef-sectionlabel::after {
+  background: #2a2e33;
+}
+
+[data-theme="dark"] .ef-sectionintro {
+  color: #9aa0a6;
+}
+
+[data-theme="dark"] .ef-track {
+  border-bottom-color: #e6e8eb;
+}
+
+[data-theme="dark"] .ef-track-name {
+  color: #f1f3f5;
+}
+
+[data-theme="dark"] .ef-feature-no {
+  color: #4a2f52;
+}
+
+/* Keep figures on a light surface so the white-background charts stay legible */
+[data-theme="dark"] .ef-feature-media {
+  background: #eef0f3;
+  border-color: #2a2e33;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .ef-bib {
+  background: #15171a;
+  border-color: #2a2e33;
+}
+
+[data-theme="dark"] .ef-bib-head {
+  background: #221a27;
+  border-bottom-color: #34273b;
+}
+
+[data-theme="dark"] .ef-bib-head span {
+  color: #d7a9e2;
+}
+
+[data-theme="dark"] .ef-copy {
+  background: #1a1d21;
+  border-color: #6b3a7a;
+  color: #e879f5;
+}
+
+[data-theme="dark"] .ef-copy:hover {
+  background: #e879f5;
+  color: #121417;
+}
+
+[data-theme="dark"] .ef-bib pre {
+  color: #c4cad1;
 }
 
 [data-theme="dark"] body {
