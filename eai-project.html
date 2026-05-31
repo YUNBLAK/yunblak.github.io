@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-AI Project | Vincent-Daniel Yun</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- ========== Navbar ========== -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">Vincent-Daniel Yun</a>
+      <div class="nav-right">
+        <ul class="nav-links" id="nav-links">
+          <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+          <li><a href="publications.html" data-i18n="nav.publications">Publications</a></li>
+          <li><a href="eai-project.html" class="active" data-i18n="nav.eai">E-AI Project</a></li>
+          <li><a href="https://drive.google.com/file/d/1dwl_0Xr2m2nTVu7-nU61j8TJ-olwe626/view?usp=sharing" target="_blank">CV</a></li>
+        </ul>
+        <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language">한국어</button>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button id="nav-hamburger" class="nav-hamburger" type="button" aria-label="Menu" aria-expanded="false">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <section class="projects">
+      <h2 data-i18n="eai.h">E-AI Project</h2>
+      <p class="bio" style="margin-bottom: 30px;" data-i18n="eai.intro">
+        A collection of projects under <strong>E-AI</strong>. Project details and links will be added here.
+      </p>
+
+      <!-- ===== Project cards (edit / duplicate as needed) ===== -->
+      <div class="project-item">
+        <div class="project-title" data-i18n="eai.ptitle">Project Title</div>
+        <div class="project-desc" data-i18n="eai.pdesc">
+          A short one- to two-sentence description of the project, its goal, and your role.
+        </div>
+        <div class="pub-links" style="margin-top: 10px;">
+          <a class="pub-link" href="#" target="_blank">Code</a>
+          <a class="pub-link" href="#" target="_blank">Demo</a>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-title" data-i18n="eai.ptitle">Project Title</div>
+        <div class="project-desc" data-i18n="eai.pdesc">
+          A short one- to two-sentence description of the project, its goal, and your role.
+        </div>
+        <div class="pub-links" style="margin-top: 10px;">
+          <a class="pub-link" href="#" target="_blank">Code</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="site-footer">
+    &copy; 2026 Vincent-Daniel Yun
+  </footer>
+
+  <!-- ========== Dark mode toggle ========== -->
+  <script>
+    (function () {
+      const STORAGE_KEY = "theme";
+      const root = document.documentElement;
+
+      const apply = (theme) => {
+        root.setAttribute("data-theme", theme);
+        const icon = document.querySelector("#theme-toggle i");
+        if (icon) {
+          icon.className = theme === "dark" ? "fa-solid fa-sun" : "fa-solid fa-moon";
+        }
+      };
+
+      const saved = localStorage.getItem(STORAGE_KEY);
+      const prefersDark = window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      apply(saved || (prefersDark ? "dark" : "light"));
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const btn = document.getElementById("theme-toggle");
+        apply(root.getAttribute("data-theme"));
+        if (!btn) return;
+        btn.addEventListener("click", () => {
+          const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          localStorage.setItem(STORAGE_KEY, next);
+          apply(next);
+        });
+      });
+    })();
+  </script>
+
+  <!-- ========== i18n (KR / EN) ========== -->
+  <script src="i18n.js"></script>
+</body>
+</html>

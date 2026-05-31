@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daniel .Com</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- ========== Navbar ========== -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">Vincent-Daniel Yun</a>
+      <div class="nav-right">
+        <ul class="nav-links" id="nav-links">
+          <li><a href="index.html" class="active" data-i18n="nav.home">Home</a></li>
+          <li><a href="publications.html" data-i18n="nav.publications">Publications</a></li>
+          <li><a href="eai-project.html" data-i18n="nav.eai">E-AI Project</a></li>
+          <li><a href="https://drive.google.com/file/d/1dwl_0Xr2m2nTVu7-nU61j8TJ-olwe626/view?usp=sharing" target="_blank">CV</a></li>
+        </ul>
+        <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language">한국어</button>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button id="nav-hamburger" class="nav-hamburger" type="button" aria-label="Menu" aria-expanded="false">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- ========== Profile Header ========== -->
+    <header class="profile-header">
+      <div class="profile-info">
+        <h1 class="profile-name">Vincent-Daniel Yun</h1>
+        <p class="profile-subtitle" data-i18n="home.subtitle">MS in Artificial Intelligence student at the University of Southern California</p>
+        <p class="profile-address" data-i18n="home.address">Los Angeles, CA, USA</p>
+        <ul class="socials">
+          <li>
+            <a href="https://www.linkedin.com/in/yun-cs/" aria-label="LinkedIn" title="LinkedIn" target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a href="mailto:juyoung.yun@usc.edu" aria-label="Email" title="Email">
+              <i class="fa-solid fa-envelope"></i>
+            </a>
+          </li>
+          <li>
+            <a href="https://scholar.google.com/citations?user=mlfYKfgAAAAJ" aria-label="Google Scholar" title="Google Scholar" target="_blank">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="profile-image">
+        <img src="../img/New.jpeg" alt="Vincent-Daniel Yun" />
+      </div>
+    </header>
+
+    <!-- ========== Bio ========== -->
+    <section class="bio">
+      <p data-i18n="bio.p1">
+        This is Daniel, a first-year MSAI student at the University of Southern California researching
+        <strong>Deep Learning Foundation &amp; LLM Optimization</strong>. I'm fortunately supervised by
+        <a href="https://spkreddy.org/">Prof. Sai Praneeth Karimireddy</a> and
+        <a href="https://vatsalsharan.github.io/">Prof. Vatsal Sharan</a> from USC. I am also closely working with
+        <a href="https://sites.google.com/view/sunwoolee/home">Prof. Sunwoo Lee</a> from Inha University (Republic of Korea).
+      </p>
+      <p data-i18n="bio.p2">
+        Recent progress in AI such as large language models has been driven largely by scaling, but this comes with
+        significant computational and memory costs. This motivates a broader question at the core of my research:
+      </p>
+      <p class="research-question" data-i18n="bio.rq">
+        Given that modern neural networks are inherently overparameterized and computationally redundant, how can we transform them into structurally and computationally optimal systems?
+      </p>
+      <p data-i18n="bio.p3">
+        Therefore, my research focuses on improving optimization, generalization, and model compression techniques to make
+        neural networks lighter, faster, and more efficient in learning from data.
+      </p>
+      <p style="font-weight: 500;" data-i18n="bio.interests_label">My current research interests:</p>
+      <ul style="margin: 0 0 18px 22px;">
+        <li data-i18n="bio.int0">Efficient and Robust Multi-Agent</li>
+        <li data-i18n="bio.int1">Efficient LLM Optimization &amp; Reasoning</li>
+        <li data-i18n="bio.int2">Efficient &amp; Effective optimization/training dynamics of neural networks</li>
+        <li data-i18n="bio.int3">Model pruning, quantization, and compression techniques</li>
+        <li data-i18n="bio.int4">Deep learning foundation</li>
+      </ul>
+      <p style="font-weight: 500;" data-i18n="bio.affil_label">My current affiliations include:</p>
+      <ul style="margin: 0 0 18px 22px;">
+        <li data-i18n="bio.affil1">Theory Group at University of Southern California (<a href="https://viterbi-web.usc.edu/~cstheory/">USC CS Theory Group</a>)</li>
+        <li data-i18n="bio.affil2">Large-Scale Machine Learning Systems Lab at Inha University (<a href="https://sites.google.com/view/lmls-lab">LMLS</a>)</li>
+      </ul>
+    </section>
+
+    <!-- ========== Education ========== -->
+    <section class="news">
+      <h2 data-i18n="edu.h">Education</h2>
+      <div class="project-item">
+        <div class="project-title" data-i18n="edu.t1">[PhD] Actively Seeking Fall 2027 Admission PhD Program</div>
+        <div class="project-desc" data-i18n="edu.d1">
+          Computer Science, Electrical Engineering, Computer Engineering<br>
+          Potential Research Fields: Deep Learning (AI) Foundation, LLM Compression, Optimization, and Reasoning
+        </div>
+      </div>
+      <div class="project-item">
+        <div class="project-title" data-i18n="edu.t0">[Visiting Scholar] Seoul National University, Seoul, Republic of Korea (05.2026 &ndash; 08.2026)</div>
+        <div class="project-desc" data-i18n="edu.d0">
+          Computing and Memory Architecture Laboratory (CMAL)<br>
+          Supervisor: Prof. Sungjoo Yoo (with PhD student Woosang Lim)<br>
+          Research: Efficient LLM systems &mdash; KV-cache compression, quantization
+        </div>
+      </div>
+      <div class="project-item">
+        <div class="project-title" data-i18n="edu.t2">[MS] University of Southern California, Los Angeles, CA (08.2025 &ndash; 05.2027)</div>
+        <div class="project-desc" data-i18n="edu.d2">
+          Master of Science in Artificial Intelligence (Computer Science)<br>
+          Research Supervisor: <a href="https://spkreddy.org/">Prof. Sai Praneeth Karimireddy</a> and
+          <a href="https://www.vatsalsharan.com/">Prof. Vatsal Sharan</a>
+        </div>
+      </div>
+      <div class="project-item">
+        <div class="project-title" data-i18n="edu.t3">[BS] Stony Brook University, Stony Brook, NY (01.2018 &ndash; 05.2025)</div>
+        <div class="project-desc" data-i18n="edu.d3">
+          Bachelor of Science in Computer Science with AI specialization (Major 1)<br>
+          Bachelor of Science in Applied Mathematics and Statistics (Major 2)<br>
+          Research Supervisor: <a href="https://chaochen.github.io/index.html">Prof. Chao Chen</a><br>
+          2-year leave of absence due to mandatory military duty (Republic of Korea)
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Recent News ========== -->
+    <section class="news" id="publications">
+      <div class="news-head">
+        <h2 data-i18n="news.h">Recent News</h2>
+        <button id="news-toggle" class="news-toggle" type="button">Show More</button>
+      </div>
+      <table class="news-table" id="news-table">
+        <tr>
+          <td class="news-date">May, 2026</td>
+          <td class="news-item"><strong>[ICML 2026 Workshop]</strong> Our paper "Robust Multi-Agent LLMs under Byzantine Faults" is accepted at the ICML 2026 Workshop on Agents in the Wild: Safety, Security, and Beyond. [Agent]</td>
+        </tr>
+        <tr>
+          <td class="news-date">May, 2026</td>
+          <td class="news-item"><strong>[ICML 2026 Workshop]</strong> Our paper "On How Muon Reshapes Skill Learning Dynamics" is accepted at the ICML 2026 High-dimensional Learning Dynamics (HiLD) Workshop. [Optimization]</td>
+        </tr>
+        <tr>
+          <td class="news-date">May, 2026</td>
+          <td class="news-item">Five papers were submitted to the ICML 2026 Workshops. [Agent] [Optimization] [Optimization] [Pruning] [Pruning]</td>
+        </tr>
+        <tr>
+          <td class="news-date">May, 2026</td>
+          <td class="news-item">Five papers were submitted to NeurIPS 2026. [Optimization] [Optimization] [Pruning] [Pruning] [Pruning]</td>
+        </tr>
+        <tr>
+          <td class="news-date">Apr, 2026</td>
+          <td class="news-item">We recently started a research collaboration with the University of Michigan&ndash;Ann Arbor on robust multi-agent AI systems, in collaboration with PhD student <a href="https://joonlee16.github.io/">Haejoon Lee</a> and <a href="https://scholar.google.com/citations?user=ny1yTusAAAAJ&amp;hl=en">Prof. Dimitra Panagou</a>.</td>
+        </tr>
+        <tr>
+          <td class="news-date">Mar, 2026</td>
+          <td class="news-item"><strong>[Travel Grant for ICASSP 2026]</strong> Recipient of the USC GSG Travel Grant for ICASSP 2026.</td>
+        </tr>
+        <tr>
+          <td class="news-date">Jan, 2026</td>
+          <td class="news-item"><strong>[ICASSP 2026 Main]</strong> Our paper "Sharpness-Aware Minimization with Z-Score Gradient Filtering" is accepted at the 2026 International Conference on Acoustics, Speech, and Signal Processing. <a href="https://arxiv.org/abs/2505.02369">[Paper]</a> <a href="https://2026.ieeeicassp.org/">[Conference]</a></td>
+        </tr>
+        <tr>
+          <td class="news-date">Nov, 2025</td>
+          <td class="news-item"><strong>[Research Grant / $6,000]</strong> Our four papers have been supported by the Brian Impact Foundation and MODULABS from Korea, with a total research grant of $6,000.</td>
+        </tr>
+        <tr>
+          <td class="news-date">Nov, 2025</td>
+          <td class="news-item"><strong>[ICONIP 2025 / Best Paper Award]</strong> "Revisiting 16-bit Neural Network Training: A Practical Approach for Resource-Limited Learning" has been nominated as the Best Paper at ICONIP 2025. <a href="https://arxiv.org/abs/2305.10947">[Paper]</a></td>
+        </tr>
+        <tr>
+          <td class="news-date">Sep, 2025</td>
+          <td class="news-item"><strong>[NeurIPS 2025 OPT]</strong> Our paper "Why Does Stochastic Gradient Descent Slow Down in Low-Precision Training?" is accepted at the NeurIPS 2025 OPT Workshop. <a href="https://arxiv.org/pdf/2508.07142?">[Paper]</a> <a href="https://opt-ml.org/">[Workshop]</a></td>
+        </tr>
+        <tr>
+          <td class="news-date">Sep, 2025</td>
+          <td class="news-item"><strong>[NeurIPS 2025 OPT]</strong> Our paper "Sharpness-Aware Minimization with Z-Score Gradient Filtering" is accepted at the NeurIPS 2025 OPT Workshop. <a href="https://arxiv.org/abs/2505.02369">[Paper]</a> <a href="https://opt-ml.org/">[Workshop]</a></td>
+        </tr>
+        <tr>
+          <td class="news-date">Sep, 2025</td>
+          <td class="news-item"><strong>[NeurIPS 2025 OPT]</strong> Our paper "Hyperparameter-Free Auto-Scaled Gradient Normalization via Global Standard Deviation Dynamics" is accepted at the NeurIPS 2025 OPT Workshop. <a href="https://openreview.net/pdf?id=d4e2FnDNl3">[Paper]</a> <a href="https://opt-ml.org/">[Workshop]</a></td>
+        </tr>
+        <tr>
+          <td class="news-date">Sep, 2025</td>
+          <td class="news-item"><strong>[CIKM 2025 HCAI]</strong> Our paper "Fast Fourier Transform-Based Spectral and Temporal Gradient Filtering for Differential Privacy" is accepted at the CIKM 2025 Human-Centric AI Workshop. <a href="https://arxiv.org/abs/2505.04468">[Paper]</a> <a href="https://xai.kaist.ac.kr/Workshop/hcai2025/#call">[Workshop]</a></td>
+        </tr>
+        <tr>
+          <td class="news-date">Jul, 2025</td>
+          <td class="news-item"><strong>[ICONIP 2025]</strong> Our paper "Revisiting 16-bit Neural Network Training: A Practical Approach for Resource-Limited Learning" has been accepted as an oral presentation at ICONIP 2025 (top 8% acceptance rate). <a href="https://arxiv.org/abs/2305.10947">[Paper]</a></td>
+        </tr>
+        <tr>
+          <td class="news-date">Nov, 2024</td>
+          <td class="news-item"><strong>[AAAIW 2025]</strong> Our paper "ZNorm: Z-Score Gradient Normalization Accelerating Skip-Connected Network Training Without Architectural Modification" is accepted at AAAI 2025 Workshops. <a href="https://link.springer.com/chapter/10.1007/978-981-96-8912-5_12">[Paper]</a> <a href="https://seasworkshop.github.io/aaai25/">[Workshop]</a></td>
+        </tr>
+        <tr>
+          <td class="news-date">Nov, 2024</td>
+          <td class="news-item"><strong>[IEEE BigDataW 2024]</strong> Our paper "Mitigating Gradient Overlap in Deep Residual Networks with Gradient Normalization for Improved Non-Convex Optimization" is accepted at the IEEE BigData Optimization Workshop, BPOD. <a href="https://ieeexplore.ieee.org/abstract/document/10825094">[Paper]</a> <a href="https://bdal.umbc.edu/bpod-2024/">[Workshop]</a></td>
+        </tr>
+        <tr>
+          <td class="news-date">Sep, 2024</td>
+          <td class="news-item"><strong>[ESA SPAICE 2024]</strong> Our paper "Analysis and Predictive Modeling of Solar Coronal Holes Using Computer Vision and ARIMA-LSTM Networks" is accepted at SPAICE 2024. <a href="https://arxiv.org/pdf/2405.09802">[Paper]</a> <a href="https://spaice.esa.int/2024/">[Conference]</a></td>
+        </tr>
+        <tr>
+          <td class="news-date">Mar, 2024</td>
+          <td class="news-item"><strong>[IJCNN 2024]</strong> Our paper "Robust Neural Pruning with Gradient Sampling Optimization for Residual Neural Networks" is accepted at IJCNN 2024 (Oral). <a href="https://ieeexplore.ieee.org/abstract/document/10650301">[Paper]</a></td>
+        </tr>
+        <tr>
+          <td class="news-date">Mar, 2024</td>
+          <td class="news-item"><strong>[CVPRW 2024]</strong> Our paper "Uncertainty Estimation for Tumor Prediction with Unlabeled Data" is accepted at the IEEE/CVF CVPR Workshop. <a href="https://openaccess.thecvf.com/content/CVPR2024W/CVMI/papers/Yun_Uncertainty_Estimation_for_Tumor_Prediction_with_Unlabeled_Data_CVPRW_2024_paper.pdf">[Paper]</a></td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- ========== Academic Services ========== -->
+    <section class="news" id="projects">
+      <h2 data-i18n="svc.h">Academic Services</h2>
+      <table class="news-table">
+        <tr>
+          <td class="news-date">2026</td>
+          <td class="news-item">Reviewer, Conference on Neural Information Processing Systems (NeurIPS)</td>
+        </tr>
+        <tr>
+          <td class="news-date">2025</td>
+          <td class="news-item">Reviewer, Conference on Parsimony and Learning (CPAL)</td>
+        </tr>
+        <tr>
+          <td class="news-date">2025</td>
+          <td class="news-item">Reviewer, International Joint Conference on Neural Networks (IJCNN)</td>
+        </tr>
+        <tr>
+          <td class="news-date">2020</td>
+          <td class="news-item">Teaching Assistant, CSE 216: Programming Abstractions, Stony Brook University</td>
+        </tr>
+        <tr>
+          <td class="news-date">2019</td>
+          <td class="news-item">Teaching Assistant, CSE 114: Introduction to Object-Oriented Programming, Stony Brook University</td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- ========== Awards ========== -->
+    <section class="news">
+      <h2 data-i18n="awards.h">Awards</h2>
+      <table class="news-table">
+        <tr>
+          <td class="news-date">Mar, 2026</td>
+          <td class="news-item">USC GSG Travel Award for ICASSP 2026</td>
+        </tr>
+        <tr>
+          <td class="news-date">Nov, 2025</td>
+          <td class="news-item"><strong>Best Paper Award</strong> at International Conference on Neural Information Processing (ICONIP) 2025</td>
+        </tr>
+        <tr>
+          <td class="news-date">Apr, 2025</td>
+          <td class="news-item">3rd place at Stony Brook Web Development Hackathon</td>
+        </tr>
+        <tr>
+          <td class="news-date">Oct, 2023</td>
+          <td class="news-item">1st place at Data Science Track of NYC Hack-O-Ween Hackathon</td>
+        </tr>
+        <tr>
+          <td class="news-date">Jul, 2023</td>
+          <td class="news-item">3rd place at Microsoft Hackerground Hackathon 2023</td>
+        </tr>
+        <tr>
+          <td class="news-date">May, 2023</td>
+          <td class="news-item">1st place at Stony Brook SUNYK Hackathon 2023</td>
+        </tr>
+        <tr>
+          <td class="news-date">Apr, 2021</td>
+          <td class="news-item">3rd place at Korea Smart City Data Hackathon 2021</td>
+        </tr>
+        <tr>
+          <td class="news-date">Jul, 2020</td>
+          <td class="news-item">1st place at Busan Pathhack / Google Developer Groups Hackathon 2019</td>
+        </tr>
+        <tr>
+          <td class="news-date">Jul, 2019</td>
+          <td class="news-item">1st place / Contributor MVP Award at COSMOS Hackathon Seoul 2019</td>
+        </tr>
+        <tr>
+          <td class="news-date">Jul, 2018</td>
+          <td class="news-item">3rd place at Global Applied Game Jam 2018</td>
+        </tr>
+        <tr>
+          <td class="news-date">Feb, 2018</td>
+          <td class="news-item">Merit Scholarship from Stony Brook University</td>
+        </tr>
+      </table>
+    </section>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="site-footer">
+    &copy; 2026 Vincent-Daniel Yun
+  </footer>
+
+  <!-- ========== Dark mode toggle ========== -->
+  <script>
+    (function () {
+      const STORAGE_KEY = "theme";
+      const root = document.documentElement;
+
+      const apply = (theme) => {
+        root.setAttribute("data-theme", theme);
+        const icon = document.querySelector("#theme-toggle i");
+        if (icon) {
+          icon.className = theme === "dark" ? "fa-solid fa-sun" : "fa-solid fa-moon";
+        }
+      };
+
+      // Initial theme: saved preference, else system preference.
+      const saved = localStorage.getItem(STORAGE_KEY);
+      const prefersDark = window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      apply(saved || (prefersDark ? "dark" : "light"));
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const btn = document.getElementById("theme-toggle");
+        // Re-apply once the button exists so the icon is correct.
+        apply(root.getAttribute("data-theme"));
+        if (!btn) return;
+        btn.addEventListener("click", () => {
+          const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          localStorage.setItem(STORAGE_KEY, next);
+          apply(next);
+        });
+      });
+    })();
+  </script>
+
+  <!-- ========== Recent News collapse/expand ========== -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const VISIBLE_COUNT = 5;
+      const rows = Array.from(document.querySelectorAll("#news-table tr"));
+      const btn = document.getElementById("news-toggle");
+
+      if (!btn || rows.length <= VISIBLE_COUNT) {
+        if (btn) btn.style.display = "none";
+        return;
+      }
+
+      let expanded = false;
+      const labels = {
+        en: { more: "Show More", less: "Show Less" },
+        ko: { more: "더 보기", less: "접기" }
+      };
+      const render = () => {
+        rows.forEach((row, idx) => {
+          row.style.display = (expanded || idx < VISIBLE_COUNT) ? "" : "none";
+        });
+        const lang = (window.siteLang && window.siteLang() === "ko") ? "ko" : "en";
+        btn.textContent = expanded ? labels[lang].less : labels[lang].more;
+      };
+
+      btn.addEventListener("click", () => {
+        expanded = !expanded;
+        render();
+      });
+
+      // Re-render the button label whenever the language changes.
+      document.addEventListener("i18nchange", render);
+
+      render();
+    });
+  </script>
+
+  <!-- ========== i18n (KR / EN) ========== -->
+  <script src="i18n.js"></script>
+</body>
+</html>
