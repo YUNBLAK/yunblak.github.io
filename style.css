@@ -9,10 +9,6 @@
 
 html {
   scroll-behavior: smooth;
-  /* Clip the off-canvas mobile drawer so it can't be revealed by
-     swiping/scrolling horizontally. Applied on the root so it does
-     not break the sticky navbar. */
-  overflow-x: hidden;
 }
 
 body {
@@ -32,6 +28,15 @@ body {
 html[lang="ko"] body {
   font-weight: 400;
   font-family: 'Roboto', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Korean-only content: hidden by default, shown only when lang = ko */
+.kr-only {
+  display: none;
+}
+
+html[lang="ko"] .kr-only {
+  display: block;
 }
 
 a {
@@ -315,6 +320,47 @@ section h2::after {
   padding: 12px 14px 12px 0;
   color: #212529;
   vertical-align: top;
+}
+
+/* Multi-paper news entries: readable list */
+.news-sublist {
+  list-style: none;
+  margin: 9px 0 2px;
+  padding: 0;
+}
+
+.news-sublist li {
+  position: relative;
+  padding: 5px 0 5px 18px;
+  line-height: 1.5;
+}
+
+.news-sublist li::before {
+  content: "\25B8"; /* ▸ */
+  position: absolute;
+  left: 0;
+  top: 5px;
+  color: #b509ac;
+}
+
+.news-paper {
+  font-weight: 500;
+  color: #212529;
+}
+
+.news-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: #b509ac;
+  background: rgba(181, 9, 172, 0.08);
+  border: 1px solid rgba(181, 9, 172, 0.18);
+  border-radius: 999px;
+  padding: 1px 8px;
+  margin-left: 4px;
+  vertical-align: middle;
+  white-space: nowrap;
 }
 
 /* =========================
@@ -1037,6 +1083,14 @@ section h2::after {
     align-items: center;
   }
 
+  /* backdrop-filter makes the navbar a containing block for the fixed
+     drawer, which would then scroll away with the page. Disable it on
+     mobile so the drawer stays pinned to the viewport. */
+  .navbar {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
   .nav-right {
     gap: 12px;
   }
@@ -1370,6 +1424,20 @@ section h2,
 
 [data-theme="dark"] .news-table tr:hover {
   background: rgba(232, 121, 245, 0.06);
+}
+
+[data-theme="dark"] .news-paper {
+  color: #e6e8eb;
+}
+
+[data-theme="dark"] .news-sublist li::before {
+  color: #e879f5;
+}
+
+[data-theme="dark"] .news-tag {
+  color: #e879f5;
+  background: rgba(232, 121, 245, 0.12);
+  border-color: rgba(232, 121, 245, 0.28);
 }
 
 [data-theme="dark"] section h2::after {

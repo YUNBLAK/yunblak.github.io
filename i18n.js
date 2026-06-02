@@ -49,7 +49,7 @@
     "edu.t1": "[박사] 2027년 가을학기 박사과정 입학 지원 중",
     "edu.d1": "컴퓨터과학 · 전기공학 · 컴퓨터공학<br>관심 연구 분야: 딥러닝(AI) 기초, LLM 압축, 최적화 및 추론",
     "edu.t0": "[방문 연구원] 서울대학교, 서울, 대한민국 (2026.05 – 2026.08)",
-    "edu.d0": "컴퓨팅·메모리 아키텍처 연구실(CMAL)<br>지도교수: 유성주 교수님 (박사과정 임우상 연구원과 협업)<br>연구 분야: 효율적인 LLM 시스템 — 긴 컨텍스트 추론을 위한 KV-cache 압축·양자화·프루닝",
+    "edu.d0": "<a href=\"https://cmalab.snu.ac.kr/\">컴퓨팅·메모리 아키텍처 연구실(CMAL)</a><br>지도교수: <a href=\"https://scholar.google.com/citations?user=__waCuYAAAAJ&hl=en\">유성주 교수님</a> (박사과정 임우상 연구원과 협업)<br>연구 분야: 효율적인 LLM 시스템 — 긴 컨텍스트 추론을 위한 KV-cache 압축·양자화·프루닝",
     "edu.t2": "[석사] 서던캘리포니아대학교, 로스앤젤레스, CA (2025.08 – 2027.05)",
     "edu.d2": "인공지능 이학석사(컴퓨터과학)<br>지도교수: <a href=\"https://spkreddy.org/\">Sai Praneeth Karimireddy 교수님</a>, <a href=\"https://www.vatsalsharan.com/\">Vatsal Sharan 교수님</a>",
     "edu.t3": "[학사] 스토니브룩대학교, 스토니브룩, NY (2018.01 – 2025.05)",
@@ -119,7 +119,7 @@
     // The button shows the language you can switch TO, in that language.
     const langBtn = document.getElementById("lang-toggle");
     if (langBtn) {
-      langBtn.textContent = lang === "ko" ? "영어" : "한국어";
+      langBtn.textContent = lang === "ko" ? "English" : "한국어";
     }
 
     document.dispatchEvent(new CustomEvent("i18nchange", { detail: { lang: lang } }));
