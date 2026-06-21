@@ -14,7 +14,7 @@
   <!-- ========== Navbar ========== -->
   <nav class="navbar">
     <div class="nav-container">
-      <a href="/" class="nav-brand">Vincent-Daniel Yun</a>
+      <a href="/" class="nav-brand"><img src="image/usc-logo.png" alt="USC" class="nav-logo" />Vincent-Daniel Yun</a>
       <div class="nav-right">
         <ul class="nav-links" id="nav-links">
           <li><a href="/" class="active" data-i18n="nav.home">Home</a></li>
@@ -85,54 +85,17 @@
       </p>
       <p style="font-weight: 500;" data-i18n="bio.interests_label">My current research interests:</p>
       <ul style="margin: 0 0 18px 22px;">
+        <li data-i18n="bio.int3">Model pruning, quantization, and compression techniques</li>
         <li data-i18n="bio.int0">Efficient and Robust Multi-Agent</li>
         <li data-i18n="bio.int1">Efficient LLM Optimization &amp; Reasoning</li>
-        <li data-i18n="bio.int2">Efficient &amp; Effective optimization/training dynamics of neural networks</li>
-        <li data-i18n="bio.int3">Model pruning, quantization, and compression techniques</li>
         <li data-i18n="bio.int4">Deep learning foundation</li>
       </ul>
       <p style="font-weight: 500;" data-i18n="bio.affil_label">My current affiliations include:</p>
       <ul style="margin: 0 0 18px 22px;">
-        <li data-i18n="bio.affil1">Theory Group at University of Southern California (<a href="https://viterbi-web.usc.edu/~cstheory/">USC CS Theory Group</a>)</li>
+        <li data-i18n="bio.affil1">FoRT-ML Group at University of Southern California (<a href="https://spkreddy.org/group/">USC FoRT-ML Group</a>)</li>
+        <li data-i18n="bio.affil_cmal">Computing &amp; Memory Architecture Lab at Seoul National University, Visiting (<a href="https://cmalab.snu.ac.kr/">CMAL</a>)</li>
         <li data-i18n="bio.affil2">Large-Scale Machine Learning Systems Lab at Inha University (<a href="https://sites.google.com/view/lmls-lab">LMLS</a>)</li>
       </ul>
-    </section>
-
-    <!-- ========== Education ========== -->
-    <section class="news">
-      <h2 data-i18n="edu.h">Education</h2>
-      <div class="project-item">
-        <div class="project-title" data-i18n="edu.t1">[PhD] Actively Seeking Fall 2027 Admission PhD Program</div>
-        <div class="project-desc" data-i18n="edu.d1">
-          Computer Science, Electrical Engineering, Computer Engineering<br>
-          Potential Research Fields: Deep Learning (AI) Foundation, LLM Compression, Optimization, and Reasoning
-        </div>
-      </div>
-      <div class="project-item">
-        <div class="project-title" data-i18n="edu.t0">[Visiting Scholar] Seoul National University, Seoul, Republic of Korea (05.2026 &ndash; 08.2026)</div>
-        <div class="project-desc" data-i18n="edu.d0">
-          <a href="https://cmalab.snu.ac.kr/">Computing and Memory Architecture Laboratory (CMAL)</a><br>
-          Supervisor: <a href="https://scholar.google.com/citations?user=__waCuYAAAAJ&hl=en">Prof. Sungjoo Yoo</a> (with PhD student Woosang Lim)<br>
-          Research: Efficient LLM systems &mdash; KV-cache compression, quantization
-        </div>
-      </div>
-      <div class="project-item">
-        <div class="project-title" data-i18n="edu.t2">[MS] University of Southern California, Los Angeles, CA (08.2025 &ndash; 05.2027)</div>
-        <div class="project-desc" data-i18n="edu.d2">
-          Master of Science in Artificial Intelligence (Computer Science)<br>
-          Research Supervisor: <a href="https://spkreddy.org/">Prof. Sai Praneeth Karimireddy</a> and
-          <a href="https://vatsalsharan.github.io/">Prof. Vatsal Sharan</a>
-        </div>
-      </div>
-      <div class="project-item">
-        <div class="project-title" data-i18n="edu.t3">[BS] Stony Brook University, Stony Brook, NY (01.2018 &ndash; 05.2025)</div>
-        <div class="project-desc" data-i18n="edu.d3">
-          Bachelor of Science in Computer Science with AI specialization (Major 1)<br>
-          Bachelor of Science in Applied Mathematics and Statistics (Major 2)<br>
-          Research Supervisor: <a href="https://chaochen.github.io/index.html">Prof. Chao Chen</a><br>
-          2-year leave of absence due to mandatory military duty (Republic of Korea)
-        </div>
-      </div>
     </section>
 
     <!-- ========== 약력 (Korean only) ========== -->
@@ -206,29 +169,23 @@
       <table class="news-table" id="news-table">
         <tr>
           <td class="news-date">Jun, 2026</td>
-          <td class="news-item">Three papers were submitted to EMNLP 2026. <span class="news-tag">Pruning</span> <span class="news-tag">Pruning</span> <span class="news-tag">Agent</span></td>
+          <td class="news-item">Several papers were submitted to EMNLP 2026.</td>
         </tr>
         <tr>
           <td class="news-date">Jun, 2026</td>
-          <td class="news-item"><strong>[ICML 2026 Workshop]</strong> Three papers accepted as posters at the ICML 2026 AdaptFM Workshop <em>(Resource-Adaptive Foundation Model Inference)</em>:
+          <td class="news-item"><strong>[ICML 2026 Workshops]</strong> Several papers accepted at ICML 2026 workshops:
             <ul class="news-sublist">
-              <li><span class="news-paper">Rethinking Layer Redundancy in Large Language Models: Calibration Objectives and Search for Depth Pruning</span> <span class="news-tag">Pruning</span></li>
-              <li><span class="news-paper">Weight Concentration Regularization for Improving Pruning Robustness Under High Sparsity</span> <span class="news-tag">Pruning</span></li>
-              <li><span class="news-paper">Ghosted Layers: Unconstrained Activation Alignment for Recovering Layer-Pruned LLMs</span> <span class="news-tag">Pruning</span></li>
+              <li><span class="news-paper">Rethinking Layer Redundancy in Large Language Models: Calibration Objectives and Search for Depth Pruning</span> <span class="news-wks">AdaptFM</span> <span class="news-tag">Pruning</span></li>
+              <li><span class="news-paper">Weight Concentration Regularization for Improving Pruning Robustness Under High Sparsity</span> <span class="news-wks">AdaptFM</span> <span class="news-tag">Pruning</span></li>
+              <li><span class="news-paper">Ghosted Layers: Unconstrained Activation Alignment for Recovering Layer-Pruned LLMs</span> <span class="news-wks">AdaptFM</span> <span class="news-tag">Pruning</span></li>
+              <li><span class="news-paper">Robust Multi-Agent LLMs under Byzantine Faults</span> <span class="news-wks">Agents in the Wild</span> <span class="news-tag">Agent</span></li>
+              <li><span class="news-paper">On How Muon Reshapes Skill Learning Dynamics</span> <span class="news-wks">HiLD</span> <span class="news-tag">Optimization</span></li>
             </ul>
           </td>
         </tr>
         <tr>
           <td class="news-date">May, 2026</td>
-          <td class="news-item"><strong>[ICML 2026 Workshop]</strong> Our paper "Robust Multi-Agent LLMs under Byzantine Faults" is accepted at the ICML 2026 Workshop on Agents in the Wild: Safety, Security, and Beyond. <span class="news-tag">Agent</span></td>
-        </tr>
-        <tr>
-          <td class="news-date">May, 2026</td>
-          <td class="news-item"><strong>[ICML 2026 Workshop]</strong> Our paper "On How Muon Reshapes Skill Learning Dynamics" is accepted at the ICML 2026 High-dimensional Learning Dynamics (HiLD) Workshop. <span class="news-tag">Optimization</span></td>
-        </tr>
-        <tr>
-          <td class="news-date">May, 2026</td>
-          <td class="news-item">Five papers were submitted to NeurIPS 2026. <span class="news-tag">Optimization</span> <span class="news-tag">Optimization</span> <span class="news-tag">Pruning</span> <span class="news-tag">Pruning</span> <span class="news-tag">Pruning</span></td>
+          <td class="news-item">Several papers were submitted to NeurIPS 2026.</td>
         </tr>
         <tr>
           <td class="news-date">Apr, 2026</td>
@@ -291,6 +248,41 @@
           <td class="news-item"><strong>[CVPRW 2024]</strong> Our paper "Uncertainty Estimation for Tumor Prediction with Unlabeled Data" is accepted at the IEEE/CVF CVPR Workshop. <a href="https://openaccess.thecvf.com/content/CVPR2024W/CVMI/papers/Yun_Uncertainty_Estimation_for_Tumor_Prediction_with_Unlabeled_Data_CVPRW_2024_paper.pdf">[Paper]</a></td>
         </tr>
       </table>
+    </section>
+
+    <!-- ========== Education ========== -->
+    <section class="news">
+      <h2 data-i18n="edu.h">Education</h2>
+      <div class="edu-list">
+        <div class="edu-item">
+          <div class="edu-main">
+            <div class="edu-school" data-i18n="edu.t1">Ph.D. &mdash; Seeking Fall 2027 Admission</div>
+            <div class="edu-degree" data-i18n="edu.d1">Computer Science &middot; Electrical &amp; Computer Engineering &middot; Data Science<br>Efficient ML, LLM Compression, Optimization, Deep Learning (AI) Foundation</div>
+          </div>
+          <div class="edu-date">2027 &ndash;</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-main">
+            <div class="edu-school" data-i18n="edu.t0">Seoul National University</div>
+            <div class="edu-degree" data-i18n="edu.d0">Visiting Scholar &middot; <a href="https://cmalab.snu.ac.kr/">Computing &amp; Memory Architecture Lab (CMAL)</a> &middot; KV-cache compression for efficient LLMs<br>Advisor: <a href="https://scholar.google.com/citations?user=__waCuYAAAAJ&hl=en">Prof. Sungjoo Yoo</a></div>
+          </div>
+          <div class="edu-date">05.2026 &ndash; 08.2026</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-main">
+            <div class="edu-school" data-i18n="edu.t2">University of Southern California</div>
+            <div class="edu-degree" data-i18n="edu.d2">M.S. in Artificial Intelligence (Computer Science)<br>Advisors: <a href="https://spkreddy.org/">Prof. Sai Praneeth Karimireddy</a>, <a href="https://vatsalsharan.github.io/">Prof. Vatsal Sharan</a></div>
+          </div>
+          <div class="edu-date">08.2025 &ndash; 05.2027</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-main">
+            <div class="edu-school" data-i18n="edu.t3">State University of New York at Stony Brook</div>
+            <div class="edu-degree" data-i18n="edu.d3">B.S. in Computer Science (AI specialization) &amp; Applied Mathematics &middot; 2-year military service leave<br>Advisor: <a href="https://chaochen.github.io/index.html">Prof. Chao Chen</a></div>
+          </div>
+          <div class="edu-date">01.2018 &ndash; 05.2025</div>
+        </div>
+      </div>
     </section>
 
     <!-- ========== Academic Services ========== -->

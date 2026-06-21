@@ -36,7 +36,8 @@
     "bio.int3": "모델 프루닝, 양자화, 압축 기법",
     "bio.int4": "딥러닝 기초 이론",
     "bio.affil_label": "현재 소속",
-    "bio.affil1": "서던캘리포니아대학교 이론 그룹 (<a href=\"https://viterbi-web.usc.edu/~cstheory/\">USC CS Theory Group</a>)",
+    "bio.affil1": "서던캘리포니아대학교 FoRT-ML 그룹 (<a href=\"https://spkreddy.org/group/\">USC FoRT-ML Group</a>)",
+    "bio.affil_cmal": "서울대학교 컴퓨팅·메모리 아키텍처 연구실, 방문 (<a href=\"https://cmalab.snu.ac.kr/\">CMAL</a>)",
     "bio.affil2": "인하대학교 대규모 머신러닝 시스템 연구실 (<a href=\"https://sites.google.com/view/lmls-lab\">LMLS</a>)",
 
     /* ---- Home: section headings ---- */
@@ -46,14 +47,14 @@
     "awards.h": "수상 내역",
 
     /* ---- Home: education ---- */
-    "edu.t1": "[박사] 2027년 가을학기 박사과정 입학 지원 중",
-    "edu.d1": "컴퓨터과학 · 전기공학 · 컴퓨터공학<br>관심 연구 분야: 딥러닝(AI) 기초, LLM 압축, 최적화 및 추론",
-    "edu.t0": "[방문 연구원] 서울대학교, 서울, 대한민국 (2026.05 – 2026.08)",
-    "edu.d0": "<a href=\"https://cmalab.snu.ac.kr/\">컴퓨팅·메모리 아키텍처 연구실(CMAL)</a><br>지도교수: <a href=\"https://scholar.google.com/citations?user=__waCuYAAAAJ&hl=en\">유성주 교수님</a> (박사과정 임우상 연구원과 협업)<br>연구 분야: 효율적인 LLM 시스템 — 긴 컨텍스트 추론을 위한 KV-cache 압축·양자화·프루닝",
-    "edu.t2": "[석사] 서던캘리포니아대학교, 로스앤젤레스, CA (2025.08 – 2027.05)",
-    "edu.d2": "인공지능 이학석사(컴퓨터과학)<br>지도교수: <a href=\"https://spkreddy.org/\">Sai Praneeth Karimireddy 교수님</a>, <a href=\"https://www.vatsalsharan.com/\">Vatsal Sharan 교수님</a>",
-    "edu.t3": "[학사] 스토니브룩대학교, 스토니브룩, NY (2018.01 – 2025.05)",
-    "edu.d3": "컴퓨터과학 이학사(AI 세부전공, 제1전공)<br>응용수학·통계학 이학사(제2전공)<br>지도교수: <a href=\"https://chaochen.github.io/index.html\">Chao Chen 교수님</a><br>대한민국 병역 이행으로 인한 2년 휴학",
+    "edu.t1": "박사 과정 — 2027년 가을학기 입학 지원 중",
+    "edu.d1": "컴퓨터과학 · 전기·컴퓨터공학 · 데이터 사이언스<br>효율적 ML, LLM 압축, 최적화, 딥러닝(AI) 기초",
+    "edu.t0": "서울대학교",
+    "edu.d0": "방문 연구원 · <a href=\"https://cmalab.snu.ac.kr/\">컴퓨팅·메모리 아키텍처 연구실(CMAL)</a> · 효율적 LLM을 위한 KV-cache 압축<br>지도교수: <a href=\"https://scholar.google.com/citations?user=__waCuYAAAAJ&hl=en\">유성주 교수님</a>",
+    "edu.t2": "서던캘리포니아대학교(USC)",
+    "edu.d2": "인공지능 이학석사(컴퓨터과학)<br>지도교수: <a href=\"https://spkreddy.org/\">Sai Praneeth Karimireddy 교수님</a>, <a href=\"https://vatsalsharan.github.io/\">Vatsal Sharan 교수님</a>",
+    "edu.t3": "뉴욕주립대학교 스토니브룩 캠퍼스",
+    "edu.d3": "컴퓨터과학(AI 전공) · 응용수학 복수전공 이학사 · 병역으로 2년 휴학<br>지도교수: <a href=\"https://chaochen.github.io/index.html\">Chao Chen 교수님</a>",
 
     /* ---- Buttons ---- */
     "btn.showmore": "더 보기",
