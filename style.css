@@ -331,16 +331,30 @@ section h2::after {
   vertical-align: top;
 }
 
+/* Sub-detail under a 약력/news item (paper, funding, etc.) */
+.bio-sub {
+  margin-top: 7px;
+  padding-left: 12px;
+  border-left: 2px solid #e3e5e9;
+  font-size: 0.86rem;
+  line-height: 1.65;
+  color: #52585f;
+}
+
+.bio-sub a {
+  font-weight: 500;
+}
+
 /* Multi-paper news entries: readable list */
 .news-sublist {
   list-style: none;
-  margin: 9px 0 2px;
+  margin: 9px 0 2px -30px;
   padding: 0;
 }
 
 .news-sublist li {
   position: relative;
-  padding: 5px 0 5px 18px;
+  padding: 5px 0 5px 16px;
   line-height: 1.5;
 }
 
@@ -1550,6 +1564,11 @@ section h2,
 
 [data-theme="dark"] .news-paper {
   color: #e6e8eb;
+}
+
+[data-theme="dark"] .bio-sub {
+  color: #9aa0a6;
+  border-left-color: #2a2e33;
 }
 
 [data-theme="dark"] .news-sublist li::before {
