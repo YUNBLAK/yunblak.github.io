@@ -4,6 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Daniel .Com</title>
+  <meta name="description" content="Vincent-Daniel Yun — MS in Artificial Intelligence at the University of Southern California (USC). Research on efficient and robust AI: LLM compression, pruning, optimization, and multi-agent systems." />
+  <meta name="google" content="notranslate" />
+  <link rel="canonical" href="https://www.worldwidedaniel.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Vincent-Daniel Yun" />
+  <meta property="og:title" content="Vincent-Daniel Yun" />
+  <meta property="og:description" content="MS in Artificial Intelligence at USC — efficient and robust AI: LLM compression, pruning, optimization, and multi-agent systems." />
+  <meta property="og:url" content="https://www.worldwidedaniel.com/" />
+  <meta property="og:image" content="https://www.worldwidedaniel.com/image/New.jpeg" />
+  <meta property="og:locale" content="en_US" />
+  <meta name="twitter:card" content="summary" />
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -104,7 +115,8 @@
         <h2>약력</h2>
         <button id="bio-toggle" class="news-toggle" type="button">더 보기</button>
       </div>
-      <table class="news-table" id="bio-table">
+      <table class="news-table" id="bio-table"></table>
+      <template id="bio-rows"><table>
         <tr>
           <td class="news-date">2026 – 현재</td>
           <td class="news-item">아이펠(AIFFEL) AI 리서처 과정 전담 멘토</td>
@@ -175,7 +187,7 @@
           <td class="news-date">2018 – 2025</td>
           <td class="news-item">뉴욕주립대학교 스토니브룩 컴퓨터과학 전공 · 응용수학 복수전공</td>
         </tr>
-      </table>
+      </table></template>
     </section>
 
     <!-- ========== Recent News ========== -->
@@ -448,6 +460,16 @@
         btn.addEventListener("click", () => { expanded = !expanded; render(); });
         document.addEventListener("i18nchange", render);
         render();
+      }
+
+      // The Korean 약력 lives in an inert <template> (kept out of the crawlable
+      // HTML for SEO). Inject its rows into the table before wiring the toggle.
+      const bioTmpl = document.getElementById("bio-rows");
+      const bioTable = document.getElementById("bio-table");
+      if (bioTmpl && bioTable && !bioTable.querySelector("tr")) {
+        bioTmpl.content.querySelectorAll("tr").forEach(function (row) {
+          bioTable.appendChild(row.cloneNode(true));
+        });
       }
 
       setupToggle("news-table", "news-toggle");

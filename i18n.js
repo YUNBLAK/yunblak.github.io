@@ -50,7 +50,7 @@
     "edu.t1": "박사 과정 — 2027년 가을학기 입학 지원 중",
     "edu.d1": "컴퓨터과학 · 전기·컴퓨터공학 · 데이터 사이언스<br>효율적 ML, LLM 압축, 최적화, 딥러닝(AI) 기초",
     "edu.t0": "서울대학교",
-    "edu.d0": "방문 연구원 · <a href=\"https://cmalab.snu.ac.kr/\">컴퓨팅·메모리 아키텍처 연구실(CMAL)</a> · 효율적 LLM을 위한 KV-cache 압축<br>지도교수: <a href=\"https://scholar.google.com/citations?user=__waCuYAAAAJ&hl=en\">유성주 교수님</a>",
+    "edu.d0": "방문 연구원 · <a href=\"https://cmalab.snu.ac.kr/\">컴퓨팅·메모리 아키텍처 연구실(CMAL)</a> · 효율적 LLM을 위한 KV-cache 압축<br>지도교수: <a href=\"https://scholar.google.com/citations?user=__waCuYAAAAJ&hl=en\">유승주 교수님</a>",
     "edu.t2": "서던캘리포니아대학교(USC)",
     "edu.d2": "인공지능 이학석사(컴퓨터과학)<br>지도교수: <a href=\"https://spkreddy.org/\">Sai Praneeth Karimireddy 교수님</a>, <a href=\"https://vatsalsharan.github.io/\">Vatsal Sharan 교수님</a>",
     "edu.t3": "뉴욕주립대학교 스토니브룩 캠퍼스",
