@@ -31,7 +31,7 @@
           <li><a href="/" class="active" data-i18n="nav.home">Home</a></li>
           <li><a href="/publications" data-i18n="nav.publications">Publications</a></li>
           <li><a href="/eai-project" data-i18n="nav.eai">E-AI Project</a></li>
-          <li><a href="https://drive.google.com/file/d/1dwl_0Xr2m2nTVu7-nU61j8TJ-olwe626/view?usp=sharing" target="_blank">CV</a></li>
+          <li><a href="/game" data-i18n="nav.game">Game</a></li>
         </ul>
         <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language">한국어</button>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
@@ -49,6 +49,7 @@
     <header class="profile-header">
       <div class="profile-info">
         <h1 class="profile-name">Vincent-Daniel Yun</h1>
+        <p class="profile-role" data-i18n="home.role">Researcher | Efficient Machine Learning</p>
         <p class="profile-subtitle" data-i18n="home.subtitle">MS in Artificial Intelligence student at the University of Southern California</p>
         <p class="profile-address" data-i18n="home.address">Los Angeles, CA, USA</p>
         <ul class="socials">
@@ -67,6 +68,11 @@
               <i class="fa-solid fa-graduation-cap"></i>
             </a>
           </li>
+          <li>
+            <a href="https://drive.google.com/file/d/1dwl_0Xr2m2nTVu7-nU61j8TJ-olwe626/view?usp=sharing" aria-label="CV" title="CV" target="_blank" rel="noopener noreferrer">
+              <i class="fa-solid fa-file-lines"></i>
+            </a>
+          </li>
         </ul>
       </div>
       <div class="profile-image">
@@ -77,11 +83,15 @@
     <!-- ========== Bio ========== -->
     <section class="bio">
       <p data-i18n="bio.p1">
-        This is Daniel, a first-year MSAI student at the University of Southern California researching
-        <strong>Deep Learning Foundation &amp; LLM Optimization</strong>. I'm fortunately supervised by
+        Hi, I'm Daniel, a first-year M.S. student in Artificial Intelligence at the University of Southern California,
+        where I research <strong>Efficient Machine Learning</strong> and <strong>Efficient Multi-Agent Systems</strong>.
+        I am fortunate to be advised by
         <a href="https://spkreddy.org/">Prof. Sai Praneeth Karimireddy</a> and
-        <a href="https://vatsalsharan.github.io/">Prof. Vatsal Sharan</a> from USC. I am also closely working with
-        <a href="https://sites.google.com/view/sunwoolee/home">Prof. Sunwoo Lee</a> from Inha University (Republic of Korea).
+        <a href="https://vatsalsharan.github.io/">Prof. Vatsal Sharan</a>. At present, I am a visiting scholar at
+        <a href="https://cmalab.snu.ac.kr/">Seoul National University</a> under the supervision of
+        <a href="https://scholar.google.com/citations?user=__waCuYAAAAJ&amp;hl=en">Prof. Sungjoo Yoo</a>, while
+        collaborating closely with <a href="https://sites.google.com/view/sunwoolee/home">Prof. Sunwoo Lee</a>
+        at Inha University in South Korea. Alongside my research, I work as a lecturer at Samsung Electronics.
       </p>
       <p data-i18n="bio.p2">
         Recent progress in AI such as large language models has been driven largely by scaling, but this comes with
@@ -96,10 +106,11 @@
       </p>
       <p style="font-weight: 500;" data-i18n="bio.interests_label">My current research interests:</p>
       <ul style="margin: 0 0 18px 22px;">
-        <li data-i18n="bio.int3">Model pruning, quantization, and compression techniques</li>
-        <li data-i18n="bio.int0">Efficient and Robust Multi-Agent</li>
-        <li data-i18n="bio.int1">Efficient LLM Optimization &amp; Reasoning</li>
+        <li data-i18n="bio.int2">Efficient Machine Learning</li>
+        <li data-i18n="bio.int0">Efficient Multi-Agent System</li>
         <li data-i18n="bio.int4">Deep learning foundation</li>
+        <li data-i18n="bio.int3">Model pruning, quantization, and compression techniques</li>
+        <li data-i18n="bio.int1">LLM Optimization &amp; Reasoning</li>
       </ul>
       <p style="font-weight: 500;" data-i18n="bio.affil_label">My current affiliations include:</p>
       <ul style="margin: 0 0 18px 22px;">
@@ -117,6 +128,10 @@
       </div>
       <table class="news-table" id="bio-table"></table>
       <template id="bio-rows"><table>
+        <tr>
+          <td class="news-date">2026</td>
+                                    <td class="news-item">삼성전자 MX사업부 에이전트 AI 강사</td>
+        </tr>
         <tr>
           <td class="news-date">2026 – 현재</td>
           <td class="news-item">아이펠(AIFFEL) AI 리서처 과정 전담 멘토</td>
@@ -191,19 +206,28 @@
     </section>
 
     <!-- ========== Recent News ========== -->
-    <section class="news" id="publications">
+    <section class="news recent-news" id="publications">
       <div class="news-head">
         <h2 data-i18n="news.h">Recent News</h2>
-        <button id="news-toggle" class="news-toggle" type="button">Show More</button>
+        <button id="news-toggle" class="news-toggle" type="button"
+          aria-controls="news-table" aria-expanded="false">Show More</button>
       </div>
       <table class="news-table" id="news-table">
         <tr>
-          <td class="news-date">Jun, 2026</td>
-          <td class="news-item">Several papers were submitted to EMNLP 2026.</td>
+          <td class="news-date" data-i18n="news.date.jul26">Jul, 2026</td>
+          <td class="news-item" data-i18n="news.item.samsung"><span class="news-label">Samsung Electronics</span> Delivering a summer course on Multi-Agent Systems and Loop Engineering as a lecturer at its headquarters.</td>
         </tr>
         <tr>
-          <td class="news-date">Jun, 2026</td>
-          <td class="news-item"><strong>[ICML 2026 Workshops]</strong> Several papers accepted at ICML 2026 workshops:
+          <td class="news-date" data-i18n="news.date.jun26">Jun, 2026</td>
+          <td class="news-item" data-i18n="news.item.snu"><span class="news-label">Seoul National University</span> Joined the Computing &amp; Memory Architecture Lab as a visiting scholar under the supervision of <a href="https://scholar.google.com/citations?user=__waCuYAAAAJ&amp;hl=en">Prof. Sungjoo Yoo</a>.</td>
+        </tr>
+        <tr>
+          <td class="news-date" data-i18n="news.date.jun26">Jun, 2026</td>
+          <td class="news-item" data-i18n="news.item.emnlp26">Several papers were submitted to EMNLP 2026.</td>
+        </tr>
+        <tr>
+          <td class="news-date" data-i18n="news.date.jun26">Jun, 2026</td>
+          <td class="news-item" data-i18n="news.item.icml26"><span class="news-label">ICML 2026 Workshops</span> Several papers accepted at ICML 2026 workshops:
             <ul class="news-sublist">
               <li><span class="news-paper">Rethinking Layer Redundancy in Large Language Models: Calibration Objectives and Search for Depth Pruning</span> <span class="news-wks">AdaptFM</span> <span class="news-tag">Pruning</span></li>
               <li><span class="news-paper">Weight Concentration Regularization for Improving Pruning Robustness Under High Sparsity</span> <span class="news-wks">AdaptFM</span> <span class="news-tag">Pruning</span></li>
@@ -214,68 +238,68 @@
           </td>
         </tr>
         <tr>
-          <td class="news-date">May, 2026</td>
-          <td class="news-item">Several papers were submitted to NeurIPS 2026.</td>
+          <td class="news-date" data-i18n="news.date.may26">May, 2026</td>
+          <td class="news-item" data-i18n="news.item.neurips26">Several papers were submitted to NeurIPS 2026.</td>
         </tr>
         <tr>
-          <td class="news-date">Apr, 2026</td>
-          <td class="news-item">We recently started a research collaboration with the University of Michigan&ndash;Ann Arbor on robust multi-agent AI systems, in collaboration with PhD student <a href="https://joonlee16.github.io/">Haejoon Lee</a> and <a href="https://scholar.google.com/citations?user=ny1yTusAAAAJ&amp;hl=en">Prof. Dimitra Panagou</a>.</td>
+          <td class="news-date" data-i18n="news.date.apr26">Apr, 2026</td>
+          <td class="news-item" data-i18n="news.item.michigan">We recently started a research collaboration with the University of Michigan&ndash;Ann Arbor on robust multi-agent AI systems, in collaboration with PhD student <a href="https://joonlee16.github.io/">Haejoon Lee</a> and <a href="https://scholar.google.com/citations?user=ny1yTusAAAAJ&amp;hl=en">Prof. Dimitra Panagou</a>.</td>
         </tr>
         <tr>
-          <td class="news-date">Mar, 2026</td>
-          <td class="news-item"><strong>[Travel Grant for ICASSP 2026]</strong> Recipient of the USC GSG Travel Grant for ICASSP 2026.</td>
+          <td class="news-date" data-i18n="news.date.mar26">Mar, 2026</td>
+          <td class="news-item" data-i18n="news.item.icassp_grant"><span class="news-label">Travel Grant for ICASSP 2026</span> Recipient of the USC GSG Travel Grant for ICASSP 2026.</td>
         </tr>
         <tr>
-          <td class="news-date">Jan, 2026</td>
-          <td class="news-item"><strong>[ICASSP 2026 Main]</strong> Our paper "Sharpness-Aware Minimization with Z-Score Gradient Filtering" is accepted at the 2026 International Conference on Acoustics, Speech, and Signal Processing. <a href="https://arxiv.org/abs/2505.02369">[Paper]</a> <a href="https://2026.ieeeicassp.org/">[Conference]</a></td>
+          <td class="news-date" data-i18n="news.date.jan26">Jan, 2026</td>
+          <td class="news-item" data-i18n="news.item.icassp26"><span class="news-label">ICASSP 2026 Main</span> Our paper "Sharpness-Aware Minimization with Z-Score Gradient Filtering" is accepted at the 2026 International Conference on Acoustics, Speech, and Signal Processing. <a class="news-action" href="https://arxiv.org/abs/2505.02369">Paper</a> <a class="news-action" href="https://2026.ieeeicassp.org/">Conference</a></td>
         </tr>
         <tr>
-          <td class="news-date">Nov, 2025</td>
-          <td class="news-item"><strong>[Research Grant / $6,000]</strong> Our four papers have been supported by the Brian Impact Foundation and MODULABS from Korea, with a total research grant of $6,000.</td>
+          <td class="news-date" data-i18n="news.date.nov25">Nov, 2025</td>
+          <td class="news-item" data-i18n="news.item.grant25"><span class="news-label">Research Grant / $6,000</span> Our four papers have been supported by the Brian Impact Foundation and MODULABS from Korea, with a total research grant of $6,000.</td>
         </tr>
         <tr>
-          <td class="news-date">Nov, 2025</td>
-          <td class="news-item"><strong>[ICONIP 2025 / Best Paper Award]</strong> "Revisiting 16-bit Neural Network Training: A Practical Approach for Resource-Limited Learning" has been nominated as the Best Paper at ICONIP 2025. <a href="https://arxiv.org/abs/2305.10947">[Paper]</a></td>
+          <td class="news-date" data-i18n="news.date.nov25">Nov, 2025</td>
+          <td class="news-item" data-i18n="news.item.iconip_award"><span class="news-label">ICONIP 2025 / Best Paper Award</span> "Revisiting 16-bit Neural Network Training: A Practical Approach for Resource-Limited Learning" has been nominated as the Best Paper at ICONIP 2025. <a class="news-action" href="https://arxiv.org/abs/2305.10947">Paper</a></td>
         </tr>
         <tr>
-          <td class="news-date">Sep, 2025</td>
-          <td class="news-item"><strong>[NeurIPS 2025 OPT]</strong> Our paper "Why Does Stochastic Gradient Descent Slow Down in Low-Precision Training?" is accepted at the NeurIPS 2025 OPT Workshop. <a href="https://arxiv.org/pdf/2508.07142?">[Paper]</a> <a href="https://opt-ml.org/">[Workshop]</a></td>
+          <td class="news-date" data-i18n="news.date.sep25">Sep, 2025</td>
+          <td class="news-item" data-i18n="news.item.opt25_sgd"><span class="news-label">NeurIPS 2025 OPT</span> Our paper "Why Does Stochastic Gradient Descent Slow Down in Low-Precision Training?" is accepted at the NeurIPS 2025 OPT Workshop. <a class="news-action" href="https://arxiv.org/pdf/2508.07142?">Paper</a> <a class="news-action" href="https://opt-ml.org/">Workshop</a></td>
         </tr>
         <tr>
-          <td class="news-date">Sep, 2025</td>
-          <td class="news-item"><strong>[NeurIPS 2025 OPT]</strong> Our paper "Sharpness-Aware Minimization with Z-Score Gradient Filtering" is accepted at the NeurIPS 2025 OPT Workshop. <a href="https://arxiv.org/abs/2505.02369">[Paper]</a> <a href="https://opt-ml.org/">[Workshop]</a></td>
+          <td class="news-date" data-i18n="news.date.sep25">Sep, 2025</td>
+          <td class="news-item" data-i18n="news.item.opt25_sam"><span class="news-label">NeurIPS 2025 OPT</span> Our paper "Sharpness-Aware Minimization with Z-Score Gradient Filtering" is accepted at the NeurIPS 2025 OPT Workshop. <a class="news-action" href="https://arxiv.org/abs/2505.02369">Paper</a> <a class="news-action" href="https://opt-ml.org/">Workshop</a></td>
         </tr>
         <tr>
-          <td class="news-date">Sep, 2025</td>
-          <td class="news-item"><strong>[NeurIPS 2025 OPT]</strong> Our paper "Hyperparameter-Free Auto-Scaled Gradient Normalization via Global Standard Deviation Dynamics" is accepted at the NeurIPS 2025 OPT Workshop. <a href="https://openreview.net/pdf?id=d4e2FnDNl3">[Paper]</a> <a href="https://opt-ml.org/">[Workshop]</a></td>
+          <td class="news-date" data-i18n="news.date.sep25">Sep, 2025</td>
+          <td class="news-item" data-i18n="news.item.opt25_auto"><span class="news-label">NeurIPS 2025 OPT</span> Our paper "Hyperparameter-Free Auto-Scaled Gradient Normalization via Global Standard Deviation Dynamics" is accepted at the NeurIPS 2025 OPT Workshop. <a class="news-action" href="https://openreview.net/pdf?id=d4e2FnDNl3">Paper</a> <a class="news-action" href="https://opt-ml.org/">Workshop</a></td>
         </tr>
         <tr>
-          <td class="news-date">Sep, 2025</td>
-          <td class="news-item"><strong>[CIKM 2025 HCAI]</strong> Our paper "Fast Fourier Transform-Based Spectral and Temporal Gradient Filtering for Differential Privacy" is accepted at the CIKM 2025 Human-Centric AI Workshop. <a href="https://arxiv.org/abs/2505.04468">[Paper]</a> <a href="https://xai.kaist.ac.kr/Workshop/hcai2025/#call">[Workshop]</a></td>
+          <td class="news-date" data-i18n="news.date.sep25">Sep, 2025</td>
+          <td class="news-item" data-i18n="news.item.cikm25"><span class="news-label">CIKM 2025 HCAI</span> Our paper "Fast Fourier Transform-Based Spectral and Temporal Gradient Filtering for Differential Privacy" is accepted at the CIKM 2025 Human-Centric AI Workshop. <a class="news-action" href="https://arxiv.org/abs/2505.04468">Paper</a> <a class="news-action" href="https://xai.kaist.ac.kr/Workshop/hcai2025/#call">Workshop</a></td>
         </tr>
         <tr>
-          <td class="news-date">Jul, 2025</td>
-          <td class="news-item"><strong>[ICONIP 2025]</strong> Our paper "Revisiting 16-bit Neural Network Training: A Practical Approach for Resource-Limited Learning" has been accepted as an oral presentation at ICONIP 2025 (top 8% acceptance rate). <a href="https://arxiv.org/abs/2305.10947">[Paper]</a></td>
+          <td class="news-date" data-i18n="news.date.jul25">Jul, 2025</td>
+          <td class="news-item" data-i18n="news.item.iconip25"><span class="news-label">ICONIP 2025</span> Our paper "Revisiting 16-bit Neural Network Training: A Practical Approach for Resource-Limited Learning" has been accepted as an oral presentation at ICONIP 2025 (top 8% acceptance rate). <a class="news-action" href="https://arxiv.org/abs/2305.10947">Paper</a></td>
         </tr>
         <tr>
-          <td class="news-date">Nov, 2024</td>
-          <td class="news-item"><strong>[AAAIW 2025]</strong> Our paper "ZNorm: Z-Score Gradient Normalization Accelerating Skip-Connected Network Training Without Architectural Modification" is accepted at AAAI 2025 Workshops. <a href="https://link.springer.com/chapter/10.1007/978-981-96-8912-5_12">[Paper]</a> <a href="https://seasworkshop.github.io/aaai25/">[Workshop]</a></td>
+          <td class="news-date" data-i18n="news.date.nov24">Nov, 2024</td>
+          <td class="news-item" data-i18n="news.item.aaaiw25"><span class="news-label">AAAIW 2025</span> Our paper "ZNorm: Z-Score Gradient Normalization Accelerating Skip-Connected Network Training Without Architectural Modification" is accepted at AAAI 2025 Workshops. <a class="news-action" href="https://link.springer.com/chapter/10.1007/978-981-96-8912-5_12">Paper</a> <a class="news-action" href="https://seasworkshop.github.io/aaai25/">Workshop</a></td>
         </tr>
         <tr>
-          <td class="news-date">Nov, 2024</td>
-          <td class="news-item"><strong>[IEEE BigDataW 2024]</strong> Our paper "Mitigating Gradient Overlap in Deep Residual Networks with Gradient Normalization for Improved Non-Convex Optimization" is accepted at the IEEE BigData Optimization Workshop, BPOD. <a href="https://ieeexplore.ieee.org/abstract/document/10825094">[Paper]</a> <a href="https://bdal.umbc.edu/bpod-2024/">[Workshop]</a></td>
+          <td class="news-date" data-i18n="news.date.nov24">Nov, 2024</td>
+          <td class="news-item" data-i18n="news.item.bigdataw24"><span class="news-label">IEEE BigDataW 2024</span> Our paper "Mitigating Gradient Overlap in Deep Residual Networks with Gradient Normalization for Improved Non-Convex Optimization" is accepted at the IEEE BigData Optimization Workshop, BPOD. <a class="news-action" href="https://ieeexplore.ieee.org/abstract/document/10825094">Paper</a> <a class="news-action" href="https://bdal.umbc.edu/bpod-2024/">Workshop</a></td>
         </tr>
         <tr>
-          <td class="news-date">Sep, 2024</td>
-          <td class="news-item"><strong>[ESA SPAICE 2024]</strong> Our paper "Analysis and Predictive Modeling of Solar Coronal Holes Using Computer Vision and ARIMA-LSTM Networks" is accepted at SPAICE 2024. <a href="https://arxiv.org/pdf/2405.09802">[Paper]</a> <a href="https://spaice.esa.int/2024/">[Conference]</a></td>
+          <td class="news-date" data-i18n="news.date.sep24">Sep, 2024</td>
+          <td class="news-item" data-i18n="news.item.spaice24"><span class="news-label">ESA SPAICE 2024</span> Our paper "Analysis and Predictive Modeling of Solar Coronal Holes Using Computer Vision and ARIMA-LSTM Networks" is accepted at SPAICE 2024. <a class="news-action" href="https://arxiv.org/pdf/2405.09802">Paper</a> <a class="news-action" href="https://spaice.esa.int/2024/">Conference</a></td>
         </tr>
         <tr>
-          <td class="news-date">Mar, 2024</td>
-          <td class="news-item"><strong>[IJCNN 2024]</strong> Our paper "Robust Neural Pruning with Gradient Sampling Optimization for Residual Neural Networks" is accepted at IJCNN 2024 (Oral). <a href="https://ieeexplore.ieee.org/abstract/document/10650301">[Paper]</a></td>
+          <td class="news-date" data-i18n="news.date.mar24">Mar, 2024</td>
+          <td class="news-item" data-i18n="news.item.ijcnn24"><span class="news-label">IJCNN 2024</span> Our paper "Robust Neural Pruning with Gradient Sampling Optimization for Residual Neural Networks" is accepted at IJCNN 2024 (Oral). <a class="news-action" href="https://ieeexplore.ieee.org/abstract/document/10650301">Paper</a></td>
         </tr>
         <tr>
-          <td class="news-date">Mar, 2024</td>
-          <td class="news-item"><strong>[CVPRW 2024]</strong> Our paper "Uncertainty Estimation for Tumor Prediction with Unlabeled Data" is accepted at the IEEE/CVF CVPR Workshop. <a href="https://openaccess.thecvf.com/content/CVPR2024W/CVMI/papers/Yun_Uncertainty_Estimation_for_Tumor_Prediction_with_Unlabeled_Data_CVPRW_2024_paper.pdf">[Paper]</a></td>
+          <td class="news-date" data-i18n="news.date.mar24">Mar, 2024</td>
+          <td class="news-item" data-i18n="news.item.cvprw24"><span class="news-label">CVPRW 2024</span> Our paper "Uncertainty Estimation for Tumor Prediction with Unlabeled Data" is accepted at the IEEE/CVF CVPR Workshop. <a class="news-action" href="https://openaccess.thecvf.com/content/CVPR2024W/CVMI/papers/Yun_Uncertainty_Estimation_for_Tumor_Prediction_with_Unlabeled_Data_CVPRW_2024_paper.pdf">Paper</a></td>
         </tr>
       </table>
     </section>
@@ -321,7 +345,15 @@
       <table class="news-table">
         <tr>
           <td class="news-date">2026</td>
-          <td class="news-item">Reviewer, Conference on Neural Information Processing Systems (NeurIPS)</td>
+          <td class="news-item">Reviewer, Conference on Neural Information Processing Systems (NeurIPS) <a href="https://odi2026.github.io/" target="_blank" rel="noopener noreferrer">ODI Workshop</a></td>
+        </tr>
+        <tr>
+          <td class="news-date">2026</td>
+          <td class="news-item">Reviewer, Conference on Neural Information Processing Systems (NeurIPS) <a href="https://opt-ml.org/" target="_blank" rel="noopener noreferrer">OPT Workshop</a></td>
+        </tr>
+        <tr>
+          <td class="news-date">2026</td>
+          <td class="news-item">Reviewer, Conference on Neural Information Processing Systems (NeurIPS) Position Track</td>
         </tr>
         <tr>
           <td class="news-date">2025</td>
@@ -456,6 +488,7 @@
           });
           const lang = (window.siteLang && window.siteLang() === "ko") ? "ko" : "en";
           btn.textContent = expanded ? labels[lang].less : labels[lang].more;
+          btn.setAttribute("aria-expanded", expanded ? "true" : "false");
         };
         btn.addEventListener("click", () => { expanded = !expanded; render(); });
         document.addEventListener("i18nchange", render);

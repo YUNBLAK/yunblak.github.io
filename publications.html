@@ -23,7 +23,7 @@
           <li><a href="/" data-i18n="nav.home">Home</a></li>
           <li><a href="/publications" class="active" data-i18n="nav.publications">Publications</a></li>
           <li><a href="/eai-project" data-i18n="nav.eai">E-AI Project</a></li>
-          <li><a href="https://drive.google.com/file/d/1dwl_0Xr2m2nTVu7-nU61j8TJ-olwe626/view?usp=sharing" target="_blank">CV</a></li>
+          <li><a href="/game" data-i18n="nav.game">Game</a></li>
         </ul>
         <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language">한국어</button>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
@@ -38,7 +38,15 @@
 
   <div class="container">
     <section class="publications">
-      <h2 data-i18n="pub.h">Publications</h2>
+      <h2 class="pub-page-title">
+        <span data-i18n="pub.h">Publications</span>
+        <a class="pub-scholar-link"
+          href="https://scholar.google.com/citations?user=mlfYKfgAAAAJ"
+          target="_blank" rel="noopener noreferrer"
+          aria-label="View Google Scholar profile" title="Google Scholar">
+          <i class="fa-brands fa-google-scholar" aria-hidden="true"></i>
+        </a>
+      </h2>
       <p class="pub-note" data-i18n="pub.note">* denotes equal contribution.</p>
 
       <!-- ===== Sub-tabs ===== -->
@@ -313,6 +321,14 @@
           </div>
         </div>
       </div>
+
+      <p class="pub-more">
+        <span data-i18n="pub.more_prefix">For more papers and the latest updates, visit</span>
+        <a href="https://scholar.google.com/citations?user=mlfYKfgAAAAJ"
+          target="_blank" rel="noopener noreferrer">Google Scholar
+          <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+        </a><span data-i18n="pub.more_suffix">.</span>
+      </p>
     </section>
   </div>
 
