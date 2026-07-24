@@ -18,13 +18,15 @@
   const overlayTitle = document.getElementById("game-overlay-title");
   const overlayCopy = document.getElementById("game-overlay-copy");
   const overlayCard = document.getElementById("game-overlay-card");
+  const playerSelect = document.getElementById("game-player-select");
   const levelOptions = document.getElementById("game-level-options");
   const startButton = document.getElementById("game-start");
+  const soundButton = document.getElementById("game-sound-toggle");
 
   const copy = {
     en: {
       readyTitle: "Ready for takeoff?",
-      readyCopy: "Use WASD to move, Space to fire, and B to deploy a bomb.",
+      readyCopy: "Choose 1P for a solo flight or 2P for local co-op.",
       start: "Start Mission",
       pauseTitle: "Mission paused",
       pauseCopy: "Take a breath. Your flight will resume exactly where you left it.",
@@ -34,14 +36,18 @@
       restart: "Fly Again",
       levelTitle: "Level up!",
       levelCopy: (level) => `Level ${level} reached. Choose one stat to upgrade.`,
+      multishot: "Multi-shot",
+      multishotDesc: (current) => `Add one bullet lane (${current} → ${current + 1} / 6)`,
+      upgradeComplete: "Upgrade complete",
+      multishotMax: "Maximum 6-way shot reached",
+      mute: "Mute sound",
+      unmute: "Turn sound on",
       heal: "+ Health",
-      bomb: "+ Bomb",
-      weapon: "Weapon upgraded",
-      maxWeapon: "Weapon bonus +250"
+      bomb: "+ Bomb"
     },
     ko: {
       readyTitle: "이륙 준비가 되셨나요?",
-      readyCopy: "WASD로 이동하고, Space로 공격하며, B로 폭탄을 사용하세요.",
+      readyCopy: "혼자 비행할지, 2인 협동으로 비행할지 선택하세요.",
       start: "미션 시작",
       pauseTitle: "미션 일시정지",
       pauseCopy: "잠시 쉬어가세요. 현재 위치에서 그대로 비행을 재개할 수 있습니다.",
@@ -51,16 +57,22 @@
       restart: "다시 비행하기",
       levelTitle: "레벨 업!",
       levelCopy: (level) => `레벨 ${level} 달성! 강화할 스탯을 하나 선택하세요.`,
+      multishot: "다중 사격",
+      multishotDesc: (current) => `공격 갈래 1개 증가 (${current} → ${current + 1} / 6)`,
+      upgradeComplete: "업그레이드 완료",
+      multishotMax: "최대 6갈래에 도달했습니다",
+      mute: "소리 끄기",
+      unmute: "소리 켜기",
       heal: "+ 체력",
-      bomb: "+ 폭탄",
-      weapon: "무기 강화",
-      maxWeapon: "무기 보너스 +250"
+      bomb: "+ 폭탄"
     }
   };
 
   const keys = new Set();
   let mode = "ready";
   let player;
+  let players = [];
+  let selectedPlayerCount = 1;
   let bullets = [];
   let enemies = [];
   let enemyBullets = [];
@@ -80,9 +92,96 @@
   let spawnTimer = 0;
   let screenFlash = 0;
   let lastTime = performance.now();
+  let audioContext = null;
+  let masterGain = null;
+  let soundMuted = false;
+
+  try {
+    soundMuted = localStorage.getItem("frostWingMuted") === "true";
+  } catch (error) {}
 
   function language() {
     return document.documentElement.getAttribute("lang") === "ko" ? "ko" : "en";
+  }
+
+  function ensureAudio() {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return false;
+    if (!audioContext) {
+      audioContext = new AudioContextClass();
+      masterGain = audioContext.createGain();
+      masterGain.gain.value = soundMuted ? 0 : 0.72;
+      masterGain.connect(audioContext.destination);
+    }
+    if (audioContext.state === "suspended") audioContext.resume();
+    return true;
+  }
+
+  function playTone(frequency, endFrequency, duration, volume, type, delay) {
+    if (soundMuted || !ensureAudio()) return;
+    const start = audioContext.currentTime + (delay || 0);
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    oscillator.type = type || "sine";
+    oscillator.frequency.setValueAtTime(Math.max(20, frequency), start);
+    oscillator.frequency.exponentialRampToValueAtTime(Math.max(20, endFrequency || frequency), start + duration);
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(volume, start + 0.008);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+    oscillator.connect(gain);
+    gain.connect(masterGain);
+    oscillator.start(start);
+    oscillator.stop(start + duration + 0.02);
+  }
+
+  function playNoise(duration, volume, cutoff) {
+    if (soundMuted || !ensureAudio()) return;
+    const length = Math.max(1, Math.floor(audioContext.sampleRate * duration));
+    const buffer = audioContext.createBuffer(1, length, audioContext.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < length; i += 1) {
+      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 1.8);
+    }
+    const source = audioContext.createBufferSource();
+    const filter = audioContext.createBiquadFilter();
+    const gain = audioContext.createGain();
+    filter.type = "lowpass";
+    filter.frequency.value = cutoff || 900;
+    gain.gain.value = volume;
+    source.buffer = buffer;
+    source.connect(filter);
+    filter.connect(gain);
+    gain.connect(masterGain);
+    source.start();
+  }
+
+  function playLevelSound() {
+    playTone(440, 440, 0.14, 0.07, "sine", 0);
+    playTone(554, 554, 0.14, 0.07, "sine", 0.12);
+    playTone(659, 880, 0.28, 0.08, "sine", 0.24);
+  }
+
+  function updateSoundButton() {
+    const t = copy[language()];
+    const label = soundMuted ? t.unmute : t.mute;
+    soundButton.setAttribute("aria-label", label);
+    soundButton.setAttribute("title", label);
+    soundButton.setAttribute("aria-pressed", soundMuted ? "true" : "false");
+    const icon = soundButton.querySelector("i");
+    if (icon) icon.className = soundMuted ? "fa-solid fa-volume-xmark" : "fa-solid fa-volume-high";
+  }
+
+  function toggleSound() {
+    soundMuted = !soundMuted;
+    try {
+      localStorage.setItem("frostWingMuted", String(soundMuted));
+    } catch (error) {}
+    if (!soundMuted) ensureAudio();
+    if (masterGain && audioContext) {
+      masterGain.gain.setTargetAtTime(soundMuted ? 0 : 0.72, audioContext.currentTime, 0.02);
+    }
+    updateSoundButton();
+    if (!soundMuted) playTone(520, 740, 0.12, 0.05, "sine");
   }
 
   function palette() {
@@ -141,9 +240,10 @@
     }));
   }
 
-  function resetGame() {
-    player = {
-      x: WIDTH / 2,
+  function createPilot(id, x) {
+    return {
+      id,
+      x,
       y: HEIGHT - 88,
       radius: 20,
       collisionRadius: 11,
@@ -155,8 +255,15 @@
       damage: 1,
       fireInterval: 0.19,
       fireTimer: 0,
-      invulnerable: 0
+      invulnerable: 0,
+      alive: true
     };
+  }
+
+  function resetGame() {
+    player = createPilot(1, selectedPlayerCount === 2 ? WIDTH * 0.38 : WIDTH / 2);
+    players = [player];
+    if (selectedPlayerCount === 2) players.push(createPilot(2, WIDTH * 0.62));
     bullets = [];
     enemies = [];
     enemyBullets = [];
@@ -181,6 +288,7 @@
     const t = copy[language()];
     overlay.classList.remove("is-hidden");
     overlayCard.classList.remove("is-levelup");
+    playerSelect.hidden = true;
     levelOptions.hidden = true;
     startButton.hidden = false;
     if (kind === "paused") {
@@ -190,16 +298,19 @@
     } else if (kind === "gameover") {
       overlayTitle.textContent = t.overTitle;
       overlayCopy.textContent = t.overCopy(Math.floor(score), kills);
-      startButton.textContent = t.restart;
+      playerSelect.hidden = false;
+      startButton.hidden = true;
     } else {
       overlayTitle.textContent = t.readyTitle;
       overlayCopy.textContent = t.readyCopy;
-      startButton.textContent = t.start;
+      playerSelect.hidden = false;
+      startButton.hidden = true;
     }
   }
 
   function showLevelUp() {
     if (pendingLevelUps <= 0) return;
+    const enteringLevelUp = mode !== "levelup";
     const t = copy[language()];
     mode = "levelup";
     keys.clear();
@@ -207,17 +318,29 @@
     overlayCard.classList.add("is-levelup");
     overlayTitle.textContent = t.levelTitle;
     overlayCopy.textContent = t.levelCopy(level - pendingLevelUps + 1);
+    playerSelect.hidden = true;
+    const multiShotButton = levelOptions.querySelector('[data-upgrade="multishot"]');
+    if (multiShotButton) {
+      const atMaximum = players.every((pilot) => pilot.weapon >= 6);
+      multiShotButton.disabled = atMaximum;
+      document.getElementById("game-multishot-title").textContent = atMaximum ? t.upgradeComplete : t.multishot;
+      document.getElementById("game-multishot-desc").textContent = atMaximum ? t.multishotMax : t.multishotDesc(player.weapon);
+    }
     levelOptions.hidden = false;
     startButton.hidden = true;
+    if (enteringLevelUp) playLevelSound();
   }
 
   function hideOverlay() {
     overlay.classList.add("is-hidden");
   }
 
-  function startGame() {
+  function startGame(playerCount) {
     if (mode === "levelup") return;
-    if (mode === "ready" || mode === "gameover") resetGame();
+    if (mode === "ready" || mode === "gameover") {
+      selectedPlayerCount = playerCount === 2 ? 2 : 1;
+      resetGame();
+    }
     mode = "running";
     hideOverlay();
     canvas.focus({ preventScroll: true });
@@ -237,35 +360,54 @@
     scoreEl.textContent = Math.floor(score).toString().padStart(6, "0");
     levelEl.textContent = `LV.${level}`;
     xpEl.textContent = `${xp} / ${xpNeeded} XP`;
-    healthEl.textContent = `${Math.max(0, Math.ceil(player.health))} / ${player.maxHealth}`;
-    weaponEl.textContent = `LV.${player.weapon}`;
-    bombsEl.textContent = player.bombs;
-    const healthPercent = Math.max(0, player.health / player.maxHealth * 100);
+    const isCoop = players.length === 2;
+    const setPlayerRows = (element, values) => {
+      element.replaceChildren(...values.map((value, index) => {
+        const row = document.createElement("span");
+        row.className = `coop-player-row coop-player-${index + 1}`;
+        row.textContent = `P${index + 1} ${value}`;
+        return row;
+      }));
+    };
+    if (isCoop) {
+      setPlayerRows(healthEl, players.map((pilot) => `${Math.max(0, Math.ceil(pilot.health))}/${pilot.maxHealth}`));
+      setPlayerRows(weaponEl, players.map((pilot) => `${pilot.weapon}W`));
+      setPlayerRows(bombsEl, players.map((pilot) => pilot.bombs));
+    } else {
+      healthEl.textContent = `${Math.max(0, Math.ceil(player.health))} / ${player.maxHealth}`;
+      weaponEl.textContent = `${player.weapon}-WAY`;
+      bombsEl.textContent = player.bombs;
+    }
+    [healthEl, weaponEl, bombsEl].forEach((element) => element.classList.toggle("coop-value", isCoop));
+    const totalHealth = players.reduce((total, pilot) => total + Math.max(0, pilot.health), 0);
+    const totalMaxHealth = players.reduce((total, pilot) => total + pilot.maxHealth, 0);
+    const healthPercent = Math.max(0, totalHealth / totalMaxHealth * 100);
     healthBarEl.style.width = `${healthPercent}%`;
     healthBarEl.style.backgroundColor = healthPercent > 55 ? "#4ea187" : healthPercent > 25 ? "#d69a4b" : "#d6665d";
   }
 
-  function shoot() {
-    if (player.fireTimer > 0) return;
-    const patterns = {
-      1: [0],
-      2: [-0.09, 0, 0.09],
-      3: [-0.17, -0.08, 0, 0.08, 0.17]
-    };
-    patterns[player.weapon].forEach((angle) => {
+  function shoot(pilot) {
+    if (!pilot || !pilot.alive || pilot.fireTimer > 0) return;
+    const laneGap = 0.075;
+    const shotAngles = Array.from(
+      { length: pilot.weapon },
+      (_, index) => (index - (pilot.weapon - 1) / 2) * laneGap
+    );
+    shotAngles.forEach((angle) => {
       const speed = 560;
       bullets.push({
-        x: player.x,
-        y: player.y - 31,
+        x: pilot.x,
+        y: pilot.y - 31,
         vx: Math.sin(angle) * speed,
         vy: -Math.cos(angle) * speed,
         radius: 4,
         collisionRadius: 3,
-        damage: player.damage
+        damage: pilot.damage,
+        owner: pilot.id
       });
     });
-    const weaponBonus = (player.weapon - 1) * 0.015;
-    player.fireTimer = Math.max(0.065, player.fireInterval - weaponBonus);
+    playTone(720, 980, 0.045, 0.018, "square");
+    pilot.fireTimer = pilot.fireInterval;
   }
 
   function spawnEnemy() {
@@ -331,8 +473,15 @@
   }
 
   function spawnEnemyBullet(enemy) {
-    const dx = player.x - enemy.x;
-    const dy = player.y - enemy.y;
+    const targets = players.filter((pilot) => pilot.alive);
+    if (!targets.length) return;
+    const target = targets.reduce((closest, pilot) => {
+      const pilotDistance = Math.hypot(pilot.x - enemy.x, pilot.y - enemy.y);
+      const closestDistance = Math.hypot(closest.x - enemy.x, closest.y - enemy.y);
+      return pilotDistance < closestDistance ? pilot : closest;
+    });
+    const dx = target.x - enemy.x;
+    const dy = target.y - enemy.y;
     const baseAngle = Math.atan2(dy, dx);
     const offsets = enemy.tripleBeam ? [-0.28, 0, 0.28] : [0];
     const speed = enemy.type === "tank" ? 235 : enemy.type === "prism" ? 255 : 280;
@@ -349,6 +498,8 @@
         kind: enemy.tripleBeam ? "beam" : "orb"
       });
     });
+    if (enemy.tripleBeam) playTone(240, 610, 0.22, 0.055, "sawtooth");
+    else playTone(180, 120, 0.08, 0.018, "triangle");
   }
 
   function addExplosion(x, y, color, amount) {
@@ -370,8 +521,7 @@
 
   function maybeDropItem(x, y) {
     if (Math.random() > 0.22) return;
-    const roll = Math.random();
-    const type = roll < 0.46 ? "heal" : roll < 0.72 ? "bomb" : "weapon";
+    const type = Math.random() < 0.65 ? "heal" : "bomb";
     items.push({ x, y, type, radius: 15, speed: 105, phase: Math.random() * Math.PI * 2 });
   }
 
@@ -379,6 +529,7 @@
     const enemy = enemies[index];
     if (!enemy) return;
     addExplosion(enemy.x, enemy.y, enemy.type === "tank" ? "#f0a05e" : "#e0766d", enemy.type === "tank" ? 24 : 15);
+    playNoise(enemy.type === "tank" || enemy.type === "guardian" ? 0.2 : 0.12, awardPoints ? 0.055 : 0.035, 780);
     if (awardPoints) {
       score += enemy.points;
       kills += 1;
@@ -396,57 +547,63 @@
     if (awardPoints && pendingLevelUps > 0 && mode === "running") showLevelUp();
   }
 
-  function damagePlayer(amount) {
-    if (player.invulnerable > 0 || mode !== "running") return;
-    player.health -= amount;
-    player.invulnerable = 0.9;
+  function damagePlayer(pilot, amount) {
+    if (!pilot || !pilot.alive || pilot.invulnerable > 0 || mode !== "running") return;
+    pilot.health -= amount;
+    pilot.invulnerable = 0.9;
     screenFlash = Math.max(screenFlash, 0.35);
-    addExplosion(player.x, player.y, "#9adcf4", 12);
-    if (player.health <= 0) {
-      player.health = 0;
-      addExplosion(player.x, player.y, "#eaf8ff", 38);
-      mode = "gameover";
-      showOverlay("gameover");
+    addExplosion(pilot.x, pilot.y, "#9adcf4", 12);
+    playTone(150, 70, 0.22, 0.085, "sawtooth");
+    playNoise(0.16, 0.05, 540);
+    if (pilot.health <= 0) {
+      pilot.health = 0;
+      pilot.alive = false;
+      addExplosion(pilot.x, pilot.y, "#eaf8ff", 38);
+      if (!players.some((candidate) => candidate.alive)) {
+        mode = "gameover";
+        showOverlay("gameover");
+      }
     }
     updateHud();
   }
 
-  function addMessage(text, color) {
-    messages.push({ text, x: player.x, y: player.y - 30, life: 1.1, color });
+  function addMessage(text, color, pilot) {
+    const target = pilot || player;
+    messages.push({ text, x: target.x, y: target.y - 30, life: 1.1, color });
   }
 
-  function collectItem(item) {
+  function collectItem(item, pilot) {
     const t = copy[language()];
     if (item.type === "heal") {
-      player.health = Math.min(player.maxHealth, player.health + 32);
-      addMessage(t.heal, "#75d4ac");
+      pilot.health = Math.min(pilot.maxHealth, pilot.health + 32);
+      addMessage(t.heal, "#75d4ac", pilot);
     } else if (item.type === "bomb") {
-      player.bombs = Math.min(5, player.bombs + 1);
-      addMessage(t.bomb, "#ffc27c");
-    } else if (player.weapon < 3) {
-      player.weapon += 1;
-      addMessage(t.weapon, "#8edbff");
-    } else {
-      score += 250;
-      addMessage(t.maxWeapon, "#8edbff");
+      pilot.bombs = Math.min(5, pilot.bombs + 1);
+      addMessage(t.bomb, "#ffc27c", pilot);
     }
     addExplosion(item.x, item.y, "#dff7ff", 12);
+    playTone(item.type === "heal" ? 520 : 620, item.type === "heal" ? 740 : 780, 0.2, 0.06, "sine");
     updateHud();
   }
 
   function chooseUpgrade(type) {
     if (mode !== "levelup" || pendingLevelUps <= 0) return;
     if (type === "damage") {
-      player.damage += 0.5;
+      players.forEach((pilot) => { pilot.damage += 0.5; });
     } else if (type === "speed") {
-      player.fireInterval = Math.max(0.08, player.fireInterval * 0.85);
+      players.forEach((pilot) => { pilot.fireInterval = Math.max(0.08, pilot.fireInterval * 0.85); });
     } else if (type === "health") {
-      player.maxHealth += 25;
-      player.health = Math.min(player.maxHealth, player.health + 25);
+      players.forEach((pilot) => {
+        pilot.maxHealth += 25;
+        if (pilot.alive) pilot.health = Math.min(pilot.maxHealth, pilot.health + 25);
+      });
+    } else if (type === "multishot" && players.some((pilot) => pilot.weapon < 6)) {
+      players.forEach((pilot) => { pilot.weapon = Math.min(6, pilot.weapon + 1); });
     } else {
       return;
     }
 
+    playTone(480, 820, 0.2, 0.07, "sine");
     pendingLevelUps -= 1;
     updateHud();
     if (pendingLevelUps > 0) {
@@ -459,10 +616,12 @@
     }
   }
 
-  function useBomb() {
-    if (mode !== "running" || player.bombs <= 0) return;
-    player.bombs -= 1;
+  function useBomb(pilot) {
+    if (mode !== "running" || !pilot || !pilot.alive || pilot.bombs <= 0) return;
+    pilot.bombs -= 1;
     screenFlash = 1;
+    playTone(110, 42, 0.55, 0.11, "sawtooth");
+    playNoise(0.55, 0.11, 620);
     enemyBullets = [];
     for (let i = enemies.length - 1; i >= 0; i -= 1) destroyEnemy(i, true);
     updateHud();
@@ -477,28 +636,48 @@
     return dx * dx + dy * dy <= radius * radius;
   }
 
+  function updatePilot(pilot, controls, dt) {
+    if (!pilot || !pilot.alive) return;
+    const isPressed = (binding) => {
+      const bindings = Array.isArray(binding) ? binding : [binding];
+      return bindings.some((code) => keys.has(code));
+    };
+    pilot.fireTimer = Math.max(0, pilot.fireTimer - dt);
+    pilot.invulnerable = Math.max(0, pilot.invulnerable - dt);
+    let dx = 0;
+    let dy = 0;
+    if (isPressed(controls.left)) dx -= 1;
+    if (isPressed(controls.right)) dx += 1;
+    if (isPressed(controls.up)) dy -= 1;
+    if (isPressed(controls.down)) dy += 1;
+    if (dx || dy) {
+      const length = Math.hypot(dx, dy);
+      pilot.x += dx / length * pilot.speed * dt;
+      pilot.y += dy / length * pilot.speed * dt;
+    }
+    pilot.x = Math.max(34, Math.min(WIDTH - 42, pilot.x));
+    pilot.y = Math.max(34, Math.min(HEIGHT - 34, pilot.y));
+    if (isPressed(controls.fire)) shoot(pilot);
+  }
+
   function update(dt) {
     elapsed += dt;
     score += dt * 12;
     terrainOffset += 82 * dt;
     screenFlash = Math.max(0, screenFlash - dt * 2.2);
-    player.fireTimer = Math.max(0, player.fireTimer - dt);
-    player.invulnerable = Math.max(0, player.invulnerable - dt);
-
-    let dx = 0;
-    let dy = 0;
-    if (keys.has("KeyA") || keys.has("ArrowLeft")) dx -= 1;
-    if (keys.has("KeyD") || keys.has("ArrowRight")) dx += 1;
-    if (keys.has("KeyW") || keys.has("ArrowUp")) dy -= 1;
-    if (keys.has("KeyS") || keys.has("ArrowDown")) dy += 1;
-    if (dx || dy) {
-      const length = Math.hypot(dx, dy);
-      player.x += dx / length * player.speed * dt;
-      player.y += dy / length * player.speed * dt;
+    const playerOneControls = players.length === 1
+      ? {
+          left: ["KeyA", "ArrowLeft"],
+          right: ["KeyD", "ArrowRight"],
+          up: ["KeyW", "ArrowUp"],
+          down: ["KeyS", "ArrowDown"],
+          fire: "Space"
+        }
+      : { left: "KeyA", right: "KeyD", up: "KeyW", down: "KeyS", fire: "Space" };
+    updatePilot(players[0], playerOneControls, dt);
+    if (players[1]) {
+      updatePilot(players[1], { left: "ArrowLeft", right: "ArrowRight", up: "ArrowUp", down: "ArrowDown", fire: "ShiftRight" }, dt);
     }
-    player.x = Math.max(34, Math.min(WIDTH - 42, player.x));
-    player.y = Math.max(34, Math.min(HEIGHT - 34, player.y));
-    if (keys.has("Space")) shoot();
 
     stars.forEach((star) => {
       star.y += star.speed * dt;
@@ -539,6 +718,7 @@
           if (enemy.shieldCooldown <= 0) {
             enemy.shieldActive = true;
             enemy.shieldTimer = Math.min(1.8, 1.2 + Math.max(0, level - 4) * 0.08);
+            playTone(340, 780, 0.2, 0.035, "sine");
           }
         }
       }
@@ -580,9 +760,10 @@
         enemies.splice(i, 1);
         continue;
       }
-      if (circlesTouch(player, enemy, -1)) {
+      const hitPilot = players.find((pilot) => pilot.alive && circlesTouch(pilot, enemy, -1));
+      if (hitPilot) {
         destroyEnemy(i, false);
-        damagePlayer(enemy.contactDamage);
+        damagePlayer(hitPilot, enemy.contactDamage);
       }
     }
 
@@ -594,9 +775,11 @@
       const bullet = enemyBullets[i];
       if (bullet.x < -20 || bullet.x > WIDTH + 20 || bullet.y < -20 || bullet.y > HEIGHT + 20) {
         enemyBullets.splice(i, 1);
-      } else if (circlesTouch(player, bullet, -1)) {
+      } else {
+        const hitPilot = players.find((pilot) => pilot.alive && circlesTouch(pilot, bullet, -1));
+        if (!hitPilot) continue;
         enemyBullets.splice(i, 1);
-        damagePlayer(bullet.damage || 12);
+        damagePlayer(hitPilot, bullet.damage || 12);
       }
     }
 
@@ -629,8 +812,10 @@
       item.x += Math.sin(item.phase) * 10 * dt;
       if (item.y > HEIGHT + 30) {
         items.splice(i, 1);
-      } else if (circlesTouch(player, item, 3)) {
-        collectItem(item);
+      } else {
+        const collector = players.find((pilot) => pilot.alive && circlesTouch(pilot, item, 3));
+        if (!collector) continue;
+        collectItem(item, collector);
         items.splice(i, 1);
       }
     }
@@ -747,10 +932,11 @@
     ctx.globalAlpha = 1;
   }
 
-  function drawPlayer(colors) {
-    if (player.invulnerable > 0 && Math.floor(player.invulnerable * 16) % 2 === 0) return;
+  function drawPlayer(pilot, colors) {
+    if (!pilot.alive || (pilot.invulnerable > 0 && Math.floor(pilot.invulnerable * 16) % 2 === 0)) return;
+    const isPlayerTwo = pilot.id === 2;
     ctx.save();
-    ctx.translate(player.x + 10, player.y + 13);
+    ctx.translate(pilot.x + 10, pilot.y + 13);
     ctx.rotate(-Math.PI / 2);
     ctx.fillStyle = colors.shadow;
     ctx.beginPath();
@@ -759,10 +945,10 @@
     ctx.restore();
 
     ctx.save();
-    ctx.translate(player.x, player.y);
+    ctx.translate(pilot.x, pilot.y);
     ctx.rotate(-Math.PI / 2);
 
-    ctx.fillStyle = colors.engine;
+    ctx.fillStyle = isPlayerTwo ? "#f0a84d" : colors.engine;
     ctx.globalAlpha = 0.42 + Math.random() * 0.28;
     ctx.beginPath();
     ctx.moveTo(-25, -7);
@@ -772,8 +958,8 @@
     ctx.fill();
     ctx.globalAlpha = 1;
 
-    ctx.fillStyle = colors.player;
-    ctx.strokeStyle = colors.playerEdge;
+    ctx.fillStyle = isPlayerTwo ? "#fff3d4" : colors.player;
+    ctx.strokeStyle = isPlayerTwo ? "#b97828" : colors.playerEdge;
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(33, 0);
@@ -804,11 +990,18 @@
     ctx.fill();
     ctx.stroke();
 
-    ctx.fillStyle = colors.canopy;
+    ctx.fillStyle = isPlayerTwo ? "#e2a04d" : colors.canopy;
     ctx.beginPath();
     ctx.ellipse(9, -3, 9, 5, 0, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
+
+    if (players.length === 2) {
+      ctx.fillStyle = isPlayerTwo ? "#f0b35f" : "#8edbff";
+      ctx.font = "700 12px Roboto, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(`P${pilot.id}`, pilot.x, pilot.y + 42);
+    }
   }
 
   function drawEnemy(enemy, colors) {
@@ -888,8 +1081,7 @@
   function drawItem(item) {
     const colors = {
       heal: { fill: "#dff4e9", edge: "#4c9c80", mark: "+" },
-      bomb: { fill: "#fff0df", edge: "#c67a43", mark: "✦" },
-      weapon: { fill: "#e1f3fc", edge: "#367fa9", mark: "»" }
+      bomb: { fill: "#fff0df", edge: "#c67a43", mark: "✦" }
     }[item.type];
     ctx.save();
     ctx.translate(item.x, item.y);
@@ -906,7 +1098,7 @@
     ctx.font = "700 18px Roboto, sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText(colors.mark, 0, item.type === "weapon" ? -1 : 0);
+    ctx.fillText(colors.mark, 0, 0);
     ctx.restore();
   }
 
@@ -917,8 +1109,9 @@
     bullets.forEach((bullet) => {
       ctx.save();
       ctx.shadowBlur = 9;
-      ctx.shadowColor = colors.bullet;
-      ctx.fillStyle = colors.bullet;
+      const bulletColor = bullet.owner === 2 ? "#f0b35f" : colors.bullet;
+      ctx.shadowColor = bulletColor;
+      ctx.fillStyle = bulletColor;
       ctx.beginPath();
       ctx.ellipse(bullet.x, bullet.y, 2.6, 9, 0, 0, Math.PI * 2);
       ctx.fill();
@@ -949,7 +1142,7 @@
 
     enemies.forEach((enemy) => drawEnemy(enemy, colors));
     items.forEach(drawItem);
-    drawPlayer(colors);
+    players.forEach((pilot) => drawPlayer(pilot, colors));
 
     particles.forEach((particle) => {
       ctx.globalAlpha = Math.max(0, particle.life / particle.maxLife);
@@ -994,8 +1187,10 @@
     if (["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.code)) {
       event.preventDefault();
     }
+    if (["Space", "ShiftRight", "KeyB", "KeyL", "Enter"].includes(event.code)) ensureAudio();
     keys.add(event.code);
-    if (event.code === "KeyB" && !event.repeat) useBomb();
+    if (event.code === "KeyB" && !event.repeat) useBomb(players[0]);
+    if (event.code === "KeyL" && !event.repeat && players[1]) useBomb(players[1]);
     if (event.code === "KeyP" && !event.repeat) togglePause();
     if (event.code === "Enter" && !event.repeat && ["ready", "paused", "gameover"].includes(mode)) startGame();
   });
@@ -1009,11 +1204,22 @@
     if (mode === "running") togglePause();
   });
 
-  startButton.addEventListener("click", startGame);
+  startButton.addEventListener("click", () => {
+    ensureAudio();
+    startGame();
+  });
+  playerSelect.querySelectorAll("[data-player-count]").forEach((button) => {
+    button.addEventListener("click", () => {
+      ensureAudio();
+      startGame(Number(button.dataset.playerCount));
+    });
+  });
+  soundButton.addEventListener("click", toggleSound);
   levelOptions.querySelectorAll("[data-upgrade]").forEach((button) => {
     button.addEventListener("click", () => chooseUpgrade(button.dataset.upgrade));
   });
   document.addEventListener("i18nchange", () => {
+    updateSoundButton();
     if (mode === "paused") showOverlay("paused");
     else if (mode === "gameover") showOverlay("gameover");
     else if (mode === "ready") showOverlay("ready");
@@ -1022,5 +1228,6 @@
 
   resetGame();
   showOverlay("ready");
+  updateSoundButton();
   requestAnimationFrame(frame);
 })();

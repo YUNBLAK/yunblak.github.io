@@ -40,6 +40,10 @@
       <div>
         <div class="game-kicker" data-i18n="game.kicker">Winter Sky Mission</div>
         <h1 data-i18n="game.title">Frost Wing</h1>
+        <p class="game-creator-note">
+          <i class="fa-regular fa-snowflake" aria-hidden="true"></i>
+          <span data-i18n="game.creator_note">Made for fun by Daniel.</span>
+        </p>
       </div>
       <div class="game-flight-mark" aria-hidden="true">
         <i class="fa-solid fa-plane-up"></i>
@@ -64,12 +68,16 @@
         </div>
         <div class="game-stat">
           <span data-i18n="game.weapon">Weapon</span>
-          <strong id="game-weapon">LV.1</strong>
+          <strong id="game-weapon">1-WAY</strong>
         </div>
         <div class="game-stat">
           <span data-i18n="game.bombs">Bombs</span>
           <strong id="game-bombs">1</strong>
         </div>
+        <button class="game-sound-toggle" id="game-sound-toggle" type="button"
+          aria-label="Mute sound" title="Mute sound" aria-pressed="false">
+          <i class="fa-solid fa-volume-high" aria-hidden="true"></i>
+        </button>
       </div>
 
       <div class="game-stage">
@@ -80,6 +88,18 @@
             <span class="game-overlay-icon"><i class="fa-solid fa-snowflake"></i></span>
             <h2 id="game-overlay-title">Ready for takeoff?</h2>
             <p id="game-overlay-copy">Use WASD to move, Space to fire, and B to deploy a bomb.</p>
+            <div class="game-player-select" id="game-player-select">
+              <button type="button" data-player-count="1">
+                <i class="fa-solid fa-user"></i>
+                <strong data-i18n="game.one_player">1 Player</strong>
+                <small data-i18n="game.one_player_desc">Solo flight</small>
+              </button>
+              <button type="button" data-player-count="2">
+                <i class="fa-solid fa-user-group"></i>
+                <strong data-i18n="game.two_players">2 Players</strong>
+                <small data-i18n="game.two_players_desc">Local co-op</small>
+              </button>
+            </div>
             <div class="game-level-options" id="game-level-options" hidden>
               <button type="button" data-upgrade="damage">
                 <i class="fa-solid fa-crosshairs"></i>
@@ -96,6 +116,11 @@
                 <strong data-i18n="game.upgrade_health">Max Health</strong>
                 <small data-i18n="game.upgrade_health_desc">Gain 25 max health and recover 25</small>
               </button>
+              <button type="button" data-upgrade="multishot">
+                <i class="fa-solid fa-share-nodes"></i>
+                <strong id="game-multishot-title">Multi-shot</strong>
+                <small id="game-multishot-desc">Add one bullet lane (max 6-way)</small>
+              </button>
             </div>
             <button type="button" id="game-start">Start Mission</button>
           </div>
@@ -106,22 +131,83 @@
     <section class="game-guide">
       <div class="game-guide-block">
         <h2 data-i18n="game.controls">Controls</h2>
-        <div class="game-control-list">
-          <span><kbd>WASD</kbd><em data-i18n="game.move">Move</em></span>
-          <span><kbd>SPACE</kbd><em data-i18n="game.fire">Fire</em></span>
-          <span><kbd>B</kbd><em data-i18n="game.bomb">Bomb</em></span>
-          <span><kbd>P</kbd><em data-i18n="game.pause">Pause</em></span>
+        <div class="game-player-controls">
+          <div class="game-player-card player-one-card">
+            <div class="game-player-card-head">
+              <strong class="game-player-label">P1</strong>
+              <span>PLAYER 1</span>
+            </div>
+            <div class="game-control-list">
+              <span><kbd>WASD</kbd><em data-i18n="game.move">Move</em></span>
+              <span><kbd>SPACE</kbd><em data-i18n="game.fire">Fire</em></span>
+              <span><kbd>B</kbd><em data-i18n="game.bomb">Bomb</em></span>
+            </div>
+            <p class="game-solo-control">
+              <kbd>ARROWS</kbd>
+              <span data-i18n="game.solo_arrows">Arrow keys also move</span>
+            </p>
+          </div>
+          <div class="game-player-card player-two-card">
+            <div class="game-player-card-head">
+              <strong class="game-player-label player-two">P2</strong>
+              <span>PLAYER 2</span>
+            </div>
+            <div class="game-control-list">
+              <span><kbd>ARROWS</kbd><em data-i18n="game.move">Move</em></span>
+              <span><kbd>R SHIFT</kbd><em data-i18n="game.fire">Fire</em></span>
+              <span><kbd>L</kbd><em data-i18n="game.bomb">Bomb</em></span>
+            </div>
+          </div>
         </div>
+        <p class="game-pause-control">
+          <span data-i18n="game.common_control">Common control</span>
+          <kbd>P</kbd>
+          <strong data-i18n="game.pause">Pause</strong>
+        </p>
       </div>
       <div class="game-guide-block">
         <h2 data-i18n="game.items">Supply Items</h2>
         <div class="game-item-list">
           <span><i class="fa-solid fa-heart"></i><em data-i18n="game.heal">Health recovery</em></span>
           <span><i class="fa-solid fa-burst"></i><em data-i18n="game.bomb_item">Bomb charge</em></span>
-          <span><i class="fa-solid fa-angles-up"></i><em data-i18n="game.weapon_item">Weapon upgrade</em></span>
         </div>
       </div>
     </section>
+
+    <section class="game-leaderboard" aria-labelledby="leaderboard-title">
+      <div class="game-leaderboard-head">
+        <div>
+          <span class="game-leaderboard-kicker">Frost Wing Records</span>
+          <h2 id="leaderboard-title" data-i18n="game.leaderboard">Leaderboard</h2>
+        </div>
+        <i class="fa-solid fa-trophy" aria-hidden="true"></i>
+      </div>
+      <div class="game-leaderboard-table-wrap">
+        <table class="game-leaderboard-table">
+          <thead>
+            <tr>
+              <th data-i18n="game.rank">Rank</th>
+              <th data-i18n="game.player">Player</th>
+              <th data-i18n="game.score">Score</th>
+              <th data-i18n="game.affiliation">Affiliation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="game-rank">1</span></td>
+              <td><strong>Vincent-Daniel Yun</strong></td>
+              <td><strong class="game-record-score">1,173</strong></td>
+              <td>USC</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p data-i18n="game.submit_score">
+        Want to join the leaderboard? Take a screenshot of your score and send it to
+        <a href="mailto:yunjuyou@usc.edu">yunjuyou@usc.edu</a>.
+      </p>
+    </section>
+
     <p class="game-tip" data-i18n="game.tip">Your score keeps rising as you destroy enemies and survive longer.</p>
   </main>
 
