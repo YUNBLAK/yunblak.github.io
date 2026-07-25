@@ -59,7 +59,7 @@
         <div class="game-stat game-level-stat">
           <span data-i18n="game.level">Level</span>
           <strong id="game-level">LV.1</strong>
-          <small id="game-xp">0 / 5 XP</small>
+          <small id="game-xp">0 / 10 XP</small>
         </div>
         <div class="game-stat game-health-stat">
           <span data-i18n="game.health">Health</span>
@@ -74,15 +74,53 @@
           <span data-i18n="game.bombs">Bombs</span>
           <strong id="game-bombs">1</strong>
         </div>
-        <button class="game-sound-toggle" id="game-sound-toggle" type="button"
-          aria-label="Mute sound" title="Mute sound" aria-pressed="false">
-          <i class="fa-solid fa-volume-high" aria-hidden="true"></i>
-        </button>
+        <div class="game-hud-actions">
+          <button class="game-hud-toggle game-sound-toggle" id="game-sound-toggle" type="button"
+            aria-label="Mute sound" title="Mute sound" aria-pressed="false">
+            <i class="fa-solid fa-volume-high" aria-hidden="true"></i>
+          </button>
+          <button class="game-hud-toggle game-terminal-toggle" id="game-terminal-toggle" type="button"
+            aria-label="Open command terminal" title="Open command terminal" aria-expanded="false">
+            <i class="fa-solid fa-terminal" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
 
       <div class="game-stage">
         <canvas id="flight-game" width="960" height="720" tabindex="0"
           aria-label="Frost Wing flight shooter game"></canvas>
+        <div class="game-mobile-controls" id="game-mobile-controls" aria-label="Touch controls">
+          <div class="game-joystick" id="game-joystick" role="button" aria-label="Move aircraft">
+            <span class="game-joystick-ring" aria-hidden="true"></span>
+            <span class="game-joystick-knob" id="game-joystick-knob" aria-hidden="true"></span>
+          </div>
+          <div class="game-mobile-actions">
+            <button class="game-mobile-bomb" id="game-mobile-bomb" type="button">
+              <i class="fa-solid fa-burst" aria-hidden="true"></i>
+              <span data-i18n="game.bomb">Bomb</span>
+            </button>
+            <button class="game-mobile-fire" id="game-mobile-fire" type="button">
+              <i class="fa-solid fa-crosshairs" aria-hidden="true"></i>
+              <span data-i18n="game.fire">Fire</span>
+            </button>
+          </div>
+        </div>
+        <div class="game-terminal" id="game-terminal" role="dialog" aria-labelledby="game-terminal-title" hidden>
+          <div class="game-terminal-head">
+            <strong id="game-terminal-title" data-i18n="game.terminal">Command Terminal</strong>
+            <button type="button" id="game-terminal-close" aria-label="Close terminal">
+              <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+          </div>
+          <p data-i18n="game.terminal_help">Enter a mission command.</p>
+          <form id="game-terminal-form" autocomplete="off">
+            <span aria-hidden="true">&gt;</span>
+            <input id="game-terminal-input" type="text" inputmode="text" spellcheck="false"
+              aria-label="Mission command" placeholder="type a command" />
+            <button type="submit" aria-label="Run command"><i class="fa-solid fa-arrow-turn-down"></i></button>
+          </form>
+          <small id="game-terminal-output" aria-live="polite"></small>
+        </div>
         <div class="game-overlay" id="game-overlay">
           <div class="game-overlay-card" id="game-overlay-card">
             <span class="game-overlay-icon"><i class="fa-solid fa-snowflake"></i></span>
@@ -120,6 +158,33 @@
                 <i class="fa-solid fa-share-nodes"></i>
                 <strong id="game-multishot-title">Multi-shot</strong>
                 <small id="game-multishot-desc">Add one bullet lane (max 6-way)</small>
+              </button>
+              <button type="button" class="fleet-upgrade" data-upgrade="fleet_speed">
+                <i class="fa-solid fa-forward-fast"></i>
+                <strong id="game-fleet-speed-title" data-i18n="game.fleet_speed">Fleet Fire Rate</strong>
+                <small id="game-fleet-speed-desc" data-i18n="game.fleet_speed_desc">Wingmen fire 15% faster</small>
+              </button>
+              <button type="button" class="fleet-upgrade" data-upgrade="fleet_multishot">
+                <i class="fa-solid fa-arrows-split-up-and-left"></i>
+                <strong id="game-fleet-shot-title" data-i18n="game.fleet_multishot">Fleet Multi-shot</strong>
+                <small id="game-fleet-shot-desc" data-i18n="game.fleet_multishot_desc">Add one wingman bullet lane · Maximum 3</small>
+              </button>
+              <button type="button" class="fleet-upgrade" data-upgrade="fleet_capacity">
+                <i class="fa-solid fa-jet-fighter-up"></i>
+                <strong id="game-fleet-capacity-title" data-i18n="game.fleet_capacity">Fleet Capacity</strong>
+                <small id="game-fleet-capacity-desc" data-i18n="game.fleet_capacity_desc">Maximum wingmen +1 · Up to 3</small>
+              </button>
+            </div>
+            <div class="game-class-options" id="game-class-options" hidden>
+              <button type="button" data-class="laser">
+                <i class="fa-solid fa-bolt"></i>
+                <strong data-i18n="game.class_laser">Laser Gunner</strong>
+                <small data-i18n="game.class_laser_desc">Hold fire to maintain a continuous laser beam</small>
+              </button>
+              <button type="button" data-class="aegis">
+                <i class="fa-solid fa-shield-halved"></i>
+                <strong data-i18n="game.class_aegis">Aegis Pilot</strong>
+                <small data-i18n="game.class_aegis_desc">Become invincible for 2 seconds every 10 seconds</small>
               </button>
             </div>
             <button type="button" id="game-start">Start Mission</button>
@@ -170,6 +235,9 @@
         <div class="game-item-list">
           <span><i class="fa-solid fa-heart"></i><em data-i18n="game.heal">Health recovery</em></span>
           <span><i class="fa-solid fa-burst"></i><em data-i18n="game.bomb_item">Bomb charge</em></span>
+          <span><i class="fa-solid fa-shield-halved"></i><em data-i18n="game.shield_item">Two-hit shield</em></span>
+          <span><i class="fa-solid fa-jet-fighter-up"></i><em data-i18n="game.wingman_item">Wingman support</em></span>
+          <span><i class="fa-solid fa-magnet"></i><em data-i18n="game.magnet_item">Collect all supplies</em></span>
         </div>
       </div>
     </section>
