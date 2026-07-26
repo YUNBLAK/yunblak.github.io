@@ -7,7 +7,7 @@
   <meta name="description" content="Frost Wing, a winter-themed browser flight game by Vincent-Daniel Yun." />
   <meta name="google" content="notranslate" />
   <link rel="canonical" href="https://www.worldwidedaniel.com/game" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=20260726c" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
@@ -112,7 +112,7 @@
               <i class="fa-solid fa-xmark" aria-hidden="true"></i>
             </button>
           </div>
-          <p data-i18n="game.terminal_help">Enter a mission command.</p>
+          <p data-i18n="game.terminal_help">Enter boss1–boss20 to jump to a boss stage.</p>
           <form id="game-terminal-form" autocomplete="off">
             <span aria-hidden="true">&gt;</span>
             <input id="game-terminal-input" type="text" inputmode="text" spellcheck="false"
@@ -154,6 +154,21 @@
                 <strong data-i18n="game.upgrade_health">Max Health</strong>
                 <small data-i18n="game.upgrade_health_desc">Gain 25 max health and recover 25</small>
               </button>
+              <button type="button" data-upgrade="mobility">
+                <i class="fa-solid fa-plane-circle-check"></i>
+                <strong data-i18n="game.upgrade_mobility">Mobility</strong>
+                <small data-i18n="game.upgrade_mobility_desc">Increase movement speed</small>
+              </button>
+              <button type="button" data-upgrade="armor">
+                <i class="fa-solid fa-shield"></i>
+                <strong data-i18n="game.upgrade_armor">Armor</strong>
+                <small data-i18n="game.upgrade_armor_desc">Reduce incoming damage</small>
+              </button>
+              <button type="button" data-upgrade="salvage">
+                <i class="fa-solid fa-clover"></i>
+                <strong data-i18n="game.upgrade_salvage">Salvage Luck</strong>
+                <small data-i18n="game.upgrade_salvage_desc">Increase item drop rates</small>
+              </button>
               <button type="button" data-upgrade="multishot">
                 <i class="fa-solid fa-share-nodes"></i>
                 <strong id="game-multishot-title">Multi-shot</strong>
@@ -176,15 +191,35 @@
               </button>
             </div>
             <div class="game-class-options" id="game-class-options" hidden>
-              <button type="button" data-class="laser">
+              <button type="button" data-class="laser" data-class-tier="1">
                 <i class="fa-solid fa-bolt"></i>
                 <strong data-i18n="game.class_laser">Laser Gunner</strong>
                 <small data-i18n="game.class_laser_desc">Hold fire to maintain a continuous laser beam</small>
               </button>
-              <button type="button" data-class="aegis">
+              <button type="button" data-class="aegis" data-class-tier="1">
                 <i class="fa-solid fa-shield-halved"></i>
                 <strong data-i18n="game.class_aegis">Aegis Pilot</strong>
                 <small data-i18n="game.class_aegis_desc">Become invincible for 2 seconds every 10 seconds</small>
+              </button>
+              <button type="button" data-class="overcharge" data-class-tier="2" hidden>
+                <i class="fa-solid fa-bolt-lightning"></i>
+                <strong data-i18n="game.class_overcharge">Overcharge Core</strong>
+                <small data-i18n="game.class_overcharge_desc">Gain damage, fire rate, and critical hits</small>
+              </button>
+              <button type="button" data-class="vanguard" data-class-tier="2" hidden>
+                <i class="fa-solid fa-shield-heart"></i>
+                <strong data-i18n="game.class_vanguard">Vanguard Frame</strong>
+                <small data-i18n="game.class_vanguard_desc">Gain armor, speed, health, and a shield</small>
+              </button>
+              <button type="button" data-class="nova" data-class-tier="3" hidden>
+                <i class="fa-solid fa-sun"></i>
+                <strong data-i18n="game.class_nova">Nova Engine</strong>
+                <small data-i18n="game.class_nova_desc">Release an automatic radial nova every 8 seconds</small>
+              </button>
+              <button type="button" data-class="chrono" data-class-tier="3" hidden>
+                <i class="fa-solid fa-clock"></i>
+                <strong data-i18n="game.class_chrono">Chrono Drive</strong>
+                <small data-i18n="game.class_chrono_desc">Slow hostile fire and greatly increase fire rate</small>
               </button>
             </div>
             <button type="button" id="game-start">Start Mission</button>
@@ -238,6 +273,8 @@
           <span><i class="fa-solid fa-shield-halved"></i><em data-i18n="game.shield_item">Two-hit shield</em></span>
           <span><i class="fa-solid fa-jet-fighter-up"></i><em data-i18n="game.wingman_item">Wingman support</em></span>
           <span><i class="fa-solid fa-magnet"></i><em data-i18n="game.magnet_item">Collect all supplies</em></span>
+          <span><i class="fa-solid fa-bolt-lightning"></i><em data-i18n="game.overdrive_item">10-second overdrive</em></span>
+          <span><i class="fa-solid fa-gem"></i><em data-i18n="game.core_item">Bonus XP data core</em></span>
         </div>
       </div>
     </section>
@@ -310,7 +347,7 @@
       });
     })();
   </script>
-  <script src="i18n.js"></script>
-  <script src="game.js"></script>
+  <script src="i18n.js?v=20260726c"></script>
+  <script src="game.js?v=20260726q"></script>
 </body>
 </html>

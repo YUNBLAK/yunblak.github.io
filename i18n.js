@@ -108,7 +108,7 @@
     "game.solo_arrows": "방향키로도 이동 가능",
     "game.common_control": "공통 조작",
     "game.terminal": "명령 터미널",
-    "game.terminal_help": "미션 명령어를 입력하세요.",
+    "game.terminal_help": "boss1부터 boss20까지 입력하면 해당 보스 스테이지로 이동합니다.",
     "game.fire": "공격",
     "game.bomb": "폭탄",
     "game.pause": "일시정지",
@@ -118,16 +118,32 @@
     "game.shield_item": "2회 방어 보호막",
     "game.wingman_item": "보조 비행기",
     "game.magnet_item": "모든 보급품 자동 회수",
+    "game.overdrive_item": "10초간 공격 오버드라이브",
+    "game.core_item": "추가 경험치 데이터 코어",
     "game.class_laser": "레이저 거너",
     "game.class_laser_desc": "공격키를 누르는 동안 연속 레이저 빔을 유지합니다",
     "game.class_aegis": "이지스 파일럿",
     "game.class_aegis_desc": "10초마다 2초 동안 무적 보호막을 생성합니다",
+    "game.class_overcharge": "오버차지 코어",
+    "game.class_overcharge_desc": "공격력·공격 속도·치명타 확률이 증가합니다",
+    "game.class_vanguard": "뱅가드 프레임",
+    "game.class_vanguard_desc": "방어력·이동 속도·체력과 보호막을 획득합니다",
+    "game.class_nova": "노바 엔진",
+    "game.class_nova_desc": "8초마다 자동으로 전방위 노바 공격을 방출합니다",
+    "game.class_chrono": "크로노 드라이브",
+    "game.class_chrono_desc": "적의 공격을 느리게 하고 공격 속도를 크게 높입니다",
     "game.upgrade_damage": "공격력",
     "game.upgrade_damage_desc": "총알 피해량 50% 증가",
     "game.upgrade_speed": "공격 속도",
     "game.upgrade_speed_desc": "공격 속도 15% 증가",
     "game.upgrade_health": "최대 체력",
     "game.upgrade_health_desc": "최대 체력 25 증가 및 체력 25 회복",
+    "game.upgrade_mobility": "기동력",
+    "game.upgrade_mobility_desc": "이동 속도가 증가합니다",
+    "game.upgrade_armor": "장갑",
+    "game.upgrade_armor_desc": "받는 피해가 감소합니다 (최대 42%)",
+    "game.upgrade_salvage": "보급 행운",
+    "game.upgrade_salvage_desc": "아이템 획득 확률이 증가합니다",
     "game.fleet_speed": "함대 공격 속도",
     "game.fleet_speed_desc": "보조 비행기의 공격 속도가 15% 증가합니다",
     "game.fleet_multishot": "함대 다중 사격",
@@ -307,6 +323,7 @@
 
   function initSnowfall() {
     if (document.querySelector(".snowfall")) return;
+    if (document.querySelector(".game-page")) return;
     if (window.matchMedia &&
         window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 

@@ -2374,6 +2374,26 @@ section h2,
 
 .game-overlay-card.is-levelup {
   width: min(800px, 100%);
+  max-height: calc(100% - 8px);
+  padding: 22px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(157, 221, 248, 0.62) rgba(8, 29, 42, 0.28);
+}
+
+.game-overlay-card.is-levelup::-webkit-scrollbar {
+  width: 8px;
+}
+
+.game-overlay-card.is-levelup::-webkit-scrollbar-track {
+  border-radius: 99px;
+  background: rgba(8, 29, 42, 0.28);
+}
+
+.game-overlay-card.is-levelup::-webkit-scrollbar-thumb {
+  border-radius: 99px;
+  background: rgba(157, 221, 248, 0.62);
 }
 
 .game-overlay-icon {
@@ -2440,6 +2460,10 @@ section h2,
   display: none;
 }
 
+.game-class-options button[hidden] {
+  display: none;
+}
+
 .game-player-select button {
   display: flex;
   min-height: 105px;
@@ -2486,8 +2510,8 @@ section h2,
 .game-level-options button,
 .game-class-options button {
   display: flex;
-  min-height: 132px;
-  padding: 17px 13px;
+  min-height: 104px;
+  padding: 13px 11px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -3152,6 +3176,15 @@ section h2,
     grid-template-columns: 1fr;
     max-height: 310px;
     overflow-y: auto;
+  }
+
+  .game-overlay {
+    padding: 12px;
+  }
+
+  .game-overlay-card.is-levelup {
+    max-height: calc(100% - 4px);
+    padding: 18px 16px;
   }
 
   .game-player-select {
