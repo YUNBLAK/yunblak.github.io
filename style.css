@@ -2336,6 +2336,10 @@ section h2,
   height: 100%;
   outline: none;
   touch-action: none;
+  contain: paint;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 .game-mobile-controls {
@@ -2507,6 +2511,11 @@ section h2,
   display: none;
 }
 
+.game-level-options button[hidden],
+.game-class-options button[hidden] {
+  display: none;
+}
+
 .game-level-options button,
 .game-class-options button {
   display: flex;
@@ -2567,6 +2576,18 @@ section h2,
 
 .game-level-options button.fleet-upgrade i {
   color: #8de2d2;
+}
+
+.game-level-options button.aegis-upgrade {
+  border-color: rgba(255, 220, 112, 0.52);
+  background:
+    radial-gradient(circle at 50% 15%, rgba(110, 224, 246, 0.13), transparent 52%),
+    rgba(210, 174, 68, 0.1);
+}
+
+.game-level-options button.aegis-upgrade i {
+  color: #ffe17d;
+  filter: drop-shadow(0 0 8px rgba(99, 220, 244, 0.48));
 }
 
 .game-guide {
