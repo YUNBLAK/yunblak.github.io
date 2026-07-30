@@ -1,0 +1,516 @@
+EMBERFALL EXPANSION LOOP CHECKLIST
+==================================
+
+[x] 1. ENGINE / MODULES
+    [x] Split config, core, world, systems, rendering, and UI into ES modules
+    [x] Dynamically import only the current map
+    [x] Preload only the next adjacent map near a gate
+    [x] Unload inactive map entities and keep at most two map definitions cached
+    [x] Fixed-step update, delta cap, visibility pause, viewport culling
+    [x] Particle / projectile object caps and pooling
+    [x] WebGL2 GPU presentation with Canvas2D fallback
+
+[x] 2. FULLSCREEN / SAVE
+    [x] Fullscreen button for game shell
+    [x] 16:9 letterbox and pixel-perfect scaling
+    [x] Three manual save slots and one autosave
+    [x] Save menu and explicit save / load controls
+    [x] JSON save export and import
+    [x] Autosave on map, level, equipment, stats, NPC death, boss, day, and respawn
+    [x] Persist world clock, karma, NPC corpses, quests, inventory, and bosses
+
+[x] 3. INPUT / HOTBAR
+    [x] F interaction replaces E
+    [x] Hold Slash + A to attack NPCs
+    [x] Red hostile-mode indicator while Slash is held
+    [x] Q/W/E/R configurable skill hotbar
+    [x] 1/2/3/4 configurable item hotbar
+    [x] Stamina, mana, cooldowns, and ultimate cooldown
+    [x] Keyboard and mobile controls
+
+[x] 4. NPC / KARMA / CORPSES
+    [x] NPC HP, defense, flee reaction, and guard retaliation
+    [x] Permanent NPC death and immediate autosave
+    [x] Dead NPC quest / shop / inn functionality disabled
+    [x] Karma stat starts at zero and increases on NPC kills
+    [x] Positive karma is red in the status UI
+    [x] Karma thresholds affect prices, guards, hunters, and dark content
+    [x] Fresh corpse, decay, and bones after five in-game days
+    [x] Corpse inspection, one-time loot, grounded blood, decay, bones, and flies
+
+[x] 5. TIME / WORLD
+    [x] Smoothly blended morning, day, sunset, and night visual cycle
+    [x] Eighteen-minute in-game day saved between sessions
+    [x] NPC schedules and shop closures at night
+    [x] Night monster strength / XP / gold modifiers
+    [x] Village -> Outskirts I -> Outskirts II -> Boss Arena -> Dungeon map flow
+    [x] No field checkpoints; death always respawns at village inn
+
+[x] 6. SKILLS / ITEMS
+    [x] Ember Slash, Iron Guard / parry, Knight Charge, Sunset Execution
+    [x] Fire Wave, Frost Bind, Shadow Step, Lightning, Meteor, Soul Drain
+    [x] Karma skill unlocks at 20 / 40 / 60 / 100
+    [x] Assign owned skills and consumables to hotbar slots
+    [x] H remains a quick-heal shortcut
+    [x] Shop and inventory support new skills and items
+
+[x] 7. BOSS
+    [x] Dedicated Ashen Bridge boss arena
+    [x] Phase 1 combo, charge, slam, and shield bash
+    [x] Phase 2 fire blade, flame lanes, summons, and predicted charge
+    [x] Phase 3 faster five-hit combo, flame pillars, and fire walls
+    [x] Clear telegraphs, parry opening, night variation, and fair difficulty
+    [x] Boss reset on death and persistent victory reward
+
+[x] 8. VERIFICATION
+    [x] JavaScript syntax and module import verification
+    [x] Fullscreen, save slots, export/import browser test
+    [x] NPC attack, death, karma, corpse, and disabled-service test
+    [x] Time-cycle and five-day corpse transition test
+    [x] Skill / item hotbar and boss pattern test
+    [x] Dynamic map loading and death-to-village test
+    [x] Desktop and mobile responsive test
+    [x] No console errors in production mode
+
+[x] ALL CHECKS COMPLETE
+
+[x] WEB START HOTFIX
+    [x] Replace module-only entry with a production-compatible single bundle
+    [x] Keep modular source files and add a deterministic bundle build/check script
+    [x] Verify the adventure start button and confirm zero browser console errors
+
+[x] CONTINUOUS WORLD / PIXEL ART QUALITY LOOP
+    [x] Add a shared full-width foundation layer to every zone while preserving hills and platforms
+    [x] Remove fall damage and recover out-of-bounds players onto safe ground at the same X position
+    [x] Add fall and ground-gap browser diagnostics
+    [x] Redesign the held sword as a one-handed longsword with matching attack trails
+    [x] Upgrade player armor, cape, helmet, face, run pose, highlights, and grounded shadow
+    [x] Give every NPC a readable two-line pixel nameplate above the unit
+    [x] Preserve each NPC's original appearance when hostile and add role-specific equipment
+    [x] Upgrade slimes, wolves, treants, scorpions, ghosts, bosses, and humanoid enemies
+    [x] Add regional house silhouettes, roof tiles, timber frames, windows, signs, and chimneys
+    [x] Add regional ground textures, distant landmarks, clouds, stars, fireflies, and dungeon runes
+    [x] Verify village, former gap coordinates, Moonbriar, Sunspire, and dungeon in the browser
+    [x] Confirm fall recovery keeps HP unchanged, all maps report zero gaps, and runtime errors stay at zero
+
+[x] PERSISTENT WORLD / COMBAT POLISH LOOP
+    [x] Rest the player's unsheathed sword across the shoulder while idle
+    [x] Make the attacked NPC itself retaliate with its original visual identity
+    [x] Replace the anonymous village karma hunter with the real guard NPC
+    [x] Add roaming adventurer pursuit, dashes, weapon swings, and combat abilities
+    [x] Add KARMA 500 contact retaliation damage against touching enemies
+    [x] Persist authored, karma, event, judge, and individual pursuit enemy deaths
+    [x] Persist collected crystals so their XP and gold cannot be collected twice
+    [x] Allow L-key arson at houses whose owning NPC is dead
+    [x] Persist one-day house fires and permanent burned-house ruins
+    [x] Remove corpse ghosts and keep only grounded blood, bodies, bones, and flies
+    [x] Anchor corruption ground effects only to the player's current support surface
+    [x] Block horizontal passage through tall terrain faces until the player jumps
+    [x] Smoothly interpolate sunrise, daylight, sunset, night, stars, and lighting
+    [x] Stabilize map_05 parallax and fog bands with world-indexed positioning
+    [x] Display the live game clock directly below map_{number}
+    [x] Pass smoke tests, deterministic build verification, and direct browser playtest
+
+[x] FINE PIXEL ART / FACE READABILITY LOOP
+    [x] Replace broad humanoid face blocks with 1–2 px eyes, pupils, brows, noses, mouths, jaw shadows, ears, and hair strands
+    [x] Give the player a clearer open-face helmet, expressive directional face, finer armor plates, narrow limbs, hands, boots, and cape folds
+    [x] Preserve the shoulder-carried sword pose while reducing blade, grip, guard, and attack-trail thickness
+    [x] Refine every NPC role with readable faces, slimmer silhouettes, cloth folds, tools, hats, helmets, beards, and regional skin palettes
+    [x] Refine bandits, soldiers, mages, skeletons, ghosts, slimes, wolves, treants, scorpions, and the boss with smaller facial and body details
+    [x] Move NPC nameplates clear of hats and faces and reduce their border and typography weight
+    [x] Reduce ground seam, timber-frame, roof-tile, window-frame, portcullis, and cloud block thickness
+    [x] Add layered mountain ridges, tiered conifers, Moonbriar branches and leaves, and detailed Sunspire towers
+    [x] Verify player, NPC, elder, monster, hostile humanoid, Moonbriar, Sunspire, karma aura, and attack frames at live browser scale
+    [x] Pass syntax, smoke, deterministic bundle, runtime-error, and browser-console checks
+
+[x] SMOOTH GAMEPLAY / FULL-BODY ANIMATION LOOP
+    [x] Reproduce rigid jump, weapon-only attack, map transition, and field combat in the live browser
+    [x] Interpolate player, enemy, camera, NPC wanderer, projectile, particle, and floater positions between fixed updates
+    [x] Add full-body player attack lunges, planted combo stances, airborne leg tucks, landing squash, and dust
+    [x] Add enemy/NPC attack anticipation, torso lunges, leg bracing, airborne poses, and contact attack feedback
+    [x] Remove avoidable per-frame allocations and throttle HUD/minimap work without reducing responsiveness
+    [x] Add FPS, frame-time, dropped-step, and animation-state diagnostics for browser regression checks
+    [x] Rebuild the production bundle and extend automated animation/performance regression tests
+    [x] Replay movement, sprint, jump, all combo stages, enemy combat, map transition, fall recovery, and multiple regions
+    [x] Confirm stable ground/camera rendering, zero runtime errors, and smooth sustained combat
+
+[ ] LEVEL-SCALING SKILL / COMBAT VFX LOOP
+    [x] Audit player skill, monster, hostile NPC, pursuit, captain, and boss effect paths
+    [x] Add per-level range, effect-size, duration, power, trail, echo, and chain scaling
+    [x] Expose skill tier and live effect diagnostics for direct browser QA
+    [x] Add differentiated skill sigils, slashes, barriers, blessings, lightning, frost, meteor, drain, and ultimate effects
+    [x] Add monster-family attack effects and active abilities for arcane, root, venom, spectral, and elite enemies
+    [x] Add hostile NPC, pursuit party, Garen rage, boss phase, summon, and hazard activation effects
+    [x] Replace flat hazard rectangles with readable animated telegraphs and active impact visuals
+    [x] Avoid particle-pool shift spikes when high-level effects reach capacity
+    [x] Rebuild the production bundle and pass scaling/effect regression tests
+    [ ] Direct-play level 1 and high-level skills, monsters, NPC combat, Garen, and boss patterns
+    [ ] Confirm effect readability, hit-range accuracy, stable frame pacing, and zero runtime errors
+    [!] Final live visual pass is waiting on local-page browser access permission
+
+[x] STAT ALLOCATION HOTFIX
+    [x] Normalize legacy and string-form stat values before calculations
+    [x] Validate pending investment against available points in one commit path
+    [x] Apply attack, HP, defense, magic, mana, stamina, movement, jump, and attack-speed effects immediately
+    [x] Preview derived values and pending point cost before confirmation
+    [x] Make delegated panel buttons robust to nested click targets
+    [x] Autosave committed allocations and expose live stat diagnostics
+    [x] Add valid, overspend, rollback, legacy-save, and derived-stat regression tests
+
+[x] ABYSSAL WORLD / DEATH & FIRE QUALITY LOOP
+    [x] Gate Garen's hostile spawn behind every Duskvale civilian death, including the elder
+    [x] Block karma, witness, map-load, saved-hostility, and direct-attack shortcuts into early Garen combat
+    [x] Give pre-massacre Garen a non-damaging parry response instead of hostile pursuit
+    [x] Replace flat corpses with grounded prone bodies, faces, clothing, limbs, role gear, blood, and flies
+    [x] Add separate fresh, decayed, and detailed skeletal corpse silhouettes
+    [x] Upgrade active house fires with interior glow, layered flames, soot, roof collapse, sparks, and smoke
+    [x] Upgrade burned houses with rubble, broken beams, chimney remains, ash, and smoldering embers
+    [x] Turn every outdoor region bleak at KARMA 1000 with abyss sky colors, a blood eclipse, burning ridges, smoke, ash, and intermittent firefall
+    [x] Add interior red ruin ambience and live apocalypse / Garen diagnostics
+    [x] Pass syntax, Garen-threshold behavior, persistence, render-order, and deterministic bundle checks
+
+[x] WOLF FACING / CROSS-SLASH Q / COMBO POLISH LOOP
+    [x] Mirror wolf, hound, and moonstalker pixel bodies toward their actual movement direction
+    [x] Replace Q with a two-stroke full-body X slash and delayed flying X sword wave
+    [x] Scale Q damage, speed, size, penetration, stagger, guard break, trails, and echoes by level
+    [x] Preserve projectile-direction knockback even if the player turns after firing
+    [x] Replace A combo hit two's upward cut with a low forward waist cut
+    [x] Remove the third hit's elevated hitbox and rename combo diagnostics to match the new motion
+    [x] Add live Q cast, projectile, damage, penetration, and beast-facing diagnostics
+    [x] Pass syntax, animation, skill-growth, deterministic bundle, and runtime checks
+
+[x] FIRE / SKILL / GAREN / NPC GRAVITY QUALITY LOOP
+    [x] Reproduce map_04 ledge-hovering NPCs, flat house fire, generic player skills, and unreadable Garen effects in the live browser
+    [x] Let wandering NPCs walk off drops, fall with gravity, land smoothly, and still block impossible upward steps
+    [x] Change KARMA 1000 firefall to a long diagonal trajectory with layered trail and embers
+    [x] Upgrade burning houses with curved multi-layer flames, interior combustion, glow, embers, roof charring, and smoke
+    [x] Replace shared skill-web effects with distinct shield, blink, lightning, drain, frost, blessing, solar, eclipse, soul, transform, and meteor visuals
+    [x] Add dedicated Garen blade, rage, banner, shield bash, dash, spear rain, slam, and oath visuals
+    [x] Add deterministic NPC gravity, diagonal firefall, and Garen effect-profile regression tests
+    [x] Rebuild the production bundle and pass all syntax, smoke, and deterministic checks
+    [x] Direct-play map_04 NPC falls, house fire, Q/W/E/R, KARMA 1000 firefall, and every Garen phase
+    [x] Confirm stable frame pacing, effect readability, and zero runtime errors
+
+[x] CROSS WAVE / SEALED CAVE / MOONBRIAR ENTRANCE LOOP
+    [x] Reproduce the blunt X projectile, abrupt disappearance, malformed elder-hill grave backdrop, and house-shaped forest exit
+    [x] Replace the X projectile and cast release with tapered blade strokes, restrained echoes, wind trails, and a long smooth fade
+    [x] Mark apocalypse firefall as non-collidable, zero-damage, background-only scenery
+    [x] Rebuild the elder-hill cemetery on a coherent raised terrace
+    [x] Add a tall rock wall, chained cave door, lock, runes, and no-key interaction west of the elder house
+    [x] Remove the wanderer's house from the Moonbriar exit and replace it with a metasequoia forest corridor
+    [x] Pass smoke tests and deterministic bundle verification
+    [x] Direct-play the X fade, background firefall, sealed cave, cemetery, and Moonbriar transition
+    [x] Confirm stable frame pacing and zero runtime errors
+
+[x] HOUSE FIRE ARTIFACT / MOONBRIAR GATE LOOP
+    [x] Reproduce the rectangular house-fire scorch overlay and block-shaped smoke in the live browser
+    [x] Replace the full rectangular scorch mask with irregular flame-shaped char patches and curved burn trails
+    [x] Replace stacked black smoke rectangles with layered drifting smoke puffs
+    [x] Remove the metasequoia corridor entrance from map_04
+    [x] Add a standard Moonbriar gate with moonstone palette, portcullis, towers, torches, and gate interaction
+    [x] Pass smoke tests and deterministic bundle verification
+    [x] Direct-play the burning elder house, Moonbriar gate, and gate transition
+    [x] Confirm stable frame pacing and zero runtime errors
+
+[x] NPC HOUSE FIRE RECTANGLE FOLLOW-UP
+    [x] Reproduce the issue through hostile / + A NPC combat followed by L house ignition
+    [x] Remove the uniform dark facade tint from burning NPC-owned houses
+    [x] Split overlapping wall scorch masks into separated tapered flame marks
+    [x] Replace full-width black roof bars with short curved charred rafters
+    [x] Identify the coincident fog weather rectangles visible above burning houses
+    [x] Replace five 330px fog rectangles with soft curved ribbons and transparent ends
+    [x] Direct-play standard, wide guild, and multiple simultaneous NPC house fires
+    [x] Leave and re-enter the village while preserving fire state without rectangular artifacts
+    [x] Confirm three simultaneous fires at 120 FPS with zero dropped steps or runtime errors
+
+[x] HOUSE FIRE Y-BEAM / STANDING DEBRIS FOLLOW-UP
+    [x] Reproduce the giant Y/V silhouette at mid-fire progress in the live browser
+    [x] Remove the connected roof-to-center collapse stroke and central upright post
+    [x] Remove every remaining floating curved beam and scattered black shingle bar
+    [x] Keep fire damage readable through roof-attached holes, separated scorch marks, flames, and smoke
+    [x] Replace the burned-house standing V frame and tall posts with low independent rubble
+    [x] Direct-play standard and wide NPC houses at mid-fire progress
+    [x] Advance one full day and confirm the burned ruin has no Y/V-shaped standing frame
+    [x] Confirm 120 FPS, zero dropped steps, zero terrain gaps, and zero runtime errors
+
+[x] MAP_09 WOUNDED KNIGHT MORAL-CHOICE LOOP
+    [x] Replace the random generic field-event knight with one persistent authored world encounter
+    [x] Place Sir Cedric beneath a broken roadside tree with layered armor, wounds, embedded arrows, blood, breathing, and a readable nameplate
+    [x] Trigger his voiced plea automatically as the player approaches
+    [x] Add an irreversible execute / spare choice panel with clear consequences
+    [x] Stage an automatic execution walk-up, sword wind-up, impact freeze, blood arc, beheading, and rolling detached head
+    [x] Keep the separated body and head permanently and convert both to detailed bones after three game days
+    [x] Turn spare into a cross-map escort objective ending inside the elder's house
+    [x] Add escort HP, limping follow animation, damage reactions, route progress, and completion rewards
+    [x] Spawn varied persistent ambush waves from the right side of map_09 and renewed pursuit pressure along the return route
+    [x] Make nearby monsters and escort hunters target and physically attack Cedric
+    [x] On monster-caused escort death, play Cedric's accusation and grant exactly KARMA +30
+    [x] Persist choice, HP, remains age, detached-head state, ambush defeats, and mission outcome in saves
+    [x] Add state-transition, three-day remains, escort failure, rescue, and save-merge regression tests
+    [x] Rebuild the deterministic production bundle
+    [x] Direct-play approach dialogue and both execute / spare branches
+    [x] Leave and re-enter maps, reload saves, advance three days, and verify no defeated ambush unit respawns
+    [x] Confirm the scene composition, animation timing, escort difficulty, stable frame pacing, and zero runtime errors
+
+[x] NAMELESS CEMETERY / CINDERKEEP / CEDRIC POSE LOOP
+    [x] Trigger a two-stage inner monologue when the player first approaches the elder-hill cemetery
+    [x] Persist the cemetery omen so map re-entry and a full page reload cannot replay it
+    [x] Add a distinct old-road arch beyond the sealed cave without overlapping the cave interaction
+    [x] Preserve map_09 and append the new Cinderkeep regions as map_12 and map_13
+    [x] Build a continuous 36-step stone ascent whose visible steps match the collision floor
+    [x] Add a large authored castle facade, towers, banners, portcullis, torches, and working great gate
+    [x] Add a traversable great hall with stained-glass walls, columns, carpet, throne dais, and working exit
+    [x] Ground Cedric's hips, legs, and boots against the roadside floor and tree roots
+    [x] Limit Cedric's breathing motion to the upper body so he never floats
+    [x] Lean Cedric's back and shoulder against the trunk and embed two readable arrows in shoulder and thigh wounds
+    [x] Add cemetery, castle-map, collision-stair, route-separation, and world-state regression coverage
+    [x] Rebuild the deterministic production bundle and pass syntax and smoke tests
+    [x] Direct-play the cemetery trigger, both castle transitions, full stair geometry, great hall, and Cedric scene
+    [x] Confirm zero terrain gaps and zero runtime errors across every inspected scene
+
+[x] CINDERKEEP VERTICAL CAMERA / GATE ART LOOP
+    [x] Add a terrain-height camera axis that follows stairs without following jump bob
+    [x] Keep the grounded player at the same screen height at the stair bottom, middle, and summit
+    [x] Smooth vertical movement between terrain heights and interpolate it with the fixed-step renderer
+    [x] Expose camera position, target, screen-space player height, and follow mode diagnostics
+    [x] Replace the elder-hill side arch with a full cave-carved Cinderkeep passage
+    [x] Join the open Cinderkeep passage and sealed cave door into one continuous rock face
+    [x] Replace the stair-bottom city gate with the matching far side of the same cave passage
+    [x] Add raised portcullises, open gate leaves, chains, tunnel depth, cobbles, rock facets, and shared signage
+    [x] Replace the great-hall house door with a large arched double ironwood gate
+    [x] Match the hall gate to the exterior castle through masonry, banners, crest colors, studs, braziers, and portcullis
+    [x] Preserve safe spawn distances and verify every gate works in both directions
+    [x] Add vertical camera target and easing regression tests
+    [x] Rebuild the production bundle and pass syntax, smoke, and deterministic checks
+    [x] Direct-check bottom / middle / summit player screen heights and all three redesigned gate scenes
+    [x] Confirm 0 terrain gaps, 0 runtime errors, approximately 120 FPS, and sub-1 ms draw time
+
+[x] RESPONSIVE JUMP CAMERA / GRAND CINDERKEEP STAIR LOOP
+    [x] Reproduce the delayed vertical-camera reaction immediately after takeoff
+    [x] Replace terrain-only tracking with a grounded-terrain / airborne-player hybrid target
+    [x] Add upward-velocity prediction so the camera begins climbing during the first airborne frames
+    [x] Increase camera responsiveness while retaining fixed-step interpolation and a stable landing return
+    [x] Keep the grounded player locked at screen Y 370 throughout the ascent
+    [x] Rebuild the approach as a 34-step royal stair with an 8px rise per step
+    [x] Increase total castle ascent from 180px to 280px without introducing terrain gaps
+    [x] Extend the Cinderkeep silhouette with a taller rear keep, central spire, and flanking spires
+    [x] Preserve the cave entrance, summit gate, collision floor, and both map transitions
+    [x] Add airborne camera-target, velocity-prediction, new stair-profile, and summit-height regression tests
+    [x] Rebuild the production bundle and pass syntax, smoke, and deterministic checks
+    [x] Measure jump response at 45 / 100 / 180 / 300 / 520 / 1040ms and confirm immediate tracking
+    [x] Direct-check stair bottom, midpoint, summit, castle composition, and landing recovery
+    [x] Confirm map_01 reset state, KARMA 0, 0 terrain gaps, and 0 runtime errors
+
+[x] CAMERA EDGE-SUPPORT FOLLOW-UP
+    [x] Reproduce the camera changing height while the player still straddles the previous stair
+    [x] Identify center-point terrain sampling as the premature height-switch trigger
+    [x] Lock grounded camera height to the player's actual foot support instead of the next terrain sample
+    [x] Keep upward velocity prediction for immediate jump response
+    [x] Remove downward velocity prediction so the camera never falls ahead of the player
+    [x] Add diagnostics for foot height, sampled terrain height, and active camera source
+    [x] Add descending-edge, ascending-edge, and non-anticipating fall regression tests
+    [x] Rebuild the production bundle and pass syntax, smoke, and deterministic checks
+    [x] Direct-play the Cinderkeep edge with foot Y 158 while sampled terrain Y is already 166
+    [x] Confirm the camera remains at -280 until the player actually moves to foot Y 166
+    [x] Audit 61 live straddle samples with zero premature camera-target changes
+    [x] Confirm immediate jump tracking, exact landing recovery, zero terrain gaps, and zero runtime errors
+
+[x] OVERHEAD-PLATFORM CAMERA FOLLOW-UP
+    [x] Reproduce the camera treating a platform above the character as the active terrain height
+    [x] Separate raw X-axis terrain lookup from camera landing-surface selection
+    [x] Exclude every platform whose Y is above the player's current foot position
+    [x] Allow a platform to become a camera landing candidate only after the player's feet pass above it
+    [x] Preserve actual ground and lower-platform tracking during jumping and falling
+    [x] Add raw terrain, filtered landing floor, and airborne source diagnostics
+    [x] Add overhead-ground, below-platform, passed-platform, and fallback regression tests
+    [x] Direct-play beneath the map_05 floating wooden platform
+    [x] Confirm raw terrain Y 302 is ignored while the actual floor remains Y 438
+    [x] Audit 60 grounded under-platform samples with zero camera movement
+    [x] Jump directly beneath the platform and confirm it remains excluded throughout the full arc
+    [x] Rebuild the production bundle and confirm zero runtime errors
+
+[x] CEDRIC EXECUTION FREEZE FOLLOW-UP
+    [x] Reproduce Cedric execution with the elder and all eight Duskvale civilians already dead
+    [x] Identify the removed falling-support helper still referenced by detached-head physics, escort terrain, and corpse rendering
+    [x] Restore the falling-body terrain helper as a tested shared camera-system export
+    [x] Reconnect detached-head physics, escort hunters, and corpse rendering with explicit platform input
+    [x] Move execution countdown into a finite, recoverable state-machine step
+    [x] Recover malformed or missing execution timers at the impact frame instead of leaving the sequence stuck
+    [x] Add execution timer, impact, and detached-head diagnostics
+    [x] Add falling-body tolerance and execution-state recovery regression tests
+    [x] Direct-play the disabled-rescue / all-civilians-dead execution branch
+    [x] Confirm executing → executed, severed-head motion, corpse rendering, and post-scene movement controls
+    [x] Reload the execution autosave and confirm the fresh remains render without errors
+    [x] Repeat the full execution with the elder alive and rescue still available
+    [x] Confirm both branches finish with timer 0, impact true, runtime errors 0, and game state running
+    [x] Reset to map_01, KARMA 0, zero civilian deaths, and Cedric waiting
+
+[x] NEW GAME KARMA PROLOGUE LOOP
+    [x] Start the prologue only for a fresh game while preserving continue-save behavior
+    [x] Build seven authored scenes for the demon war, angelic victory, karma curse, massacre, executions, escape, and Duskvale arrival
+    [x] Mix cinematic pixel illustrations with side-scrolling in-game memory scenes
+    [x] Add Korean narration, chapter titles, scene numbering, progress diamonds, and a timeline meter
+    [x] Add automatic scene timing, fade transitions, Enter / Space / canvas advance, and scene sound cues
+    [x] Pause world simulation and suppress gameplay HUD clutter while the prologue is active
+    [x] Add the safe developer-console `skip` command without eval
+    [x] Make skip and natural completion enter the same map_01 / DAY 1 / KARMA 0 village start
+    [x] Persist only after the prologue finishes or is skipped so reload behavior remains deterministic
+    [x] Add state-machine, full-timeline, manual-advance, skip-command, and scene-order regression tests
+    [x] Rebuild the deterministic production bundle and pass syntax and smoke tests
+    [x] Direct-play all seven scenes and verify captions, art composition, automatic completion, and console skip
+    [x] Confirm map_01 start state, zero runtime errors, and uninterrupted controls after the prologue
+
+[x] PROLOGUE PACING / FLOATING SWORD FOLLOW-UP
+    [x] Increase total automatic playback from 28.8 seconds to 42.3 seconds
+    [x] Slow scene fades and stagger narration lines for a calmer reading pace
+    [x] Remove the detached center swords and light-trail blades from the war tableau
+    [x] Remove the angel's unheld decorative sword
+    [x] Remove duplicate swords from the karma rampage, execution, escape, and village-arrival scenes
+    [x] Keep prisoners and Duskvale civilians visibly unarmed
+    [x] Attach the fugitive's single sword to his hand in a shoulder-resting pose
+    [x] Preserve attached swords for soldiers and guards only
+    [x] Rebuild the bundle, pass smoke tests, and visually inspect all seven scenes
+
+[x] PROLOGUE FINAL FLOATING BLADE / FIVE-SECOND EXTENSION
+    [x] Freeze and inspect the final bundled war scene instead of relying on source inspection alone
+    [x] Identify the remaining apparent sword as rotating line-shaped impact sparks
+    [x] Replace every long impact ray with small square pixel debris
+    [x] Keep every actual sword inside the character helper so its hilt stays attached to a hand
+    [x] Add exactly 5,000ms to each of the seven scenes
+    [x] Increase total automatic playback from 42.3 seconds to 77.3 seconds
+    [x] Add exact per-scene duration and total-timeline regression assertions
+    [x] Rebuild the deterministic bundle and pass syntax and smoke tests
+    [x] Inspect the war scene near 3 seconds and 6 seconds with no detached blade visible
+    [x] Confirm the extended intro still supports console skip and reaches map_01 with zero runtime errors
+
+[x] COMBAT HUD / PANEL RESOURCE VISIBILITY FOLLOW-UP
+    [x] Move HP and LV/XP into the in-canvas combat HUD directly above MP and ST
+    [x] Remove the duplicate outer-topbar HP and level blocks while retaining their live DOM bindings
+    [x] Increase HUD contrast, bar thickness, value size, border definition, and spacing
+    [x] Add a prominent gold summary card to the top of the inventory
+    [x] Add a prominent remaining-stat-points card to the top of the status panel
+    [x] Keep the stat-points card live while points are allocated and highlight it when points remain
+    [x] Prevent the enlarged HUD from overlapping the minimap at desktop and 390px widths
+    [x] Fix the legacy first-row selector overriding the new red HP bar
+    [x] Prevent TIME/KARMA from widening and clipping the mobile FULL button
+    [x] Add static HUD-order, unique-ID, gold-card, and stat-point-card regression checks
+    [x] Rebuild the production bundle and pass syntax, smoke, and bundle-freshness checks
+    [x] Directly inspect desktop HUD, desktop panels, mobile HUD, and mobile panels
+    [x] Confirm 0 HUD/minimap overlap, 0 topbar horizontal overflow, and 0 runtime errors
+    [x] Restore the browser test world to map_01, LV.1, GOLD 200 after debug validation
+
+[x] ELDER HOUSE POSITION FOLLOW-UP
+    [x] Confirm the house roof was hanging past the left edge of its raised grass platform
+    [x] Move the elder house exterior 70 world pixels to the right
+    [x] Move the door landmark and interior entrance trigger by the same amount
+    [x] Update the exterior return spawn to the relocated doorway
+    [x] Derive the arson prompt and fire effect position from the live doorway instead of a stale hardcoded coordinate
+    [x] Preserve clear spacing between the house and the windmill
+    [x] Add platform-margin, windmill-gap, landmark, entrance, and return-spawn regression checks
+    [x] Rebuild the production bundle and pass syntax, smoke, and bundle-freshness checks
+    [x] Direct-play map_02 → map_03 → map_02 and confirm the return position is X 900 with zero runtime errors
+    [x] Restore the browser test world to map_01, LV.1, GOLD 200
+
+[x] ELDER CAVE / CASTLE PASS SPACING FOLLOW-UP
+    [x] Reproduce the Cinderkeep pass rock shell overlapping the sealed-cave arch
+    [x] Measure the original visual overlap and overlapping interaction radii
+    [x] Move the sealed cave 70 world pixels to the right while preserving the cemetery approach
+    [x] Keep the Cinderkeep pass label fully visible at the map edge
+    [x] Leave 24 pixels of empty visual space between the two outer rock shells
+    [x] Leave at least 70 pixels between the two interaction-radius boundaries
+    [x] Derive both rendered positions from zone data so visuals and interactions stay aligned
+    [x] Add visual-shell and interaction-boundary regression checks
+    [x] Rebuild the production bundle and pass syntax, smoke, and bundle-freshness checks
+    [x] Direct-play the locked cave, map_02 → map_12 passage, and map_12 → map_02 return
+    [x] Confirm the pass returns to X 38 with zero runtime errors
+    [x] Restore the browser test world to map_01, LV.1, GOLD 200
+
+[x] DUSKVALE LEFT GATE / INN SPACING FOLLOW-UP
+    [x] Reproduce the Sunset Hill gate overlapping the first inn house by roughly 59 pixels
+    [x] Add a dedicated 180-pixel camera and terrain apron to the village's left edge
+    [x] Move the rendered gate center 108 world pixels left from X 48 to X -60
+    [x] Keep the complete gate, towers, and SUNSET HILL sign visible instead of clipping them off-screen
+    [x] Move the reachable transition trigger to X 12 while keeping it aligned with the edge gate
+    [x] Leave at least 45 pixels between the gate's outer tower and the inn roof
+    [x] Return from the elder hill to X 55 beside the relocated gate
+    [x] Add reusable horizontal-camera targeting with negative per-zone camera bounds
+    [x] Add gate spacing, ground-apron, return-spawn, and camera-bound regression checks
+    [x] Rebuild the production bundle and pass syntax, smoke, and bundle-freshness checks
+    [x] Direct-play map_01 → map_02 → map_01 and confirm the relocated gate remains usable
+    [x] Confirm the return position is X 55 with zero runtime errors
+    [x] Restore the browser test world to map_01, LV.1, GOLD 200
+
+[x] ELDER WINDMILL MANOR REDESIGN FOLLOW-UP
+    [x] Replace the generic narrow exterior with a dedicated 250-pixel-wide elder manor
+    [x] Add a long stone foundation, tiled double roof, central gable, crest, plaque, chimney, timber braces, and four lit windows
+    [x] Align the custom front door with the existing X 880 interior transition
+    [x] Integrate the windmill into the manor silhouette instead of leaving a detached generic prop
+    [x] Animate four detailed windmill sails during the intact state
+    [x] Make the long manor roof, walls, windows, windmill tower, hub, and sails burn together
+    [x] Leave a wide charred frame, collapsed beams, scorched doorway, broken tower, and snapped sails after one world day
+    [x] Keep the entire manor and windmill footprint inside the raised grass plateau
+    [x] Add manor width, door alignment, windmill attachment, plateau-bound, renderer, and fire-offset regression checks
+    [x] Rebuild the production bundle and pass syntax, smoke, and bundle-freshness checks
+    [x] Directly inspect intact, burning, and burned states with no black rectangles or runtime warnings
+    [x] Direct-play map_02 → map_03 → map_02 and confirm the return position is X 900
+    [x] Restore the browser test world to map_01, LV.1, KARMA 0
+
+[x] DUSKVALE LEFT GATE REACHABILITY FIX
+    [x] Reproduce the mismatch between the visible gate at X -60 and the player movement boundary at X 0
+    [x] Add a village-specific player movement boundary at X -78
+    [x] Let the knight walk fully into the center of the visible gate opening
+    [x] Align the transition trigger and rendered gate center at the same X -60 coordinate
+    [x] Apply the extended movement boundary to normal movement, blink movement, fall recovery, and debug positioning
+    [x] Preserve the return spawn at X 55 so returning players do not immediately retrigger the gate
+    [x] Add gate alignment, reachable-center, and movement-clamp regression checks
+    [x] Rebuild the production bundle and pass syntax, smoke, and bundle-freshness checks
+    [x] Direct-play map_01 X -78 → map_02 X 1320 → map_01 X 55
+    [x] Confirm zero browser runtime errors and restore map_01, LV.1, KARMA 0
+
+[x] CINDERKEEP CAVE-PASS ROCK MOUNTAIN FOLLOW-UP
+    [x] Reproduce the map_12 return cave appearing as a detached rock shell in front of the forest
+    [x] Add a full-height layered stone mountain behind the Duskvale cave pass
+    [x] Build three distinct cliff planes with a dusk-compatible slate palette
+    [x] Add twelve angular rock facets, illuminated edges, ledges, and branching cliff cracks
+    [x] Add a deep cave shadow and foreground boulder shoulders around the tunnel
+    [x] Keep the royal stairway, rope posts, cave sign, player, and interaction prompt readable in front
+    [x] Ensure the mountain renders before the cave gate so the entrance appears carved from the massif
+    [x] Add renderer presence and layer-order regression checks
+    [x] Rebuild the production bundle and pass syntax, smoke, and bundle-freshness checks
+    [x] Direct-play map_12 → map_02 → map_12 with zero runtime errors
+    [x] Restore the browser test world to map_01, LV.1, KARMA 0
+
+[x] BURNING ELDER HOUSE CURSE ENCOUNTER
+    [x] Keep the elder alive when an intact occupied manor is set on fire
+    [x] Allow entry into the burning manor until one full game day has elapsed
+    [x] Make the burning, red-eyed elder walk up to the player before speaking
+    [x] Present the four requested dialogue lines in sequence
+    [x] Render the final curse line in red
+    [x] Give the player persistent red eyes after accepting the curse
+    [x] Drain exactly 1 HP every 2 seconds while the cursed player remains inside
+    [x] Stop the fire damage outside and resume it after re-entry
+    [x] Increase the interior flames, smoke, embers, and collapsing-beam effects over time
+    [x] Kill the doomed elder and block further entry once the manor becomes ash
+    [x] Preserve confrontation, curse, house-fire, and elder-death state across saves
+    [x] Migrate compatible legacy saves that immediately killed the elder during arson
+    [x] Add world-state and source regression coverage
+    [x] Rebuild the production bundle and pass syntax, smoke, and freshness checks
+    [x] Direct-play arson → burning entry → approach → all dialogue → curse damage → death/respawn → exit → one-day collapse
+    [x] Confirm zero browser runtime errors and restore map_01, LV.1, KARMA 0
+
+[x] UNIQUE WEAPON AND ARMOR VISUALS
+    [x] Create dedicated visual profiles for every weapon item
+    [x] Give all nine swords unique lengths, widths, silhouettes, palettes, guards, grips, pommels, glows, and trails
+    [x] Preserve each weapon's identity while applying high-KARMA and transformation tints
+    [x] Create dedicated visual profiles for every armor item
+    [x] Give traveler cloth, chain mail, dusk plate, and sunscale armor distinct helmets, pauldrons, torsos, arms, legs, boots, capes, trims, and crests
+    [x] Apply equipped weapon visuals to idle shoulder carry and every attack frame
+    [x] Apply equipped armor visuals to idle, airborne, sprinting, guarding, and attacking poses
+    [x] Replace generic inventory and shop glyphs with equipment-specific pixel-art icons
+    [x] Add equipped weapon and armor diagnostics plus a developer equip command
+    [x] Add complete visual-profile coverage and unique-design regression tests
+    [x] Directly compare all nine weapon designs in-game
+    [x] Directly compare all four armor designs in-game
+    [x] Exercise the attack renderer with every weapon and confirm zero runtime errors
+    [x] Confirm all thirteen equipment icons have distinct computed silhouettes
+    [x] Restore the browser test world to map_01, LV.1, KARMA 0, rusty sword, and traveler cloth

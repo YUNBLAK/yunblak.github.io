@@ -1,4 +1,11 @@
 import { ITEMS, SHOPS, DEFAULT_COUNTS } from "./config/items.js";
+import {
+  WEAPON_VISUALS,
+  ARMOR_VISUALS,
+  weaponVisual,
+  armorVisual,
+  equipmentVisual
+} from "./config/equipment-visuals.js";
 import { SKILLS, DEFAULT_SKILL_SLOTS, DEFAULT_ITEM_SLOTS } from "./config/skills.js";
 import { NPCS, VILLAGE_CIVILIAN_IDS } from "./config/npcs.js";
 import { ENEMIES, NIGHT_MULTIPLIER } from "./config/enemies.js";
@@ -19,13 +26,29 @@ import { updatePursuitSchedule, beginPursuit, finishPursuit } from "./systems/pu
 import { DEV_COMMANDS, DEV_HELP, parseDevCommand, commandSuggestion } from "./systems/dev-console.js";
 import { mapCode } from "./config/maps.js";
 import { skillForKarma } from "./systems/karma-skills.js";
-import { mergeWorldStates, elapsedWorldDays, elderHouseStage, startElderHouseFire, houseFireStage, startHouseFire } from "./systems/world-state.js";
+import {
+  mergeWorldStates,
+  elapsedWorldDays,
+  elderHouseStage,
+  startElderHouseFire,
+  elderHouseCanEnter,
+  elderConfrontationReady,
+  completeElderConfrontation,
+  houseFireStage,
+  startHouseFire
+} from "./systems/world-state.js";
 import { ensureContinuousGround, groundCoverageGaps } from "./systems/platforms.js";
 import { daylightAt, sunsetGlowAt, blendHex, interpolatePalette } from "./systems/daylight.js";
 import { resolveHorizontalMovement } from "./systems/collision.js";
 import {
-  verticalCameraTarget, playerVerticalCameraTarget, landingFloorBelowPlayer, easeCamera
+  horizontalCameraTarget, verticalCameraTarget, playerVerticalCameraTarget,
+  landingFloorBelowPlayer, fallingSupportFloorAt, easeCamera
 } from "./systems/camera.js";
+import {
+  INTRO_SCENES, createIntroState, startIntroState, introCurrentScene,
+  introSceneProgress, updateIntroState, advanceIntroState, skipIntroState
+} from "./systems/intro.js";
+import { drawIntroCinematic } from "./render/intro-cinematic.js";
 import { lerp, interpolated, playerSwordAngle, playerAttackMotion, playerAirMotion, enemyCombatMotion } from "./systems/animation.js";
 import { skillGrowth, scaledRange, scaledEffectSize, skillGrowthSummary } from "./systems/skill-scaling.js";
 import { enemyEffectProfile, hazardEffectProfile } from "./systems/combat-effects.js";
@@ -42,6 +65,7 @@ import { ZoneLoader } from "./world/zone-loader.js";
 import {
   WOUNDED_KNIGHT,
   WOUNDED_KNIGHT_ROUTE,
+  advanceWoundedKnightExecution,
   chooseWoundedKnight,
   completeWoundedKnightEscort,
   failWoundedKnightEscort,
@@ -171,6 +195,10 @@ let killsSinceDrop = 0;
 let killsSincePickup = 99;
 let transitionBusy = false;
 let massacreBanner = 0;
+
+function zonePlayerMinX(targetZone = zone) {
+  return Number.isFinite(targetZone?.playerMinX) ? targetZone.playerMinX : 0;
+}
 let pursuitBanner = 0;
 let zoneSpawnState = { total: 0, defeated: 0, cleared: false };
 let consoleHistory = [];
@@ -190,6 +218,19 @@ let woundedKnightBanner = 0;
 let woundedKnightBannerText = "";
 const CEMETERY_THOUGHT_DURATION = 420;
 let cemeteryThought = 0;
+let introState = createIntroState();
+let introRequiredOnStart = false;
+let introCueScene = -1;
+const ELDER_FIRE_DIALOGUE = Object.freeze([
+  { text:"나는 네가 그럴 줄 알았다." },
+  { text:"마음 한켠으로 너를 받아들여야 하나 고민했다." },
+  { text:"너는…… 결국 악마가 맞았구나……" },
+  { text:"내 너를 저주하며 이 집에서 죽어가겠다……", curse:true }
+]);
+const ELDER_CURSE_INTERVAL = 120;
+let elderFireDialogueStep = 0;
+let elderCurseTimer = ELDER_CURSE_INTERVAL;
+let elderApproachGrace = 0;
 
 function xpFor(level) {
   return Math.round(90 * Math.pow(1.32, level - 1));
@@ -220,13 +261,82 @@ function garenAttackReady() {
   return guardRevengeReady(VILLAGE_CIVILIAN_IDS, npcStates);
 }
 
+function elderNpc() {
+  return NPCS.find((npc) => npc.id === "elder");
+}
+
+function elderHouseBurning() {
+  return elderHouseStage(worldStates,clock.day,clock.minute) === "burning";
+}
+
+function elderFireSceneAvailable() {
+  return currentZoneId === "elderHouse"
+    && elderHouseBurning()
+    && !!worldStates.elderHouse.elderDoomed
+    && !!npcStates.elder?.alive;
+}
+
+function elderFireVisualIntensity() {
+  const fireProgress = houseBurnProgress(worldStates.elderHouse);
+  const dialogueBoost = panelType === "elderFireDialogue"
+    ? elderFireDialogueStep / Math.max(1,ELDER_FIRE_DIALOGUE.length - 1) * .32
+    : worldStates.elderHouse.confronted ? .32 : 0;
+  return clamp(.24 + fireProgress * .66 + dialogueBoost,.24,1);
+}
+
+function migrateLegacyBurningElder() {
+  const house = worldStates.elderHouse;
+  const ns = npcStates.elder;
+  if (house.stage !== "burning" || !ns) return false;
+  if (ns.alive) {
+    house.elderDoomed = true;
+    return true;
+  }
+  const legacyFireDeath = ns.hp > 0
+    && ns.deathZone === "elderHouse"
+    && ns.deathDay === house.fireDay
+    && ns.deathMinute === house.fireMinute;
+  if (!legacyFireDeath) return false;
+  const npc = elderNpc();
+  Object.assign(ns,{
+    alive:true,hp:npc.hp,deathDay:null,deathMinute:null,deathX:npc.x,
+    deathZone:npc.zone,lootAvailable:true,hostile:false,abyssHostile:false,
+    burnX:npc.x,prevBurnX:npc.x,burnFace:-1
+  });
+  house.elderDoomed = true;
+  house.confronted = false;
+  house.dialogueStep = 0;
+  house.curseActive = false;
+  house.elderDiedInFire = false;
+  return true;
+}
+
+function finalizeElderHouseBurn() {
+  const house = worldStates.elderHouse;
+  if (house.stage === "burned") return;
+  house.stage = "burned";
+  if (house.elderDoomed && !house.elderDiedInFire && npcStates.elder?.alive) {
+    house.elderDiedInFire = true;
+    const npc = elderNpc();
+    const deathX = Number.isFinite(npcStates.elder.burnX) ? npcStates.elder.burnX : npc.x;
+    killNpc(npc,deathX,"elderHouse",{
+      message:"에드윈이 촌장집과 함께 불타 죽었습니다",
+      floater:false
+    });
+  }
+  autosave("촌장집이 폐허가 됨");
+}
+
 function currentHouseStage() {
   const stage = elderHouseStage(worldStates, clock.day, clock.minute);
   if (stage === "burned" && worldStates.elderHouse.stage !== "burned") {
-    worldStates.elderHouse.stage = "burned";
-    autosave("촌장집이 폐허가 됨");
+    finalizeElderHouseBurn();
   }
   return stage;
+}
+
+function elderHouseEntranceX() {
+  return zone?.exits?.find((exit) => exit.target === "elderHouse")?.x ?? 880;
 }
 
 function currentNpcHouseStage(ownerId) {
@@ -241,11 +351,15 @@ function currentNpcHouseStage(ownerId) {
 
 function npcWorldX(npc) {
   const ns = npcStates[npc.id];
+  if (npc.id === "elder" && elderFireSceneAvailable() && Number.isFinite(ns?.burnX)) return ns.burnX;
   return npc.wander && Number.isFinite(ns?.roamX) ? ns.roamX : npc.x;
 }
 
 function npcRenderX(npc) {
   const ns = npcStates[npc.id];
+  if (npc.id === "elder" && elderFireSceneAvailable() && Number.isFinite(ns?.burnX)) {
+    return lerp(Number.isFinite(ns.prevBurnX) ? ns.prevBurnX : ns.burnX,ns.burnX,renderAlpha);
+  }
   if (!npc.wander || !Number.isFinite(ns?.roamX)) return npc.x;
   return lerp(ns.prevRoamX, ns.roamX, renderAlpha);
 }
@@ -295,6 +409,12 @@ function applyWorldHostility() {
   for (const npc of zoneNpcs()) {
     const ns = npcStates[npc.id];
     if (!ns?.alive) continue;
+    if (npc.id === "elder" && elderFireSceneAvailable()) {
+      ns.hostile = false;
+      ns.abyssHostile = false;
+      enemies = enemies.filter((enemy) => enemy.npcId !== "elder");
+      continue;
+    }
     if (npc.id === "guard") {
       if (!garenAttackReady()) {
         ns.hostile = false;
@@ -398,6 +518,31 @@ function triggerGuardRevenge() {
 function itemStat(slot, stat) {
   const id = player.equipped[slot];
   return ITEMS[id]?.[stat] || 0;
+}
+
+function equippedWeaponVisual() {
+  return weaponVisual(player.equipped.weapon);
+}
+
+function equippedArmorVisual() {
+  return armorVisual(player.equipped.armor);
+}
+
+function equipmentArtMarkup(id, item, wrapperClass = "game2-item-icon") {
+  const visual = equipmentVisual(id,item.type);
+  if (!visual) {
+    const glyph = item.type === "accessory" ? "✦" : item.type === "consumable" || item.type === "reset" ? "♥" : "◆";
+    return `<span class="${wrapperClass} ${item.type}">${glyph}</span>`;
+  }
+  const design = visual.design.replace(/[^a-z0-9_-]/gi,"");
+  const colors = item.type === "weapon"
+    ? `--eq-main:${visual.blade};--eq-light:${visual.edge};--eq-shadow:${visual.shadow};--eq-trim:${visual.guard};--eq-accent:${visual.accent};--eq-grip:${visual.grip}`
+    : `--eq-main:${visual.body};--eq-light:${visual.bodyLight};--eq-shadow:${visual.bodyShadow};--eq-trim:${visual.trim};--eq-accent:${visual.gem};--eq-metal:${visual.metal}`;
+  return `<span class="${wrapperClass} game2-equipment-art ${item.type} design-${design}" data-item-art="${id}" style="${colors}">
+    <span class="game2-equipment-sprite" aria-hidden="true">
+      <i class="eq-main"></i><i class="eq-light"></i><i class="eq-trim"></i><i class="eq-accent"></i>
+    </span>
+  </span>`;
 }
 
 function calculatedPlayerStats(stats = player.stats) {
@@ -585,6 +730,7 @@ function syncRenderState() {
   for (const ns of Object.values(npcStates)) {
     ns.prevRoamX = ns.roamX;
     ns.prevRoamY = ns.roamY;
+    if (Number.isFinite(ns.burnX)) ns.prevBurnX = ns.burnX;
   }
   for (const pool of [particles, projectiles, floaters, combatEffects]) {
     for (const item of pool.items) {
@@ -824,12 +970,12 @@ function updateWoundedKnight(dt) {
     player.grounded = true;
     player.face = 1;
     player.attackCombo = 2;
-    knight.executionTimer = Math.max(0,knight.executionTimer - dt);
-    if (knight.executionTimer < 96 && knight.executionTimer > 62) {
+    const executionFrame = advanceWoundedKnightExecution(knight,dt);
+    if (executionFrame.windup) {
       player.attackDuration = 34;
-      player.attackTimer = Math.max(player.attackTimer,knight.executionTimer - 62);
+      player.attackTimer = Math.max(player.attackTimer,executionFrame.timer - 62);
     }
-    if (!knight.executionHit && knight.executionTimer <= 62) {
+    if (executionFrame.shouldHit) {
       const floor = floorAt(knight.x);
       finishWoundedKnightExecution(
         knight,clock.day,clock.minute,currentZoneId,knight.x,
@@ -881,7 +1027,7 @@ function updateWoundedKnight(dt) {
       knight.headY += knight.headVy * dt;
       knight.headVy += .34 * dt;
       knight.headRotation += knight.headVx * .09 * dt;
-      const headFloor = fallingSupportFloorAt(knight.headX,knight.headY) - 8;
+      const headFloor = fallingSupportFloorAt(platforms,knight.headX,knight.headY) - 8;
       if (knight.headY >= headFloor) {
         knight.headY = headFloor;
         if (Math.abs(knight.headVy) > 1.25) {
@@ -1032,11 +1178,28 @@ async function setupZone(id, spawnX = null, saveReason = null) {
   placeWoundedKnightForZone(id);
   spawnWoundedKnightAmbush();
   minimap.markExplored(player.explored, id, player.x, next.width);
-  cameraX = clamp(player.x - W * .36, 0, Math.max(0, next.width - W));
+  cameraX = horizontalCameraTarget({
+    playerX:player.x,
+    viewportWidth:W,
+    worldWidth:next.width,
+    minX:next.cameraMinX
+  });
   cameraTargetY = verticalCameraTarget(player.y + player.h);
   cameraY = cameraTargetY;
   stageBanner = 180;
   interaction = null;
+  elderCurseTimer = ELDER_CURSE_INTERVAL;
+  elderApproachGrace = id === "elderHouse" && elderHouseBurning() ? 42 : 0;
+  if (id === "elderHouse" && elderHouseBurning() && worldStates.elderHouse.elderDoomed && npcStates.elder?.alive) {
+    const elder = elderNpc();
+    const ns = npcStates.elder;
+    ns.hostile = false;
+    ns.abyssHostile = false;
+    ns.burnX = Number.isFinite(ns.burnX) ? ns.burnX : elder.x;
+    ns.prevBurnX = ns.burnX;
+    ns.burnFace = -1;
+    enemies = enemies.filter((enemy) => enemy.npcId !== "elder");
+  }
   for (const npc of zoneNpcs()) {
     if (npc.id !== "guard" && npcStates[npc.id]?.hostile && npcStates[npc.id]?.alive) spawnNpcDefender(npc);
   }
@@ -1124,6 +1287,7 @@ async function loadSave(data) {
   initNpcStates(data.npcStates || {});
   bosses = { warden: false, lich: false, judge: false, ...(data.bosses || {}) };
   worldStates = mergeWorldStates(data.worldStates || {});
+  migrateLegacyBurningElder();
   cemeteryThought = 0;
   if (bosses.warden) markSpawnDefeated(worldStates.defeatedSpawns, spawnRecord("bossArena","day",["warden",1180,438],0).id, clock.day);
   if (bosses.lich) markSpawnDefeated(worldStates.defeatedSpawns, spawnRecord("dungeon","day",["lich",2920,438],6).id, clock.day);
@@ -1144,6 +1308,9 @@ async function resetNewGame() {
   killsSinceDrop = 0;
   killsSincePickup = 99;
   villageAggro = false;
+  introState = createIntroState();
+  introCueScene = -1;
+  shell.classList.remove("intro-active");
   initNpcStates();
   recalcStats();
   await setupZone("village", 150);
@@ -1184,13 +1351,87 @@ function addXp(amount, x = player.x, y = player.y) {
   updateHud();
 }
 
-function beginGame() {
+function beginGame(saveLabel = "모험 시작") {
   state = "running";
   dom.panel.hidden = true;
   dom.overlay.classList.remove("show");
+  shell.classList.remove("intro-active");
   canvas.focus();
   resumeSimulationClock();
-  autosave("모험 시작");
+  updateHud();
+  autosave(saveLabel);
+}
+
+function syncIntroDiagnostics() {
+  const scene = introCurrentScene(introState);
+  canvas.dataset.gameState = state;
+  canvas.dataset.introActive = String(!!introState.active);
+  canvas.dataset.introCompleted = String(!!introState.completed);
+  canvas.dataset.introSkipped = String(!!introState.skipped);
+  canvas.dataset.introScene = scene?.id || "none";
+  canvas.dataset.introSceneIndex = String((introState.sceneIndex || 0) + 1);
+  canvas.dataset.introSceneCount = String(INTRO_SCENES.length);
+  canvas.dataset.introSceneTime = Math.round(introState.sceneTime || 0).toString();
+  canvas.dataset.introProgress = introSceneProgress(introState).toFixed(3);
+}
+
+function playIntroCue(index) {
+  if (introCueScene === index) return;
+  introCueScene = index;
+  const frequencies = [74,523,116,82,155,196,392];
+  const wave = ["sawtooth","triangle","sine","sawtooth","square","triangle","sine"][index] || "triangle";
+  tone(frequencies[index] || 196,index === 6 ? .42 : .25,wave,index === 6 ? .035 : .025);
+  if (index === 1) setTimeout(() => tone(784,.32,"triangle",.022),130);
+  if (index === 2) setTimeout(() => tone(58,.38,"sawtooth",.022),110);
+}
+
+function startGameIntro() {
+  introState = startIntroState(createIntroState());
+  introRequiredOnStart = false;
+  introCueScene = -1;
+  state = "intro";
+  stateBeforeConsole = "intro";
+  keys.clear();
+  dom.panel.hidden = true;
+  dom.console.hidden = true;
+  dom.hostile.hidden = true;
+  dom.overlay.classList.remove("show");
+  shell.classList.add("intro-active");
+  accumulator = 0;
+  lastTime = performance.now();
+  playIntroCue(0);
+  syncIntroDiagnostics();
+  canvas.focus();
+}
+
+function finishGameIntro(reason = "complete") {
+  if (reason === "skip" && introState.active) skipIntroState(introState);
+  introRequiredOnStart = false;
+  shell.classList.remove("intro-active");
+  dom.console.hidden = true;
+  stateBeforeConsole = "running";
+  syncIntroDiagnostics();
+  beginGame(reason === "skip" ? "프롤로그 건너뛰기" : "프롤로그 완료");
+  toast(reason === "skip" ? "프롤로그 건너뜀 · 더스크베일 도착" : "더스크베일에 도착했습니다");
+}
+
+function advanceGameIntro() {
+  if (!introState.active) return;
+  const result = advanceIntroState(introState);
+  if (result.finished) {
+    finishGameIntro("complete");
+    return;
+  }
+  playIntroCue(introState.sceneIndex);
+  syncIntroDiagnostics();
+}
+
+function updateGameIntro(deltaMs) {
+  if (!introState.active) return;
+  const result = updateIntroState(introState,deltaMs);
+  if (result.sceneChanged) playIntroCue(introState.sceneIndex);
+  syncIntroDiagnostics();
+  if (result.finished) finishGameIntro(result.skipped ? "skip" : "complete");
 }
 
 function die() {
@@ -1246,6 +1487,17 @@ function updateHud() {
   canvas.dataset.playerX = String(Math.round(player.x));
   canvas.dataset.gameState = state;
   canvas.dataset.houseStage = currentHouseStage();
+  canvas.dataset.elderHouseCanEnter = String(elderHouseCanEnter(worldStates,clock.day,clock.minute));
+  canvas.dataset.elderFireConfrontation = worldStates.elderHouse.confronted
+    ? "complete"
+    : elderConfrontationReady(worldStates,clock.day,clock.minute)
+      ? panelType === "elderFireDialogue" ? "dialogue" : "approaching"
+      : "inactive";
+  canvas.dataset.elderFireDialogueStep = String(elderFireDialogueStep);
+  canvas.dataset.elderCurseActive = String(!!worldStates.elderHouse.curseActive);
+  canvas.dataset.elderCurseTimer = String(Math.max(0,Math.ceil(elderCurseTimer)));
+  canvas.dataset.elderBurnX = String(Math.round(npcStates.elder?.burnX ?? elderNpc().x));
+  canvas.dataset.elderFireVisualIntensity = elderHouseBurning() ? elderFireVisualIntensity().toFixed(3) : "0.000";
   canvas.dataset.elderCave = currentZoneId === "elderHill" ? "locked-no-key" : "unloaded";
   canvas.dataset.moonbriarEntrance = currentZoneId === "outskirts1" ? "moon-gate" : "unloaded";
   canvas.dataset.guardRevenge = worldStates.guardRevenge.triggered ? (worldStates.guardRevenge.defeated ? "defeated" : "active") : "idle";
@@ -1265,6 +1517,10 @@ function updateHud() {
   canvas.dataset.groundGaps = String(zone ? groundCoverageGaps(platforms, zone.width).length : 0);
   canvas.dataset.runtimeErrors = String(runtimeErrors);
   canvas.dataset.debugGodMode = String(debugGodMode);
+  canvas.dataset.equippedWeapon = player.equipped.weapon;
+  canvas.dataset.weaponDesign = equippedWeaponVisual().design;
+  canvas.dataset.equippedArmor = player.equipped.armor;
+  canvas.dataset.armorDesign = equippedArmorVisual().design;
   canvas.dataset.karma = String(player.karma);
   canvas.dataset.karmaAura = karmaAuraTier(player.karma).id;
   canvas.dataset.blessing = player.blessing?.timer > 0 ? player.blessing.variant : "none";
@@ -1275,7 +1531,7 @@ function updateHud() {
   canvas.dataset.hostileNpcVisual = enemies.some((enemy) => enemy.npcId && !enemy.dead) ? "original-npc" : "none";
   canvas.dataset.karmaGroundVisible = String(player.karma >= 500 && player.grounded);
   const nearbyHome = zone ? nearbyNpcHome() : null;
-  const elderBurnReady = currentZoneId === "elderHill" && Math.abs(player.x + player.w / 2 - 810) <= 190 && currentHouseStage() === "intact";
+  const elderBurnReady = currentZoneId === "elderHill" && Math.abs(player.x + player.w / 2 - elderHouseEntranceX()) <= 190 && currentHouseStage() === "intact";
   const npcBurnReady = !!nearbyHome && !npcStates[nearbyHome.ownerId]?.alive && currentNpcHouseStage(nearbyHome.ownerId) === "intact";
   canvas.dataset.burnKeyReady = String(elderBurnReady || npcBurnReady);
   canvas.dataset.swordHeld = "true";
@@ -1344,6 +1600,8 @@ function updateHud() {
   canvas.dataset.woundedKnightZone = woundedDebug.bodyZone || woundedDebug.zone;
   canvas.dataset.woundedKnightHp = `${woundedDebug.hp}/${woundedDebug.maxHp}`;
   canvas.dataset.woundedKnightRemains = woundedKnightRemainsStage(woundedDebug,clock.day,clock.minute);
+  canvas.dataset.woundedKnightExecutionTimer = Number(woundedDebug.executionTimer || 0).toFixed(2);
+  canvas.dataset.woundedKnightExecutionHit = String(!!woundedDebug.executionHit);
   canvas.dataset.woundedKnightHeadSpeed = Math.hypot(woundedDebug.headVx || 0,woundedDebug.headVy || 0).toFixed(2);
   canvas.dataset.woundedKnightPose = ["waiting","executing"].includes(woundedDebug.status)
     ? "grounded-tree-lean"
@@ -1662,17 +1920,18 @@ function damageNpc(npc) {
   if (ns.hp <= 0) killNpc(npc, npcX);
 }
 
-function killNpc(npc, deathX = npcWorldX(npc), deathZone = currentZoneId) {
+function killNpc(npc, deathX = npcWorldX(npc), deathZone = currentZoneId, options = {}) {
   const ns = npcStates[npc.id];
   ns.alive = false;
+  ns.hp = 0;
   ns.deathDay = clock.day;
   ns.deathMinute = clock.minute;
   ns.deathX = deathX;
   ns.deathZone = deathZone;
   ns.lootAvailable = true;
   setKarma(player.karma + npc.karma, "NPC 사망");
-  toast(`${npc.name} 사망 · KARMA +${npc.karma}`);
-  floater(`KARMA +${npc.karma}`, deathX, floorAt(deathX) - 96, "#ff5f68");
+  toast(`${options.message || `${npc.name} 사망`} · KARMA +${npc.karma}`);
+  if (options.floater !== false) floater(`KARMA +${npc.karma}`, deathX, floorAt(deathX) - 96, "#ff5f68");
   triggerGuardRevenge();
   updateHud();
 }
@@ -1922,7 +2181,7 @@ function useSkill(slot) {
     effectiveRange = scaledRange(180, growth);
     const originX = castX;
     const originY = castY;
-    player.x = clamp(player.x + player.face * effectiveRange, 0, zone.width - player.w);
+    player.x = clamp(player.x + player.face * effectiveRange, zonePlayerMinX(), zone.width - player.w);
     player.invincible = 30;
     addCombatEffect("skill-blink", originX, originY, {
       targetX:player.x + player.w / 2, targetY:player.y + player.h * .48,
@@ -2467,7 +2726,7 @@ function updatePlayer(dt) {
     tone(230, .07);
   }
   player.vy += .58 * dt;
-  let nextX = clamp(player.x + player.vx * dt, 0, zone.width - player.w);
+  let nextX = clamp(player.x + player.vx * dt, zonePlayerMinX(), zone.width - player.w);
   if (player.grounded && player.vy >= 0) {
     const currentFloor = floorAt(player.x + player.w / 2);
     const nextFloor = floorAt(nextX + player.w / 2);
@@ -2569,7 +2828,7 @@ function updatePlayer(dt) {
   player.auraFrame += dt;
   if (player.corruptionTrail.length) player.corruptionTrail.length = 0;
   if (player.y > H + 100) {
-    const safeX = clamp(player.x + player.w / 2, 1, zone.width - 1);
+    const safeX = clamp(player.x + player.w / 2, zonePlayerMinX() + 1, zone.width - 1);
     player.y = floorAt(safeX) - player.h;
     player.vx = 0;
     player.vy = 0;
@@ -2687,7 +2946,9 @@ function updateEnemies(dt) {
       enemy.x = clampEnemyToLeash(enemy, enemy.x);
     }
     if (enemy.escortHunter && enemy.launchTimer <= 0 && enemy.leapTimer <= 0) {
-      const terrainFloor = fallingSupportFloorAt(enemy.x + enemy.w / 2,enemy.floor);
+      const terrainFloor = fallingSupportFloorAt(
+        platforms,enemy.x + enemy.w / 2,enemy.floor
+      );
       if (terrainFloor < enemy.floor - 14) {
         enemy.x = previousEnemyX;
       } else {
@@ -2980,10 +3241,26 @@ function findInteraction() {
   }
   for (const exit of zone.exits) {
     if (Math.abs(player.x + player.w / 2 - exit.x) < 92) {
-      if (exit.target === "elderHouse" && (!npcStates.elder?.alive || currentHouseStage() !== "intact")) {
-        interaction = { kind: "landmark", obj: { kind:"elderHouse", x:exit.x }, label: currentHouseStage() === "intact" ? "촌장집에 불 지르기" : "불타는 촌장집 살펴보기" };
+      const houseStage = exit.target === "elderHouse" ? currentHouseStage() : null;
+      const houseCanEnter = exit.target !== "elderHouse"
+        || elderHouseCanEnter(worldStates,clock.day,clock.minute);
+      if (exit.target === "elderHouse" && (
+        !houseCanEnter
+        || (houseStage === "intact" && !npcStates.elder?.alive)
+      )) {
+        interaction = {
+          kind:"landmark",
+          obj:{ kind:"elderHouse",x:exit.x },
+          label:houseStage === "intact" ? "촌장집에 불 지르기" : "불타버린 촌장집 살펴보기"
+        };
       } else {
-        interaction = { kind: "exit", obj: exit, label: exit.label };
+        interaction = {
+          kind:"exit",
+          obj:exit,
+          label:exit.target === "elderHouse" && houseStage === "burning"
+            ? "불타는 촌장집 안으로 들어가기"
+            : exit.label
+        };
       }
       loader.preload(exit.target);
     } else if (Math.abs(player.x - exit.x) < 360) loader.preload(exit.target);
@@ -2994,14 +3271,23 @@ function igniteElderHouse() {
   const stage = currentHouseStage();
   if (stage === "burning") return toast("촌장집은 이미 불타고 있습니다");
   if (stage === "burned") return toast("촌장집은 이미 검게 타버렸습니다");
-  if (npcStates.elder?.alive) {
-    const elder = NPCS.find((npc) => npc.id === "elder");
-    killNpc(elder, elder.x, "elderHouse");
+  const elderAlive = !!npcStates.elder?.alive;
+  startElderHouseFire(worldStates,clock.day,clock.minute,{ elderDoomed:elderAlive });
+  if (elderAlive) {
+    const elder = elderNpc();
+    const ns = npcStates.elder;
+    ns.hostile = false;
+    ns.abyssHostile = false;
+    ns.flee = 0;
+    ns.burnX = elder.x;
+    ns.prevBurnX = elder.x;
+    ns.burnFace = -1;
+    enemies = enemies.filter((enemy) => enemy.npcId !== "elder");
   }
-  startElderHouseFire(worldStates, clock.day, clock.minute);
   setKarma(player.karma + 35, "촌장집 방화");
   worldStates.crimeMemory.lastCrimeDay = clock.day;
-  burst(810, floorAt(810) - 85, "#ff7a3d", 58, 7);
+  const fireX = elderHouseEntranceX();
+  burst(fireX, floorAt(fireX) - 85, "#ff7a3d", 58, 7);
   screenShake = 14;
   toast("촌장집에 불을 질렀습니다 · L · KARMA +35");
   updateHud();
@@ -3042,12 +3328,136 @@ function igniteNpcHouse(home) {
 }
 
 function attemptBurnHouse() {
-  const distance = Math.abs(player.x + player.w / 2 - 810);
+  const distance = Math.abs(player.x + player.w / 2 - elderHouseEntranceX());
   if (currentZoneId === "elderHill" && distance <= 190) return igniteElderHouse();
   const home = nearbyNpcHome();
   if (home) return igniteNpcHouse(home);
   toast("죽은 NPC의 집 가까이에서 L을 누르면 횃불을 던질 수 있습니다");
   return false;
+}
+
+function renderElderFireDialogue() {
+  const line = ELDER_FIRE_DIALOGUE[elderFireDialogueStep];
+  const finalLine = !!line.curse;
+  dom.panelKicker.textContent = finalLine ? "THE ELDER'S CURSE" : "A HOUSE IN FLAMES";
+  dom.panelTitle.textContent = "불타는 촌장 에드윈";
+  dom.panelBody.innerHTML = `
+    <div class="game2-elder-fire-dialogue${finalLine ? " curse" : ""}">
+      <div class="game2-elder-fire-portrait" aria-hidden="true">
+        <span class="game2-elder-fire-eyes">••</span>
+        <i>♟</i>
+      </div>
+      <div>
+        <small>에드윈 · 더스크베일의 마지막 저주</small>
+        <p class="${finalLine ? "game2-elder-curse-line" : ""}">“${line.text}”</p>
+        <div class="game2-elder-dialogue-progress">
+          ${ELDER_FIRE_DIALOGUE.map((_,index) => `<span class="${index <= elderFireDialogueStep ? "active" : ""}"></span>`).join("")}
+        </div>
+        <button class="game2-dialogue-action${finalLine ? " danger" : ""}" data-action="elder-fire-next">
+          ${finalLine ? "저주를 받아들인다" : "계속"}
+        </button>
+      </div>
+    </div>`;
+}
+
+function openElderFireDialogue() {
+  if (!elderConfrontationReady(worldStates,clock.day,clock.minute) || state !== "running") return false;
+  activeNpc = elderNpc();
+  elderFireDialogueStep = clamp(
+    Math.floor(Number(worldStates.elderHouse.dialogueStep) || 0),
+    0,
+    ELDER_FIRE_DIALOGUE.length - 1
+  );
+  panelType = "elderFireDialogue";
+  state = "panel";
+  keys.clear();
+  dom.panel.hidden = false;
+  renderElderFireDialogue();
+  tone(103,.24,"triangle",.035);
+  screenShake = Math.max(screenShake,3);
+  return true;
+}
+
+function advanceElderFireDialogue() {
+  if (panelType !== "elderFireDialogue") return false;
+  if (elderFireDialogueStep < ELDER_FIRE_DIALOGUE.length - 1) {
+    elderFireDialogueStep += 1;
+    worldStates.elderHouse.dialogueStep = elderFireDialogueStep;
+    renderElderFireDialogue();
+    tone(elderFireDialogueStep === ELDER_FIRE_DIALOGUE.length - 1 ? 76 : 96,.2,"triangle",.03);
+    screenShake = Math.max(screenShake,elderFireDialogueStep + 2);
+    return true;
+  }
+  if (!completeElderConfrontation(worldStates)) return false;
+  worldStates.elderHouse.dialogueStep = ELDER_FIRE_DIALOGUE.length;
+  elderCurseTimer = ELDER_CURSE_INTERVAL;
+  closePanel();
+  player.invincible = 0;
+  screenShake = 10;
+  burst(player.x + player.w / 2,player.y + 24,"#d63d46",26,4.5);
+  floater("에드윈의 저주",player.x + player.w / 2,player.y - 15,"#ff5963");
+  toast("붉은 눈의 저주 · 불타는 집 안에서 2초마다 HP -1");
+  tone(66,.42,"sawtooth",.045);
+  updateHud();
+  autosave("에드윈의 화염 저주");
+  return true;
+}
+
+function applyElderCurseDamage() {
+  if (debugGodMode || state !== "running" || player.hp <= 0) return;
+  player.hp = Math.max(0,player.hp - 1);
+  burst(player.x + player.w / 2,player.y + 34,"#e04b3f",9,2.4);
+  floater("화염의 저주 -1 HP",player.x + player.w / 2,player.y - 3,"#ff6b63");
+  screenShake = Math.max(screenShake,3);
+  tone(92,.13,"sawtooth",.025);
+  updateHud();
+  if (player.hp <= 0) die();
+}
+
+function updateElderHouseFireScene(dt) {
+  if (currentZoneId !== "elderHouse") {
+    elderCurseTimer = ELDER_CURSE_INTERVAL;
+    return;
+  }
+  const stage = currentHouseStage();
+  if (stage === "burned") {
+    if (!transitionBusy) {
+      toast("불타던 지붕이 무너집니다 · 가까스로 집 밖으로 탈출합니다");
+      void transitionTo("elderHill",900,"촌장집 붕괴 탈출");
+    }
+    return;
+  }
+  if (stage !== "burning") return;
+
+  const npc = elderNpc();
+  const ns = npcStates.elder;
+  if (worldStates.elderHouse.elderDoomed && ns?.alive) {
+    if (!Number.isFinite(ns.burnX)) ns.burnX = npc.x;
+    if (!Number.isFinite(ns.prevBurnX)) ns.prevBurnX = ns.burnX;
+    const playerCenter = player.x + player.w / 2;
+    const distance = playerCenter - ns.burnX;
+    ns.burnFace = Math.sign(distance || -1);
+    if (elderConfrontationReady(worldStates,clock.day,clock.minute)) {
+      elderApproachGrace = Math.max(0,elderApproachGrace - dt);
+      const stopDistance = 84;
+      if (Math.abs(distance) > stopDistance) {
+        const approachSpeed = 1.7 + elderFireVisualIntensity() * .8;
+        ns.burnX += Math.sign(distance) * Math.min(Math.abs(distance) - stopDistance,approachSpeed * dt);
+      } else if (elderApproachGrace <= 0) {
+        openElderFireDialogue();
+      }
+    }
+  }
+
+  if (worldStates.elderHouse.curseActive && worldStates.elderHouse.confronted) {
+    elderCurseTimer -= dt;
+    if (elderCurseTimer <= 0) {
+      elderCurseTimer += ELDER_CURSE_INTERVAL;
+      applyElderCurseDamage();
+    }
+  } else {
+    elderCurseTimer = ELDER_CURSE_INTERVAL;
+  }
 }
 
 function openWoundedKnightChoice() {
@@ -3173,6 +3583,10 @@ async function interact() {
   if (kind === "npc") {
     const ns = npcStates[obj.id];
     if (!ns.alive) return toast("이 NPC는 죽어 기능을 이용할 수 없습니다");
+    if (obj.id === "elder" && elderHouseBurning()) {
+      if (elderConfrontationReady(worldStates,clock.day,clock.minute)) return openElderFireDialogue();
+      return openDialogue(obj,"내 저주는 이미 네 피에 스며들었다. 나는 이 불길과 함께 마지막 숨을 쉬겠다.");
+    }
     if (obj.shop && !clock.shopOpen) return openDialogue(obj, "밤에는 상점을 닫습니다. 아침 7시에 다시 오세요.");
     if (obj.shop) openShop(obj);
     else openDialogue(obj);
@@ -3225,6 +3639,8 @@ function update(dt) {
   if (worldStates.pursuit.pending && !worldStates.pursuit.active) spawnPursuitParty();
   updatePlayer(dt);
   if (state !== "running") return;
+  updateElderHouseFireScene(dt);
+  if (state !== "running") return;
   updateWoundedKnight(dt);
   updateEnemies(dt);
   updateProjectiles(dt);
@@ -3233,7 +3649,12 @@ function update(dt) {
   updateEffects(dt);
   updateExploration(dt);
   findInteraction();
-  const target = clamp(player.x - W * .36, 0, Math.max(0, zone.width - W));
+  const target = horizontalCameraTarget({
+    playerX:player.x,
+    viewportWidth:W,
+    worldWidth:zone.width,
+    minX:zone.cameraMinX
+  });
   cameraX += (target - cameraX) * Math.min(1, .08 * dt);
   const cameraLandingFloorY = landingFloorBelowPlayer(
     platforms,player.x + player.w / 2,player.y + player.h
@@ -3295,9 +3716,17 @@ function renderStats() {
     ["magic", "마법력", "마법 피해·최대 MP 증가"],
     ["speed", "공격속도", "공격 간격·이동·스태미나 개선"]
   ];
-  dom.panelKicker.textContent = `UNSPENT POINTS · ${remaining}`;
+  dom.panelKicker.textContent = "STAT ALLOCATION";
   dom.panelTitle.textContent = "STATUS";
   dom.panelBody.innerHTML = `
+    <div class="game2-panel-resource game2-points-card ${remaining > 0 ? "available" : "empty"}">
+      <div>
+        <span>사용 가능한 스탯 포인트</span>
+        <small>${invested > 0 ? `현재 ${invested} POINT 배분 예정` : "레벨 업 포인트를 원하는 능력치에 배분하세요"}</small>
+      </div>
+      <strong>${remaining}</strong>
+      <em>POINT</em>
+    </div>
     <div class="game2-stat-summary">
       <span>LV.${player.level}</span>
       ${readout("ATK", current.attackPower, preview.attackPower)}
@@ -3327,18 +3756,26 @@ function renderStats() {
 }
 
 function renderInventory() {
-  dom.panelKicker.textContent = `GOLD · ${gold} · HOTBAR ASSIGN`;
+  dom.panelKicker.textContent = "INVENTORY · HOTBAR ASSIGN";
   dom.panelTitle.textContent = "ITEM & SKILL";
   const equipment = Object.keys(player.owned).filter((id) => player.owned[id] && ["weapon", "armor", "accessory"].includes(ITEMS[id]?.type));
   const consumables = Object.keys(player.counts);
   const ownedSkills = Object.keys(player.ownedSkills).filter((id) => player.ownedSkills[id]);
   dom.panelBody.innerHTML = `
+    <div class="game2-panel-resource game2-gold-card">
+      <div>
+        <span>보유 골드</span>
+        <small>상점 구매와 장비 강화에 사용됩니다</small>
+      </div>
+      <strong>${gold.toLocaleString("ko-KR")}</strong>
+      <em>G</em>
+    </div>
     <div class="game2-inventory-section"><h3>EQUIPMENT</h3>
       ${equipment.map((id) => {
         const item = ITEMS[id];
         const equipped = Object.values(player.equipped).includes(id);
         return `<div class="game2-item-slot ${equipped ? "equipped" : ""}">
-          <span class="game2-item-icon ${item.type}">${item.type === "weapon" ? "⚔" : item.type === "armor" ? "♜" : "✦"}</span>
+          ${equipmentArtMarkup(id,item)}
           <div><b>${item.name}</b><small>${item.desc}</small></div>
           <button data-equip="${id}" ${equipped ? "disabled" : ""}>${equipped ? "장착 중" : "장착"}</button>
         </div>`;
@@ -3429,7 +3866,7 @@ function openShop(npc) {
         const levelLocked = item.level && player.level < item.level;
         const karmaLocked = item.karma && player.karma < item.karma;
         const owned = ["weapon","armor","accessory"].includes(item.type) && player.owned[id];
-        return `<div class="game2-shop-row"><span class="game2-shop-icon">${item.type === "weapon" ? "⚔" : item.type === "armor" ? "♜" : item.type === "accessory" ? "✦" : "♥"}</span>
+        return `<div class="game2-shop-row">${equipmentArtMarkup(id,item,"game2-shop-icon")}
           <div><b>${item.name}</b><small>${levelLocked ? `LV.${item.level} 필요` : karmaLocked ? `KARMA ${item.karma} 필요` : item.desc}</small></div>
           <strong>${price}G</strong><button data-buy="${id}" data-price="${price}" ${owned || levelLocked || karmaLocked ? "disabled" : ""}>${owned ? "보유" : "구매"}</button></div>`;
       }).join("")}
@@ -3594,6 +4031,8 @@ async function handlePanelAction(target) {
   } else if (target.dataset.action === "dev-console") {
     closePanel();
     openDevConsole();
+  } else if (target.dataset.action === "elder-fire-next") {
+    advanceElderFireDialogue();
   } else if (target.dataset.action === "cancel-burn") {
     closePanel();
   } else if (target.dataset.action === "burn-house") {
@@ -3982,12 +4421,26 @@ function drawBackground() {
   const abyss = apocalypseIntensity(player.karma);
   const daylight = daylightAt(clock.minute) * (1 - abyss * .72);
   if (currentZoneId === "elderHouse") {
-    px(0,70,W,368,"#302735");
+    const burning = elderHouseBurning();
+    const fireIntensity = burning ? elderFireVisualIntensity() : 0;
+    px(0,70,W,368,burning ? blendHex("#302735","#5f2829",fireIntensity * .48) : "#302735");
     for (let x = -(renderCameraX * .08) % 150 - 150; x < W + 150; x += 150) {
-      px(x,82,138,330,"#493541"); px(x + 8,92,122,310,"#392d38");
-      px(x + 65,92,5,310,"#5f443e");
+      px(x,82,138,330,burning ? blendHex("#493541","#632d2b",fireIntensity * .35) : "#493541");
+      px(x + 8,92,122,310,burning ? blendHex("#392d38","#3e252b",fireIntensity * .42) : "#392d38");
+      px(x + 65,92,5,310,burning ? "#34262b" : "#5f443e");
     }
-    px(0,405,W,33,"#6c4937");
+    px(0,405,W,33,burning ? "#48302d" : "#6c4937");
+    if (burning) {
+      ctx.save();
+      ctx.globalAlpha = .08 + fireIntensity * .11;
+      px(0,70,W,368,"#ff4f2f");
+      ctx.globalAlpha = .16 + fireIntensity * .12;
+      for (let smoke = 0; smoke < 5; smoke++) {
+        const smokeX = 80 + smoke * 205 + Math.sin(performance.now() * .0012 + smoke) * 34;
+        drawApocalypseSmoke(smokeX,104 + smoke % 2 * 28,.72 + fireIntensity * .28,.07);
+      }
+      ctx.restore();
+    }
     return;
   }
   if (currentZoneId === "castleHall") {
@@ -4318,23 +4771,317 @@ function drawHouse(x, floor, color = "#8a624f") {
   }
 }
 
+function elderManorGeometry(prop, floor) {
+  const width = Math.max(240,Number(prop.width) || 250);
+  const x = Number.isFinite(prop.houseX) ? prop.houseX : prop.x - 65;
+  return {
+    x,
+    floor,
+    width,
+    color:"#765342",
+    doorX:elderHouseEntranceX(),
+    windmillX:Number.isFinite(prop.windmillX) ? prop.windmillX : x + width + 30
+  };
+}
+
+function drawElderManorWindmill(home, stage = "intact", progress = 0) {
+  const x = home.windmillX;
+  const floor = home.floor;
+  const hubY = floor - 151;
+  const burning = stage === "burning";
+  const burned = stage === "burned";
+  const beam = burned ? "#211f22" : burning ? "#3a2928" : "#4b3934";
+  const beamLight = burned ? "#4a312c" : burning ? "#70443a" : "#88654d";
+  const sail = burned ? "#2a2528" : burning ? "#563633" : "#8c745b";
+
+  ctx.save();
+  ctx.globalAlpha = burned ? .22 : .3;
+  ctx.fillStyle = "#15151c";
+  ctx.beginPath();ctx.ellipse(x + 1,floor - 3,52,9,0,0,Math.PI * 2);ctx.fill();
+  ctx.restore();
+
+  if (burned) {
+    ctx.fillStyle = "#282529";
+    ctx.beginPath();
+    ctx.moveTo(x - 31,floor);
+    ctx.lineTo(x - 24,floor - 97);
+    ctx.lineTo(x - 13,floor - 139);
+    ctx.lineTo(x + 17,floor - 133);
+    ctx.lineTo(x + 27,floor - 66);
+    ctx.lineTo(x + 34,floor);
+    ctx.closePath();ctx.fill();
+    px(x - 17,floor - 121,12,118,beam);
+    px(x + 9,floor - 97,9,94,beam);
+    px(x - 27,floor - 7,61,7,"#17171b");
+    ctx.save();
+    ctx.translate(x,hubY + 15);
+    ctx.rotate(-.42);
+    px(-4,-63,8,79,beam);
+    px(-3,-60,3,56,beamLight);
+    ctx.rotate(Math.PI * .72);
+    px(-4,-39,8,54,beam);
+    px(-3,-36,3,33,beamLight);
+    ctx.restore();
+    px(x - 10,hubY + 5,20,20,"#1a191d");
+    px(x - 6,hubY + 9,12,12,"#5a3a31");
+    px(x + 19,floor - 22,18,7,"#3e2a27");
+    px(x + 28,floor - 14,12,6,"#201e21");
+    return;
+  }
+
+  const rotationSpeed = burning ? .000055 * Math.max(.18,1 - progress) : .00022;
+  const rotation = performance.now() * rotationSpeed + x * .003;
+  ctx.save();
+  ctx.translate(x,hubY);
+  ctx.rotate(rotation);
+  for (let blade = 0; blade < 4; blade++) {
+    ctx.save();
+    ctx.rotate(blade * Math.PI / 2);
+    px(-4,-82,8,84,beam);
+    px(-2,-79,3,77,beamLight);
+    ctx.fillStyle = sail;
+    ctx.beginPath();
+    ctx.moveTo(7,-76);
+    ctx.lineTo(24,-67);
+    ctx.lineTo(20,-34);
+    ctx.lineTo(6,-43);
+    ctx.closePath();ctx.fill();
+    px(9,-68,11,3,beamLight);
+    px(8,-57,12,3,beamLight);
+    px(7,-46,11,3,beamLight);
+    ctx.restore();
+  }
+  ctx.restore();
+
+  const tower = burning ? "#5a3b34" : "#80604a";
+  const towerLight = burning ? "#71473a" : "#a47b57";
+  ctx.fillStyle = "#353039";
+  ctx.beginPath();
+  ctx.moveTo(x - 39,floor);
+  ctx.lineTo(x - 28,floor - 121);
+  ctx.lineTo(x - 18,floor - 151);
+  ctx.lineTo(x + 19,floor - 151);
+  ctx.lineTo(x + 30,floor - 121);
+  ctx.lineTo(x + 39,floor);
+  ctx.closePath();ctx.fill();
+  ctx.fillStyle = tower;
+  ctx.beginPath();
+  ctx.moveTo(x - 31,floor - 5);
+  ctx.lineTo(x - 22,floor - 116);
+  ctx.lineTo(x - 13,floor - 143);
+  ctx.lineTo(x + 14,floor - 143);
+  ctx.lineTo(x + 23,floor - 116);
+  ctx.lineTo(x + 31,floor - 5);
+  ctx.closePath();ctx.fill();
+  px(x - 18,floor - 129,36,5,towerLight);
+  px(x - 25,floor - 83,50,5,beam);
+  px(x - 29,floor - 39,58,5,beam);
+  px(x - 6,floor - 140,7,136,beam);
+  ctx.strokeStyle = beam;
+  ctx.lineWidth = 4;
+  ctx.beginPath();ctx.moveTo(x - 23,floor - 115);ctx.lineTo(x + 22,floor - 41);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x + 22,floor - 115);ctx.lineTo(x - 24,floor - 42);ctx.stroke();
+  px(x - 12,floor - 76,24,30,beam);
+  px(x - 8,floor - 72,16,22,burning ? "#b54c32" : "#e1b76e");
+  px(x - 1,floor - 72,2,22,"#4b3b3c");
+  px(x - 8,floor - 63,16,2,"#4b3b3c");
+  px(x - 12,floor - 10,24,10,"#3b2f2d");
+  px(x - 9,floor - 7,18,7,"#201f25");
+  px(x - 11,hubY - 11,22,22,beam);
+  px(x - 7,hubY - 7,14,14,burning ? "#9a4c38" : "#c4925c");
+  px(x - 3,hubY - 3,6,6,"#2c2730");
+}
+
+function drawBurnedElderManor(home) {
+  drawElderManorWindmill(home,"burned",1);
+  drawBurnedHouse(home);
+  px(home.x - 10,home.floor - 9,home.width + 30,9,"#17171b");
+  px(home.x - 4,home.floor - 16,home.width + 17,7,"#4c3b36");
+  for (const [offset,height] of [[8,72],[58,48],[126,81],[191,55],[239,68]]) {
+    px(home.x + offset,home.floor - height,8,height - 9,"#222024");
+    px(home.x + offset + 2,home.floor - height + 3,3,height - 16,"#56372f");
+  }
+  ctx.save();
+  ctx.strokeStyle = "#211f22";
+  ctx.lineCap = "round";
+  for (const [x1,y1,x2,y2,width] of [
+    [home.x + 3,home.floor - 63,home.x + 82,home.floor - 18,9],
+    [home.x + 69,home.floor - 47,home.x + 156,home.floor - 13,8],
+    [home.x + 139,home.floor - 75,home.x + 237,home.floor - 19,10]
+  ]) {
+    ctx.lineWidth = width;
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    ctx.strokeStyle = "#6a3d32";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.strokeStyle = "#211f22";
+  }
+  ctx.restore();
+  px(home.doorX - 19,home.floor - 31,38,24,"#1b1a1e");
+  px(home.doorX - 15,home.floor - 28,30,5,"#54342f");
+  px(home.doorX - 31,home.floor - 94,62,8,"#292329");
+  px(home.doorX - 21,home.floor - 88,42,6,"#5b3933");
+}
+
+function drawElderManor(home, stage = "intact", progress = 0) {
+  const totalWidth = home.windmillX - home.x + 92;
+  if (!inView(home.x - 34,totalWidth + 50)) return;
+  if (stage === "burned") {
+    drawBurnedElderManor(home);
+    return;
+  }
+
+  const burning = stage === "burning";
+  const floor = home.floor;
+  const x = home.x;
+  const right = x + home.width;
+  const wall = burning ? "#68443c" : "#8b624a";
+  const wallLight = burning ? "#765045" : "#a27656";
+  const stone = burning ? "#4b3f41" : "#665b59";
+  const beam = burning ? "#392b2c" : "#4b3734";
+  const roof = burning ? "#342a30" : "#44333f";
+  const roofLight = burning ? "#5a3836" : "#76504d";
+  const window = burning
+    ? "#d15a37"
+    : blendHex("#e4b96f","#ffbd6f",1 - daylightAt(clock.minute));
+
+  drawElderManorWindmill(home,stage,progress);
+  ctx.save();
+  ctx.globalAlpha = .32;
+  ctx.fillStyle = "#171720";
+  ctx.beginPath();ctx.ellipse(x + home.width * .56,floor - 2,home.width * .58,10,0,0,Math.PI * 2);ctx.fill();
+  ctx.restore();
+
+  px(x - 9,floor - 14,home.width + 20,14,"#3d3739");
+  px(x - 4,floor - 19,home.width + 10,8,stone);
+  px(x,floor - 112,home.width,96,stone);
+  px(x + 5,floor - 108,home.width - 10,90,wall);
+  px(x + 9,floor - 104,home.width - 18,5,wallLight);
+
+  ctx.fillStyle = roof;
+  ctx.beginPath();
+  ctx.moveTo(x - 18,floor - 109);
+  ctx.lineTo(x + 40,floor - 168);
+  ctx.lineTo(right - 42,floor - 168);
+  ctx.lineTo(right + 18,floor - 109);
+  ctx.closePath();ctx.fill();
+  ctx.fillStyle = roofLight;
+  ctx.beginPath();
+  ctx.moveTo(x - 9,floor - 114);
+  ctx.lineTo(x + 45,floor - 160);
+  ctx.lineTo(right - 46,floor - 160);
+  ctx.lineTo(right + 9,floor - 114);
+  ctx.closePath();ctx.fill();
+  px(x - 13,floor - 114,home.width + 26,7,roof);
+  for (let roofRow = 0; roofRow < 5; roofRow++) {
+    const roofY = floor - 121 - roofRow * 9;
+    const inset = 7 + roofRow * 10;
+    for (let tileX = x + inset; tileX < right - inset; tileX += 18) {
+      px(tileX,roofY,14,3,roof);
+      px(tileX + 2,roofY - 2,9,2,"rgba(255,226,195,.11)");
+      px(tileX + 13,roofY - 1,2,5,"rgba(32,25,31,.34)");
+    }
+  }
+
+  px(x + 28,floor - 191,19,50,beam);
+  px(x + 24,floor - 195,27,8,roof);
+  ctx.save();ctx.globalAlpha = burning ? .2 : .12;
+  drawApocalypseSmoke(x + 40,floor - 204,.42,.06);
+  ctx.restore();
+
+  px(x + 10,floor - 108,6,92,beam);
+  px(right - 16,floor - 108,6,92,beam);
+  px(x + 58,floor - 108,5,92,beam);
+  px(x + 164,floor - 108,5,92,beam);
+  px(x + 9,floor - 66,home.width - 18,6,beam);
+  ctx.strokeStyle = beam;
+  ctx.lineWidth = 4;
+  for (const [start,end] of [[x + 14,x + 58],[x + 63,x + 112],[x + 168,x + 211],[x + 216,right - 14]]) {
+    ctx.beginPath();ctx.moveTo(start,floor - 105);ctx.lineTo(end,floor - 69);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(end,floor - 105);ctx.lineTo(start,floor - 69);ctx.stroke();
+  }
+
+  for (const windowX of [x + 24,x + 72,right - 82,right - 38]) {
+    px(windowX - 3,floor - 91,29,33,beam);
+    px(windowX,floor - 88,23,27,window);
+    px(windowX + 10,floor - 88,3,27,"#493b3e");
+    px(windowX,floor - 76,23,3,"#493b3e");
+    px(windowX + 3,floor - 85,5,7,"rgba(255,246,205,.42)");
+    px(windowX - 4,floor - 57,31,4,"#584039");
+  }
+
+  const doorLeft = home.doorX - 18;
+  px(doorLeft - 4,floor - 61,44,61,beam);
+  px(doorLeft,floor - 57,36,57,"#3c2d2e");
+  px(doorLeft + 4,floor - 53,28,50,burning ? "#59352f" : "#674638");
+  for (let plank = 0; plank < 4; plank++) px(doorLeft + 7 + plank * 7,floor - 51,2,47,"rgba(28,24,29,.3)");
+  px(doorLeft + 27,floor - 29,4,4,"#e0ae5c");
+  px(doorLeft + 28,floor - 28,2,2,"#fff0a0");
+  px(doorLeft - 8,floor - 5,52,5,"#2c2930");
+
+  ctx.fillStyle = wallLight;
+  ctx.beginPath();
+  ctx.moveTo(home.doorX - 48,floor - 109);
+  ctx.lineTo(home.doorX,floor - 181);
+  ctx.lineTo(home.doorX + 48,floor - 109);
+  ctx.closePath();ctx.fill();
+  ctx.strokeStyle = beam;
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.moveTo(home.doorX - 48,floor - 109);
+  ctx.lineTo(home.doorX,floor - 181);
+  ctx.lineTo(home.doorX + 48,floor - 109);
+  ctx.stroke();
+  px(home.doorX - 44,floor - 114,88,6,beam);
+  px(home.doorX - 4,floor - 173,8,61,beam);
+  ctx.beginPath();ctx.moveTo(home.doorX - 39,floor - 115);ctx.lineTo(home.doorX - 3,floor - 157);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(home.doorX + 39,floor - 115);ctx.lineTo(home.doorX + 3,floor - 157);ctx.stroke();
+  px(home.doorX - 15,floor - 151,30,27,beam);
+  px(home.doorX - 11,floor - 147,22,19,window);
+  px(home.doorX - 1,floor - 147,3,19,"#4b3c41");
+  px(home.doorX - 11,floor - 139,22,3,"#4b3c41");
+  px(home.doorX - 28,floor - 105,56,13,"#322b32");
+  px(home.doorX - 24,floor - 102,48,8,burning ? "#8d4b37" : "#765045");
+  ctx.fillStyle = "#f1cf91";
+  ctx.font = "bold 7px monospace";
+  ctx.textAlign = "center";
+  ctx.fillText("EDWIN · ELDER",home.doorX,floor - 96);
+  px(home.doorX - 5,floor - 188,10,12,"#c89c59");
+  px(home.doorX - 2,floor - 185,4,8,"#57363d");
+
+  if (burning) {
+    drawHouseFire(home,progress,{ roofOffset:27 });
+    const fireTime = performance.now() * .014;
+    drawFireGlow(home.windmillX,home.floor - 117,62,132,.25);
+    drawDistantFlame(home.windmillX - 19,home.floor - 85,48 + progress * 28,fireTime + .8,.92);
+    drawDistantFlame(home.windmillX + 18,home.floor - 53,39 + progress * 22,fireTime * 1.07 + 2.1,.83);
+    drawDistantFlame(home.windmillX,home.floor - 151,34 + progress * 17,fireTime * 1.13 + 3.4,.86);
+    for (let spark = 0; spark < 7; spark++) {
+      const sparkY = home.floor - 123 - ((performance.now() * .021 + spark * 31) % 91);
+      px(home.windmillX - 24 + spark * 8,sparkY,2,3,spark % 2 ? "#ffb24b" : "#e9502e");
+    }
+    drawApocalypseSmoke(home.windmillX + 4,home.floor - 202,.72,.15);
+  }
+}
+
 function houseBurnProgress(fire) {
   if (!fire || fire.fireDay == null) return .35;
   return clamp(elapsedWorldDays(fire.fireDay,fire.fireMinute,clock.day,clock.minute),0,1);
 }
 
-function drawHouseFire(home, progress = .35) {
+function drawHouseFire(home, progress = .35, options = {}) {
   const width = home.width || 120;
   const center = home.x + width / 2;
+  const roofOffset = Math.max(0,Number(options.roofOffset) || 0);
   const now = performance.now();
   const fireTime = now * .013;
   const flicker = .82 + Math.sin(fireTime * .7) * .1 + Math.sin(fireTime * 1.37) * .08;
-  drawFireGlow(center,home.floor - 66,width * (.74 + progress * .12),112 + progress * 42,(.19 + progress * .09) * flicker);
+  drawFireGlow(center,home.floor - 66 - roofOffset * .3,width * (.74 + progress * .12),112 + progress * 42,(.19 + progress * .09) * flicker);
   ctx.save();
   ctx.globalAlpha = (.1 + progress * .08) * flicker;
   ctx.fillStyle = "#ff5c31";
   ctx.beginPath();
-  ctx.arc(center,home.floor - 70,width * (.56 + progress * .18),0,Math.PI * 2);
+  ctx.arc(center,home.floor - 70 - roofOffset * .3,width * (.56 + progress * .18),0,Math.PI * 2);
   ctx.fill();
   ctx.restore();
 
@@ -4409,7 +5156,7 @@ function drawHouseFire(home, progress = .35) {
   for (let index = 0; index < flameCount; index++) {
     const fx = home.x + 8 + index * (width - 16) / Math.max(1,flameCount - 1);
     const roofFlame = index % 3 === 0 || index === flameCount - 2;
-    const baseY = roofFlame ? home.floor - 89 - index % 2 * 11 : home.floor - 3;
+    const baseY = roofFlame ? home.floor - 89 - roofOffset - index % 2 * 11 : home.floor - 3;
     const height = (roofFlame ? 31 : 39) + (index * 17 % 24) + progress * 24;
     drawDistantFlame(fx,baseY,height,fireTime * (1 + index % 3 * .06) + index * 1.37,.9);
     if (!roofFlame && index % 2 === 0) {
@@ -4420,9 +5167,9 @@ function drawHouseFire(home, progress = .35) {
   if (progress > .35) {
     const collapse = clamp((progress - .35) / .65,0,1);
     const roofHoles = [
-      [home.x + width * .19,home.floor - 103,18,11,-3],
-      [home.x + width * .48,home.floor - 116,22,13,2],
-      [home.x + width * .73,home.floor - 101,19,10,-2]
+      [home.x + width * .19,home.floor - 103 - roofOffset,18,11,-3],
+      [home.x + width * .48,home.floor - 116 - roofOffset,22,13,2],
+      [home.x + width * .73,home.floor - 101 - roofOffset,19,10,-2]
     ];
     ctx.save();
     for (let hole = 0; hole < roofHoles.length; hole++) {
@@ -4463,7 +5210,7 @@ function drawHouseFire(home, progress = .35) {
 
   for (let smoke = 0; smoke < 7; smoke++) {
     const sx = center - 31 + smoke * 10 + Math.sin(fireTime * .14 + smoke) * (11 + progress * 8);
-    const sy = home.floor - 138 - ((now * (.012 + smoke % 3 * .002) + smoke * 37) % 126);
+    const sy = home.floor - 138 - roofOffset - ((now * (.012 + smoke % 3 * .002) + smoke * 37) % 126);
     drawApocalypseSmoke(sx,sy,.62 + smoke % 3 * .16,.11 + progress * .065);
   }
 }
@@ -4820,7 +5567,8 @@ function drawCastleHallGate(x,floor) {
 function drawElderHillCliffAndCave() {
   if (!inView(0,385,80)) return;
   const floor = 438;
-  const caveX = 175;
+  const caveX = zone.landmarks?.find((landmark) => landmark.kind === "sealedCave")?.x ?? 245;
+  const passX = zone.exits?.find((exit) => exit.target === "castleApproach")?.visualX ?? 48;
   ctx.save();
   ctx.fillStyle = "#30313c";
   ctx.beginPath();
@@ -4951,7 +5699,7 @@ function drawElderHillCliffAndCave() {
   }
   px(82,floor - 121,45,13,"#4a4650");
   px(88,floor - 118,35,4,"rgba(255,255,255,.08)");
-  drawCavePassGate(48,floor,"CINDERKEEP PASS","left");
+  drawCavePassGate(passX,floor,"CINDERKEEP PASS","left");
   ctx.restore();
 }
 
@@ -4985,6 +5733,144 @@ function drawElderCemetery() {
         mote % 2 ? "#b79bc6" : "#765b91"
       );
     }
+  }
+  ctx.restore();
+}
+
+function drawCastlePassMountain(x, floor) {
+  if (!inView(x - 365,650,120)) return;
+  ctx.save();
+
+  ctx.fillStyle = "#272a35";
+  ctx.beginPath();
+  ctx.moveTo(x - 365,floor);
+  ctx.lineTo(x - 345,floor - 91);
+  ctx.lineTo(x - 283,floor - 137);
+  ctx.lineTo(x - 225,floor - 229);
+  ctx.lineTo(x - 164,floor - 198);
+  ctx.lineTo(x - 103,floor - 310);
+  ctx.lineTo(x - 39,floor - 372);
+  ctx.lineTo(x + 15,floor - 324);
+  ctx.lineTo(x + 78,floor - 350);
+  ctx.lineTo(x + 139,floor - 253);
+  ctx.lineTo(x + 202,floor - 216);
+  ctx.lineTo(x + 254,floor - 108);
+  ctx.lineTo(x + 286,floor);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.fillStyle = "#363742";
+  ctx.beginPath();
+  ctx.moveTo(x - 327,floor);
+  ctx.lineTo(x - 304,floor - 103);
+  ctx.lineTo(x - 236,floor - 174);
+  ctx.lineTo(x - 182,floor - 155);
+  ctx.lineTo(x - 113,floor - 273);
+  ctx.lineTo(x - 44,floor - 330);
+  ctx.lineTo(x + 9,floor - 281);
+  ctx.lineTo(x + 76,floor - 312);
+  ctx.lineTo(x + 128,floor - 220);
+  ctx.lineTo(x + 191,floor - 174);
+  ctx.lineTo(x + 236,floor - 77);
+  ctx.lineTo(x + 258,floor);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.fillStyle = "#464550";
+  ctx.beginPath();
+  ctx.moveTo(x - 286,floor);
+  ctx.lineTo(x - 264,floor - 89);
+  ctx.lineTo(x - 201,floor - 137);
+  ctx.lineTo(x - 145,floor - 118);
+  ctx.lineTo(x - 87,floor - 226);
+  ctx.lineTo(x - 28,floor - 281);
+  ctx.lineTo(x + 23,floor - 238);
+  ctx.lineTo(x + 78,floor - 263);
+  ctx.lineTo(x + 123,floor - 179);
+  ctx.lineTo(x + 178,floor - 141);
+  ctx.lineTo(x + 218,floor - 60);
+  ctx.lineTo(x + 238,floor);
+  ctx.closePath();
+  ctx.fill();
+
+  const mountainFacets = [
+    [-300,-126,67,79],[-246,-207,61,91],[-177,-176,58,73],
+    [-121,-286,72,104],[-48,-340,63,119],[22,-282,58,88],
+    [76,-310,61,111],[130,-225,57,83],[180,-151,49,67],
+    [-262,-70,75,51],[-158,-91,69,62],[90,-107,72,67]
+  ];
+  for (let index = 0; index < mountainFacets.length; index++) {
+    const [dx,dy,w,h] = mountainFacets[index];
+    ctx.fillStyle = index % 3 === 0
+      ? "rgba(15,18,27,.25)"
+      : index % 3 === 1
+        ? "rgba(137,132,143,.14)"
+        : "rgba(91,87,101,.19)";
+    ctx.beginPath();
+    ctx.moveTo(x + dx,floor + dy);
+    ctx.lineTo(x + dx + w * .68,floor + dy + h * .12);
+    ctx.lineTo(x + dx + w,floor + dy + h * .56);
+    ctx.lineTo(x + dx + w * .46,floor + dy + h);
+    ctx.lineTo(x + dx + 5,floor + dy + h * .69);
+    ctx.closePath();
+    ctx.fill();
+    px(
+      x + dx + 7,floor + dy + 7,
+      Math.max(11,w * .38),2,
+      index % 2 ? "rgba(231,217,202,.09)" : "rgba(13,15,23,.2)"
+    );
+  }
+
+  ctx.strokeStyle = "rgba(18,20,29,.38)";
+  ctx.lineWidth = 4;
+  ctx.lineCap = "square";
+  for (const crack of [
+    [[x - 214,floor - 198],[x - 190,floor - 170],[x - 201,floor - 139],[x - 178,floor - 116]],
+    [[x - 50,floor - 309],[x - 65,floor - 270],[x - 41,floor - 244],[x - 54,floor - 209]],
+    [[x + 94,floor - 255],[x + 78,floor - 220],[x + 101,floor - 186],[x + 88,floor - 151]],
+    [[x + 180,floor - 128],[x + 157,floor - 97],[x + 170,floor - 67]]
+  ]) {
+    ctx.beginPath();
+    ctx.moveTo(crack[0][0],crack[0][1]);
+    for (let point = 1; point < crack.length; point++) ctx.lineTo(crack[point][0],crack[point][1]);
+    ctx.stroke();
+  }
+
+  for (const [ledgeX,ledgeY,ledgeW] of [
+    [x - 279,floor - 102,76],[x - 190,floor - 153,71],
+    [x - 94,floor - 225,83],[x + 9,floor - 243,72],
+    [x + 93,floor - 179,68],[x + 151,floor - 103,66]
+  ]) {
+    px(ledgeX,ledgeY,ledgeW,6,"#292b36");
+    px(ledgeX + 5,ledgeY + 1,ledgeW - 12,2,"rgba(218,207,194,.12)");
+  }
+
+  ctx.save();
+  ctx.globalAlpha = .24;
+  ctx.fillStyle = "#11141e";
+  ctx.beginPath();
+  ctx.ellipse(x,floor - 42,170,43,0,0,Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+
+  for (const [rockX,rockY,rockW,rockH,color] of [
+    [x - 253,floor - 40,76,40,"#3b3b46"],
+    [x - 208,floor - 58,69,58,"#4a4852"],
+    [x - 164,floor - 31,61,31,"#343640"],
+    [x + 124,floor - 47,71,47,"#41414b"],
+    [x + 170,floor - 66,68,66,"#4b4953"],
+    [x + 215,floor - 31,48,31,"#33353f"]
+  ]) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(rockX,rockY + rockH);
+    ctx.lineTo(rockX + rockW * .12,rockY + rockH * .31);
+    ctx.lineTo(rockX + rockW * .48,rockY);
+    ctx.lineTo(rockX + rockW * .87,rockY + rockH * .24);
+    ctx.lineTo(rockX + rockW,rockY + rockH);
+    ctx.closePath();
+    ctx.fill();
+    px(rockX + rockW * .25,rockY + rockH * .24,rockW * .34,2,"rgba(235,220,204,.1)");
   }
   ctx.restore();
 }
@@ -5097,6 +5983,7 @@ function drawCastleApproach() {
     drawTorch(476,195);
     ctx.restore();
   }
+  drawCastlePassMountain(2550,438);
   if (inView(680,1930,80)) {
     for (let post=0;post<10;post++) {
       const x = 800 + post * 190;
@@ -5166,11 +6053,82 @@ function drawCastleHall() {
   drawCastleHallGate(1390,438);
 }
 
+function drawBurningElderHouseInterior() {
+  if (!elderHouseBurning()) return;
+  const intensity = elderFireVisualIntensity();
+  const now = performance.now();
+  const fireTime = now * .014;
+  ctx.save();
+
+  ctx.globalAlpha = .15 + intensity * .13;
+  drawFireGlow(500,268,430,250,.2 + intensity * .11);
+  ctx.globalAlpha = 1;
+
+  for (let beam = 0; beam < 8; beam++) {
+    const beamX = 25 + beam * 132;
+    const charHeight = 45 + ((beam * 29) % 78) + intensity * 38;
+    px(beamX,405 - charHeight,18,charHeight,"rgba(27,23,28,.72)");
+    px(beamX + 4,409 - charHeight,5,charHeight - 9,"rgba(83,43,36,.58)");
+    px(beamX + 13,416 - charHeight,3,charHeight - 18,"rgba(205,65,36,.2)");
+  }
+
+  const flameSites = [
+    { x:84,base:405,size:44,delay:0 },
+    { x:208,base:398,size:38,delay:.15 },
+    { x:355,base:405,size:50,delay:.05 },
+    { x:486,base:394,size:40,delay:.38 },
+    { x:621,base:405,size:53,delay:.2 },
+    { x:755,base:401,size:45,delay:.48 },
+    { x:875,base:405,size:58,delay:.28 }
+  ];
+  const activeFlames = Math.min(
+    flameSites.length,
+    3 + Math.floor(intensity * 4)
+  );
+  for (let index = 0; index < activeFlames; index++) {
+    const site = flameSites[index];
+    const flameSize = site.size * (.7 + intensity * .58);
+    drawFireGlow(site.x,site.base - flameSize * .45,flameSize * 1.15,flameSize * 1.55,.12 + intensity * .1);
+    drawDistantFlame(site.x,site.base,flameSize,fireTime + index * 1.37,.8 + intensity * .16);
+  }
+
+  ctx.strokeStyle = `rgba(39,27,31,${.32 + intensity * .28})`;
+  ctx.lineWidth = 7;
+  for (const [x1,y1,x2,y2] of [
+    [6,171,218,135],[190,126,410,164],[397,153,628,117],
+    [612,124,817,162],[795,149,955,112]
+  ]) {
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  }
+  ctx.strokeStyle = `rgba(205,67,39,${.08 + intensity * .11})`;
+  ctx.lineWidth = 2;
+  for (const [x1,y1,x2,y2] of [[31,174,222,142],[416,155,625,124],[811,151,952,119]]) {
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  }
+
+  for (let ember = 0; ember < 30; ember++) {
+    const x = (ember * 83 + now * (.018 + ember % 4 * .003)) % 940 + 10;
+    const y = 386 - ((now * (.026 + ember % 5 * .004) + ember * 47) % 278);
+    const bright = ember % 5 === 0;
+    ctx.globalAlpha = (.28 + intensity * .4) * (bright ? 1 : .66);
+    px(x,y,bright ? 3 : 2,bright ? 5 : 3,bright ? "#ffc061" : ember % 2 ? "#e45130" : "#8e4035");
+  }
+
+  ctx.globalAlpha = .12 + intensity * .1;
+  px(0,70,960,58,"#171821");
+  for (let smoke = 0; smoke < 4; smoke++) {
+    const smokeX = 130 + smoke * 245 + Math.sin(now * .0015 + smoke * 1.4) * 44;
+    drawApocalypseSmoke(smokeX,122 + smoke % 2 * 19,.68 + intensity * .36,.065);
+  }
+  ctx.restore();
+}
+
 function drawZoneDecor() {
   if (currentZoneId === "village") {
     homesForZone(currentZoneId).forEach(drawOwnedHouse);
     [220,510,920,1200,1510,1810,2070].forEach((x) => drawTorch(x,408));
-    drawGate(48,438,"SUNSET HILL"); drawGate(2225,438,"AMBERWILD");
+    const sunsetGate = zone.exits.find((exit) => exit.target === "elderHill");
+    drawGate(sunsetGate?.visualX ?? 48,438,"SUNSET HILL"); drawGate(2225,438,"AMBERWILD");
   } else if (currentZoneId === "elderHill") {
     drawElderHillCliffAndCave();
     drawElderCemetery();
@@ -5185,6 +6143,7 @@ function drawZoneDecor() {
     px(120,285,220,153,"#604238"); px(138,302,184,118,"#3a2c35");
     px(150,326,64,94,"#49333b"); px(232,326,72,94,"#49333b");
     drawTorch(355,406);
+    drawBurningElderHouseInterior();
   } else if (currentZoneId === "outskirts1") {
     homesForZone(currentZoneId).forEach(drawOwnedHouse);
     [190,690,890,1280,2050,2220,2580,2810].forEach((x) => drawTorch(x,408));
@@ -5352,14 +6311,8 @@ function drawWorldProps() {
       px(prop.x - 29,floor - 174,15,56,"#826653"); px(prop.x + 14,floor - 151,15,56,"#826653");
     } else if (prop.type === "elderHouse") {
       const stage = currentHouseStage();
-      const elderHome = { x:prop.x - 35,floor,width:142,color:"#765342" };
-      if (stage === "burned") {
-        drawBurnedHouse(elderHome);
-      } else {
-        drawHouse(elderHome.x,floor,stage === "burning" ? blendHex(elderHome.color,"#5a302e",.16) : elderHome.color);
-        px(prop.x + 13,floor - 48,30,48,"#2b2730");
-        if (stage === "burning") drawHouseFire(elderHome,houseBurnProgress(worldStates.elderHouse));
-      }
+      const elderHome = elderManorGeometry(prop,floor);
+      drawElderManor(elderHome,stage,houseBurnProgress(worldStates.elderHouse));
     } else if (prop.type === "bookshelf") {
       px(prop.x - 42,floor - 145,84,145,"#53392f"); px(prop.x - 36,floor - 138,72,132,"#2e2831");
       for (let row=0;row<4;row++) { px(prop.x - 34,floor - 129 + row*31,68,5,"#77503a"); for(let book=0;book<7;book++) px(prop.x - 31 + book*9,floor - 124 + row*31,6,23,["#7f4b4f","#53657b","#7c6845"][book%3]); }
@@ -5673,7 +6626,9 @@ function drawWoundedKnightRemains(knight) {
         Number.isFinite(knight.headX) ? knight.headX : x + 45,
         Number.isFinite(knight.headY)
           ? knight.headY
-          : fallingSupportFloorAt(Number.isFinite(knight.headX) ? knight.headX : x + 45,floor - 8) - 8,
+          : fallingSupportFloorAt(
+            platforms,Number.isFinite(knight.headX) ? knight.headX : x + 45,floor - 8
+          ) - 8,
         knight.headRotation,
         true
       );
@@ -5871,7 +6826,18 @@ function drawFineFace(cx, y, {
   px(cx + 4,y,2,4,blendHex(hair,"#211e2b",.28));
 }
 
-function drawNpcModel(npc, x, y, flash, hostile = false, face = 1, combatFrame = 0, airborne = false, walkFrame = 0) {
+function drawNpcModel(
+  npc,
+  x,
+  y,
+  flash,
+  hostile = false,
+  face = 1,
+  combatFrame = 0,
+  airborne = false,
+  walkFrame = 0,
+  cursedEyes = false
+) {
   const moon = npc.id.startsWith("moon_");
   const sun = npc.id.startsWith("sun_");
   const combatProgress = combatFrame > 0 ? 1 - clamp(combatFrame / 40, 0, 1) : 0;
@@ -5920,8 +6886,8 @@ function drawNpcModel(npc, x, y, flash, hostile = false, face = 1, combatFrame =
     skinShadow:sun ? "#9a5c4f" : moon ? "#a6786c" : "#b87966",
     skinLight:sun ? "#e9b08a" : "#f4c69d",
     hair,
-    face:hostile ? face : 0,
-    hostile,
+    face:hostile || cursedEyes ? face : 0,
+    hostile:hostile || cursedEyes,
     beard:["smith","sun_smith","elder"].includes(npc.id),
     old:npc.id === "elder",
     eyeColor:moon ? "#49547a" : sun ? "#4f302d" : "#293047"
@@ -5999,15 +6965,46 @@ function drawNpcModel(npc, x, y, flash, hostile = false, face = 1, combatFrame =
   }
 }
 
+function drawBurningElderEffect(x, y) {
+  const intensity = elderFireVisualIntensity();
+  const now = performance.now();
+  const flameCount = 2 + Math.floor(intensity * 4);
+  ctx.save();
+  drawFireGlow(x,y + 31,39 + intensity * 28,74 + intensity * 35,.16 + intensity * .1);
+  ctx.globalAlpha = .34 + intensity * .28;
+  px(x - 11,y + 24,8,17,"#2a2026");
+  px(x + 4,y + 31,7,20,"#3a2425");
+  px(x - 7,y + 45,16,6,"#5d2d29");
+  ctx.globalAlpha = 1;
+  const flameOffsets = [-12,9,-3,15,-17,3];
+  for (let flame = 0; flame < flameCount; flame++) {
+    const offset = flameOffsets[flame];
+    const baseY = y + 58 - (flame % 2) * 9;
+    const size = 19 + intensity * 18 - flame % 3 * 2;
+    drawDistantFlame(x + offset,baseY,size,now * .016 + flame * 1.73,.76 + intensity * .2);
+  }
+  for (let ember = 0; ember < 9; ember++) {
+    const emberY = y + 47 - ((now * (.019 + ember * .001) + ember * 23) % 78);
+    const emberX = x - 17 + ((ember * 13 + now * .006) % 35);
+    px(emberX,emberY,ember % 3 === 0 ? 3 : 2,ember % 3 === 0 ? 4 : 3,ember % 2 ? "#ff9b47" : "#e34b31");
+  }
+  ctx.restore();
+}
+
 function drawNpc(npc) {
   const ns = npcStates[npc.id];
   const x = npcRenderX(npc);
   if (!ns.alive || ns.hostile || !npcVisible(npc) || !inView(x, 40)) return;
+  const burningElder = npc.id === "elder" && elderFireSceneAvailable();
   const visualFloor = npcRenderFloor(npc);
   const ground = floorAt(x);
   const airborne = npc.wander && (!ns.roamGrounded || visualFloor < ground - 2);
   const y = visualFloor - 60;
-  const flash = ns.hurt > 0 ? "#fff0d0" : npc.color;
+  const flash = ns.hurt > 0
+    ? "#fff0d0"
+    : burningElder
+      ? blendHex(npc.color,"#5b2929",elderFireVisualIntensity() * .54)
+      : npc.color;
   if (airborne) {
     const distance = clamp((ground - visualFloor) / 170,0,1);
     ctx.save();
@@ -6016,12 +7013,23 @@ function drawNpc(npc) {
     px(x - 7 + distance * 3,ground - 3,14 - distance * 5,2,"#443943");
     ctx.restore();
   }
-  drawNpcModel(npc,x,y,flash,false,npc.wander ? ns.roamDir : 1,0,airborne,ns.roamDistance || 0);
+  drawNpcModel(
+    npc,x,y,flash,false,
+    burningElder ? ns.burnFace || -1 : npc.wander ? ns.roamDir : 1,
+    0,airborne,ns.roamDistance || 0,burningElder
+  );
+  if (burningElder) drawBurningElderEffect(x,y);
   if (ns.flee > 0) {
     px(x + (x > player.x ? -20 : 15), y + 28, 20, 4, "#b8a79c");
     px(x + (x > player.x ? -25 : 29), y + 24, 8, 11, "#8a5960");
   }
-  drawUnitNameplate(npc.name, npc.role, x, y - 54);
+  drawUnitNameplate(
+    npc.name,
+    burningElder ? "불타는 촌장 · 저주의 화염" : npc.role,
+    x,
+    y - 54,
+    burningElder
+  );
   if (ns.hurt > 0 || ns.hp < npc.hp) {
     px(x - 22, y - 27, 44, 4, "#191a25");
     px(x - 21, y - 26, 42 * clamp(ns.hp / npc.hp, 0, 1), 2, "#e35963");
@@ -6441,45 +7449,239 @@ function traceSwordTrail(radius,angle,crossCasting) {
   ctx.arc(0,0,radius,start,angle);
 }
 
+function fillWeaponPolygon(points,color) {
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(points[0][0],points[0][1]);
+  for (let index = 1; index < points.length; index++) ctx.lineTo(points[index][0],points[index][1]);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function activeWeaponPalette(visual) {
+  const corrupt = player.karma >= 500;
+  const transformed = player.transformTimer > 0;
+  const tint = (color,corruptTarget,transformTarget) => corrupt
+    ? blendHex(color,corruptTarget,.48)
+    : transformed
+      ? blendHex(color,transformTarget,.35)
+      : color;
+  return {
+    blade:tint(visual.blade,"#24142d","#8d3f58"),
+    edge:tint(visual.edge,"#c65b9e","#f0787d"),
+    shadow:tint(visual.shadow,"#120b19","#4e263a"),
+    guard:tint(visual.guard,"#3d1b3f","#85394e"),
+    guardLight:tint(visual.guardLight,"#96538b","#e16d6d"),
+    grip:tint(visual.grip,"#1b1022","#4f2637"),
+    pommel:tint(visual.pommel,"#6f2d64","#bc4e5d"),
+    accent:tint(visual.accent,"#e16abb","#ff8a82"),
+    trail:tint(visual.trail,"#9d3d83","#e26071"),
+    trailCore:tint(visual.trailCore,"#f1a6d6","#ffc2aa")
+  };
+}
+
+function drawWeaponHilt(visual,palette) {
+  px(-15,-3,17,6,palette.grip);
+  px(-13,-2,3,4,palette.guardLight);
+  px(-8,-2,2,4,palette.shadow);
+  px(-3,-2,3,4,palette.guardLight);
+  px(-17,-4,5,8,palette.pommel);
+  px(-16,-2,3,4,palette.accent);
+  switch (visual.design) {
+    case "rusted":
+      px(0,-5,6,11,palette.guard);
+      px(2,-4,2,9,palette.guardLight);
+      px(-2,-2,11,4,palette.guard);
+      px(5,1,4,2,palette.shadow);
+      break;
+    case "iron":
+      px(0,-6,5,13,palette.guard);
+      px(2,-5,2,11,palette.guardLight);
+      px(-3,-2,13,4,palette.guard);
+      px(-1,-1,9,2,palette.guardLight);
+      break;
+    case "knight":
+      fillWeaponPolygon([[-3,-3],[1,-5],[5,-3],[9,-7],[12,-6],[8,0],[12,6],[9,7],[5,3],[1,5],[-3,3]],palette.guard);
+      px(1,-2,9,4,palette.guardLight);
+      px(5,-2,4,4,palette.accent);
+      break;
+    case "cursed":
+      fillWeaponPolygon([[-4,-3],[2,-6],[5,-3],[9,-9],[12,-7],[9,-1],[14,-3],[11,1],[14,5],[9,3],[12,8],[9,9],[5,3],[2,6],[-4,3]],palette.guard);
+      px(4,-3,6,6,palette.shadow);
+      px(6,-2,3,3,palette.accent);
+      break;
+    case "twilight":
+      fillWeaponPolygon([[-2,-3],[3,-7],[7,-4],[11,-7],[14,-5],[9,0],[14,5],[11,7],[7,4],[3,7],[-2,3]],palette.guard);
+      px(2,-2,10,4,palette.guardLight);
+      px(6,-2,4,4,palette.accent);
+      break;
+    case "wraith":
+      ctx.save();
+      ctx.globalAlpha = .82;
+      fillWeaponPolygon([[-3,-2],[2,-7],[6,-3],[11,-8],[12,-4],[9,0],[13,5],[10,8],[6,3],[1,7],[-3,2]],palette.guard);
+      px(3,-2,8,4,palette.guardLight);
+      px(6,-1,3,3,palette.accent);
+      ctx.restore();
+      break;
+    case "royal":
+      fillWeaponPolygon([[-5,-3],[1,-6],[5,-4],[8,-8],[11,-7],[9,-2],[15,-3],[12,0],[15,3],[9,2],[11,7],[8,8],[5,4],[1,6],[-5,3]],palette.guard);
+      px(0,-2,12,4,palette.guardLight);
+      px(5,-3,5,6,palette.accent);
+      px(6,-2,3,4,palette.trailCore);
+      break;
+    case "moon":
+      fillWeaponPolygon([[-4,-2],[1,-7],[5,-5],[9,-9],[12,-7],[9,-2],[14,0],[9,2],[12,7],[9,9],[5,5],[1,7],[-4,2]],palette.guard);
+      px(1,-2,11,4,palette.guardLight);
+      px(6,-3,4,6,palette.accent);
+      break;
+    case "sun":
+      fillWeaponPolygon([[-5,-2],[-1,-6],[3,-4],[5,-9],[8,-5],[11,-8],[12,-3],[17,0],[12,3],[11,8],[8,5],[5,9],[3,4],[-1,6],[-5,2]],palette.guard);
+      px(0,-2,13,4,palette.guardLight);
+      px(5,-3,6,6,palette.accent);
+      px(7,-2,3,4,palette.trailCore);
+      break;
+  }
+}
+
+function drawWeaponBlade(visual,palette) {
+  const start = 7;
+  const tip = start + visual.length;
+  const half = Math.ceil(visual.width / 2);
+  const luminous = ["cursed","twilight","wraith","royal","moon","sun"].includes(visual.design);
+  if (luminous) {
+    ctx.shadowColor = palette.accent;
+    ctx.shadowBlur = visual.design === "sun" || visual.design === "wraith" ? 8 : 5;
+  }
+  switch (visual.design) {
+    case "rusted":
+      fillWeaponPolygon([
+        [start,-half],[17,-half],[21,-half + 1],[27,-half],[31,-half + 1],[tip - 5,-half],
+        [tip,0],[tip - 5,half],[34,half],[30,half - 1],[22,half],[18,half - 1],[start,half]
+      ],palette.shadow);
+      px(start + 2,-half + 1,visual.length - 8,visual.width - 2,palette.blade);
+      px(start + 8,-half + 1,7,1,palette.accent);
+      px(start + 21,half - 2,6,1,palette.accent);
+      px(start + 11,-1,visual.length - 16,1,palette.edge);
+      break;
+    case "iron":
+      fillWeaponPolygon([[start,-half],[tip - 5,-half],[tip,0],[tip - 5,half],[start,half]],palette.shadow);
+      fillWeaponPolygon([[start + 2,-half + 1],[tip - 6,-half + 1],[tip - 1,0],[tip - 6,half - 1],[start + 2,half - 1]],palette.blade);
+      px(start + 6,-1,visual.length - 11,1,palette.edge);
+      break;
+    case "knight":
+      fillWeaponPolygon([[start,-half],[tip - 7,-half],[tip,0],[tip - 7,half],[start,half]],palette.shadow);
+      fillWeaponPolygon([[start + 2,-half + 1],[tip - 8,-half + 1],[tip - 2,0],[tip - 8,half - 1],[start + 2,half - 1]],palette.blade);
+      px(start + 6,-1,visual.length - 14,2,palette.edge);
+      px(start + 4,-half + 1,4,visual.width - 2,palette.guardLight);
+      break;
+    case "cursed":
+      fillWeaponPolygon([
+        [start,-half],[16,-half - 2],[21,-half],[26,-half - 3],[31,-half],[37,-half - 2],
+        [43,-half],[tip - 4,-half - 2],[tip,0],[tip - 5,half],[45,half - 2],[39,half + 2],
+        [33,half],[27,half + 2],[21,half],[16,half + 2],[start,half]
+      ],palette.shadow);
+      fillWeaponPolygon([[start + 3,-half + 1],[tip - 8,-half + 1],[tip - 2,0],[tip - 8,half - 1],[start + 3,half - 1]],palette.blade);
+      px(start + 8,-1,visual.length - 17,2,palette.edge);
+      for (const offset of [13,25,37]) px(start + offset,-2,3,3,palette.accent);
+      break;
+    case "twilight":
+      fillWeaponPolygon([[start,-half],[tip - 6,-half - 1],[tip,0],[tip - 6,half + 1],[start,half]],palette.shadow);
+      fillWeaponPolygon([[start + 2,-half + 1],[tip - 7,-half],[tip - 2,0],[tip - 7,0],[start + 2,0]],palette.edge);
+      fillWeaponPolygon([[start + 2,0],[tip - 7,0],[tip - 2,0],[tip - 7,half],[start + 2,half - 1]],palette.blade);
+      px(start + 9,-1,visual.length - 18,2,palette.accent);
+      for (const offset of [8,20,32]) px(start + offset,-2,3,4,palette.guardLight);
+      break;
+    case "wraith":
+      ctx.save();
+      ctx.globalAlpha = .74;
+      fillWeaponPolygon([
+        [start,-2],[14,-half],[21,-half - 2],[26,-half],[33,-half - 3],[38,-half],
+        [45,-half - 2],[tip,0],[45,half + 2],[38,half],[33,half + 3],[26,half],[21,half + 2],[14,half],[start,2]
+      ],palette.blade);
+      px(start + 5,-1,visual.length - 12,2,palette.edge);
+      for (const offset of [12,27,39]) px(start + offset,-half + 1,4,2,palette.shadow);
+      ctx.globalAlpha = .46;
+      px(tip - 12,-half - 3,7,2,palette.accent);
+      px(tip - 22,half + 2,9,2,palette.accent);
+      ctx.restore();
+      break;
+    case "royal":
+      fillWeaponPolygon([[start,-half],[tip - 8,-half],[tip - 3,-2],[tip,0],[tip - 3,2],[tip - 8,half],[start,half]],palette.shadow);
+      fillWeaponPolygon([[start + 2,-half + 1],[tip - 9,-half + 1],[tip - 2,0],[tip - 9,half - 1],[start + 2,half - 1]],palette.blade);
+      px(start + 7,-1,visual.length - 17,2,palette.edge);
+      px(start + 11,-2,3,4,palette.guardLight);
+      px(start + 25,-2,3,4,palette.guardLight);
+      px(start + 39,-2,3,4,palette.guardLight);
+      break;
+    case "moon":
+      fillWeaponPolygon([
+        [start,-2],[17,-half],[29,-half - 1],[41,-half - 2],[tip - 5,-half - 1],[tip,0],
+        [tip - 7,half - 1],[42,half],[30,half + 1],[18,half],[start,2]
+      ],palette.shadow);
+      fillWeaponPolygon([
+        [start + 3,-1],[18,-half + 1],[30,-half],[42,-half - 1],[tip - 7,-half],[tip - 2,0],
+        [tip - 8,half - 2],[42,half - 1],[30,half],[18,half - 1],[start + 3,1]
+      ],palette.blade);
+      px(start + 10,-1,visual.length - 18,1,palette.edge);
+      for (const offset of [14,28,41]) px(start + offset,-2,2,3,palette.accent);
+      break;
+    case "sun":
+      fillWeaponPolygon([
+        [start,-half],[17,-half],[21,-half - 2],[26,-half],[31,-half - 2],[36,-half],
+        [42,-half - 2],[tip - 6,-half],[tip,0],[tip - 6,half],[42,half + 2],[36,half],
+        [31,half + 2],[26,half],[21,half + 2],[17,half],[start,half]
+      ],palette.shadow);
+      fillWeaponPolygon([[start + 2,-half + 1],[tip - 8,-half + 1],[tip - 2,0],[tip - 8,half - 1],[start + 2,half - 1]],palette.blade);
+      px(start + 7,-1,visual.length - 15,2,palette.edge);
+      for (const offset of [8,19,30,41]) {
+        px(start + offset,-half + 1,3,2,palette.guardLight);
+        px(start + offset,half - 2,3,2,palette.accent);
+      }
+      break;
+  }
+  ctx.shadowBlur = 0;
+}
+
 function drawSword(x, y, face, attacking) {
+  const visual = equippedWeaponVisual();
+  const palette = activeWeaponPalette(visual);
   ctx.save();
   ctx.translate(Math.round(x), Math.round(y));
   ctx.scale(face, 1);
   const crossCasting = crossSlashActive();
   const angle = attacking ? swordAngle() : -2.25;
+  const trailRadius = visual.length + (crossCasting ? 10 : 6);
   if (attacking && (crossCasting || attackIsActive())) {
     if (player.karma >= 250) {
       ctx.save();
       ctx.globalAlpha = crossCasting ? (player.karma >= 500 ? .66 : .48) : player.karma >= 500 ? .56 : .36;
-      ctx.strokeStyle = player.karma >= 500 ? "#1b0b27" : "#661d39";
+      ctx.strokeStyle = player.karma >= 500 ? blendHex(palette.shadow,"#08040d",.5) : blendHex(palette.trail,"#661d39",.52);
       ctx.lineWidth = crossCasting ? 10 : player.karma >= 500 ? 9 : 7;
       ctx.lineCap = "round";
       ctx.beginPath();
-      traceSwordTrail(crossCasting ? 50 : 46,angle,crossCasting);
+      traceSwordTrail(trailRadius + 3,angle,crossCasting);
       ctx.stroke();
       ctx.restore();
     }
     ctx.save();
     ctx.globalAlpha = crossCasting ? .58 : player.attackCombo === 2 ? .34 : .22;
-    ctx.strokeStyle = player.karma >= 500 ? "#d75cb1" : player.transformTimer > 0 ? "#ee5f77" : crossCasting ? "#fff2a8" : player.attackCombo === 2 ? "#fff0b2" : "#cfe4ec";
+    ctx.strokeStyle = palette.trail;
     ctx.lineWidth = crossCasting ? 6 : player.attackCombo === 2 ? 7 : 4;
     ctx.lineCap = "round";
     ctx.beginPath();
-    traceSwordTrail(crossCasting ? 47 : 43,angle,crossCasting);
+    traceSwordTrail(trailRadius,angle,crossCasting);
+    ctx.stroke();
+    ctx.globalAlpha *= .72;
+    ctx.strokeStyle = palette.trailCore;
+    ctx.lineWidth = crossCasting ? 2.5 : 1.5;
+    ctx.beginPath();
+    traceSwordTrail(trailRadius - 2,angle,crossCasting);
     ctx.stroke();
     ctx.restore();
   }
   ctx.rotate(angle);
-  px(-14,-2,17,5,"#684233"); px(-10,-1,9,2,"#c18b5a");
-  px(-12,1,3,2,"#4d302c");
-  px(1,-6,5,13,"#b98542"); px(3,-5,2,11,"#ffe09a");
-  px(-2,-2,11,4,"#6f4b3d");
-  const corruptBlade = player.karma >= 500;
-  px(7,-3,35,7,corruptBlade ? "#39233f" : player.transformTimer > 0 ? "#8b425b" : "#748591");
-  px(10,-2,32,4,corruptBlade ? "#8f3c72" : player.transformTimer > 0 ? "#d85c65" : "#cedadd");
-  px(16,-1,25,1,corruptBlade ? "#ef99d0" : "#fff7df");
-  px(42,-2,5,5,corruptBlade ? "#6f365f" : "#dce4e1");
-  px(47,-1,4,3,corruptBlade ? "#ba5c91" : "#f8f3dc");
+  drawWeaponHilt(visual,palette);
+  drawWeaponBlade(visual,palette);
   ctx.restore();
 }
 
@@ -6553,27 +7755,184 @@ function drawBlessing() {
   ctx.restore();
 }
 
-function drawPlayerAttackArm(x, y, face, lean) {
+function drawPlayerAttackArm(x, y, face, lean, armorLook) {
   const angle = swordAngle();
   const shoulderX = x + (face > 0 ? 28 : 10) + lean;
   ctx.save();
   ctx.translate(Math.round(shoulderX), Math.round(y + 29));
   ctx.scale(face, 1);
   ctx.rotate(angle * .28);
-  px(-2,-4,13,8,"#263146");
-  px(0,-3,11,5,"#667994");
+  px(-2,-4,13,8,armorLook.bodyShadow);
+  px(0,-3,11,5,armorLook.sleeves);
   ctx.translate(10, 0);
   ctx.rotate(angle * .34);
-  px(-1,-3,12,7,"#2e394e");
-  px(1,-2,9,4,"#7d8ca4");
+  px(-1,-3,12,7,armorLook.bodyShadow);
+  px(1,-2,9,4,armorLook.bodyLight);
+  if (armorLook.design === "chain") {
+    px(2,-2,2,2,armorLook.metal);
+    px(6,0,2,2,armorLook.metal);
+  } else if (armorLook.design === "dusk") {
+    px(1,-3,5,2,armorLook.trim);
+  } else if (armorLook.design === "sunscale") {
+    px(1,-3,7,2,armorLook.metal);
+    px(5,0,3,2,armorLook.trim);
+  }
   px(9,-3,6,6,"#d4a17b");
   px(11,-2,4,4,"#f0bf96");
   ctx.restore();
 }
 
+function drawPlayerArmorBody(x,y,lean,armorLook,guarding) {
+  const bx = x + lean;
+  const body = guarding
+    ? blendHex(armorLook.body,player.karma >= 500 ? "#67345f" : "#5b7892",.36)
+    : armorLook.body;
+  switch (armorLook.design) {
+    case "traveler":
+      px(bx + 7,y + 20,24,5,armorLook.bodyShadow);
+      px(bx + 5,y + 24,28,8,armorLook.bodyShadow);
+      px(bx + 7,y + 31,24,20,armorLook.bodyShadow);
+      px(bx + 9,y + 23,20,8,armorLook.bodyLight);
+      px(bx + 9,y + 29,20,19,body);
+      px(bx + 8,y + 48,22,5,armorLook.bodyShadow);
+      px(bx + 11,y + 27,4,20,armorLook.bodyLight);
+      px(bx + 13,y + 27,3,21,armorLook.trim);
+      px(bx + 15,y + 29,12,3,armorLook.bodyShadow);
+      px(bx + 21,y + 31,3,15,armorLook.bodyShadow);
+      px(bx + 9,y + 42,20,3,armorLook.trim);
+      px(bx + 17,y + 42,5,4,armorLook.gem);
+      px(bx + 3,y + 21,10,7,armorLook.bodyShadow);
+      px(bx + 2,y + 23,8,5,armorLook.bodyLight);
+      px(bx + 4,y + 24,3,2,armorLook.metal);
+      break;
+    case "chain":
+      px(bx + 6,y + 20,26,5,armorLook.bodyShadow);
+      px(bx + 4,y + 23,30,9,armorLook.bodyShadow);
+      px(bx + 7,y + 30,24,22,armorLook.bodyShadow);
+      px(bx + 9,y + 23,20,6,armorLook.metal);
+      px(bx + 8,y + 28,22,21,body);
+      for (let row = 0; row < 4; row++) {
+        for (let col = 0; col < 5; col++) {
+          const chainX = bx + 10 + col * 4 + (row % 2 ? 2 : 0);
+          if (chainX > bx + 27) continue;
+          px(chainX,y + 31 + row * 4,2,2,(row + col) % 2 ? armorLook.bodyLight : armorLook.metal);
+          px(chainX + 1,y + 33 + row * 4,2,1,armorLook.bodyShadow);
+        }
+      }
+      px(bx + 8,y + 48,22,4,armorLook.trim);
+      px(bx + 16,y + 48,6,4,armorLook.metal);
+      px(bx + 2,y + 21,11,8,armorLook.bodyShadow);
+      px(bx + 3,y + 20,9,6,armorLook.metal);
+      px(bx + 25,y + 20,9,7,armorLook.bodyShadow);
+      px(bx + 26,y + 21,8,5,armorLook.metal);
+      break;
+    case "dusk":
+      fillWeaponPolygon([
+        [bx + 7,y + 20],[bx + 31,y + 20],[bx + 35,y + 27],[bx + 31,y + 32],
+        [bx + 30,y + 51],[bx + 19,y + 54],[bx + 8,y + 51],[bx + 7,y + 32],[bx + 3,y + 27]
+      ],armorLook.bodyShadow);
+      px(bx + 8,y + 24,22,8,armorLook.bodyLight);
+      px(bx + 9,y + 30,20,19,body);
+      fillWeaponPolygon([[bx + 10,y + 31],[bx + 18,y + 27],[bx + 18,y + 49],[bx + 11,y + 46]],armorLook.bodyLight);
+      fillWeaponPolygon([[bx + 28,y + 31],[bx + 20,y + 27],[bx + 20,y + 49],[bx + 27,y + 46]],armorLook.bodyShadow);
+      px(bx + 12,y + 34,14,2,armorLook.trim);
+      px(bx + 10,y + 40,18,3,armorLook.bodyShadow);
+      px(bx + 9,y + 47,20,4,armorLook.trim);
+      fillWeaponPolygon([[bx + 19,y + 29],[bx + 24,y + 35],[bx + 19,y + 42],[bx + 14,y + 35]],armorLook.gem);
+      px(bx + 18,y + 33,3,5,armorLook.metal);
+      fillWeaponPolygon([[bx + 1,y + 21],[bx + 11,y + 18],[bx + 14,y + 24],[bx + 10,y + 31],[bx + 2,y + 28]],armorLook.bodyLight);
+      fillWeaponPolygon([[bx + 37,y + 21],[bx + 27,y + 18],[bx + 24,y + 24],[bx + 28,y + 31],[bx + 36,y + 28]],armorLook.bodyLight);
+      px(bx + 3,y + 20,4,2,armorLook.trim);
+      px(bx + 31,y + 20,4,2,armorLook.trim);
+      break;
+    case "sunscale":
+      fillWeaponPolygon([
+        [bx + 6,y + 20],[bx + 32,y + 20],[bx + 36,y + 26],[bx + 31,y + 33],
+        [bx + 30,y + 52],[bx + 19,y + 55],[bx + 8,y + 52],[bx + 7,y + 33],[bx + 2,y + 26]
+      ],armorLook.bodyShadow);
+      px(bx + 8,y + 23,22,8,armorLook.metal);
+      px(bx + 8,y + 29,22,21,body);
+      for (let row = 0; row < 4; row++) {
+        for (let col = 0; col < 4; col++) {
+          const scaleX = bx + 10 + col * 5 + (row % 2 ? 2 : 0);
+          if (scaleX > bx + 27) continue;
+          fillWeaponPolygon([
+            [scaleX,y + 31 + row * 4],[scaleX + 4,y + 31 + row * 4],
+            [scaleX + 2,y + 35 + row * 4]
+          ],(row + col) % 2 ? armorLook.bodyLight : armorLook.trim);
+        }
+      }
+      px(bx + 8,y + 48,22,4,armorLook.trim);
+      px(bx + 16,y + 48,6,5,armorLook.gem);
+      fillWeaponPolygon([[bx + 1,y + 24],[bx + 7,y + 18],[bx + 15,y + 22],[bx + 12,y + 30],[bx + 3,y + 31]],armorLook.metal);
+      fillWeaponPolygon([[bx + 37,y + 24],[bx + 31,y + 18],[bx + 23,y + 22],[bx + 26,y + 30],[bx + 35,y + 31]],armorLook.metal);
+      px(bx + 4,y + 20,4,3,armorLook.gem);
+      px(bx + 30,y + 20,4,3,armorLook.gem);
+      fillWeaponPolygon([[bx + 19,y + 28],[bx + 23,y + 34],[bx + 19,y + 40],[bx + 15,y + 34]],armorLook.gem);
+      px(bx + 18,y + 31,3,6,armorLook.bodyShadow);
+      break;
+  }
+}
+
+function drawPlayerHeadgear(x,y,lean,armorLook) {
+  const bx = x + lean;
+  switch (armorLook.design) {
+    case "traveler":
+      px(bx + 9,y - 2,21,4,armorLook.bodyShadow);
+      px(bx + 11,y - 5,17,5,armorLook.body);
+      px(bx + 14,y - 7,11,3,armorLook.bodyLight);
+      px(bx + 9,y + 1,3,8,armorLook.bodyShadow);
+      px(bx + 28,y + 1,3,7,armorLook.bodyShadow);
+      px(bx + 12,y + 1,17,2,armorLook.trim);
+      px(bx + (player.face > 0 ? 6 : 29),y + 3,5,3,armorLook.cape);
+      px(bx + (player.face > 0 ? 3 : 31),y + 5,6,2,armorLook.capeLight);
+      break;
+    case "chain":
+      px(bx + 8,y - 2,23,4,armorLook.bodyShadow);
+      px(bx + 10,y - 6,19,6,armorLook.metal);
+      px(bx + 13,y - 9,13,4,armorLook.bodyLight);
+      px(bx + 8,y + 1,4,12,armorLook.body);
+      px(bx + 28,y + 1,4,11,armorLook.body);
+      px(bx + 11,y + 1,18,2,armorLook.metal);
+      px(bx + 12,y + 4,2,5,armorLook.bodyLight);
+      px(bx + 26,y + 4,2,5,armorLook.bodyShadow);
+      px(bx + (player.face > 0 ? 25 : 12),y + 2,2,9,armorLook.metal);
+      break;
+    case "dusk":
+      fillWeaponPolygon([
+        [bx + 8,y],[bx + 11,y - 7],[bx + 16,y - 5],[bx + 19,y - 12],
+        [bx + 22,y - 5],[bx + 28,y - 8],[bx + 31,y],[bx + 28,y + 9],[bx + 11,y + 9]
+      ],armorLook.bodyShadow);
+      px(bx + 10,y - 3,20,5,armorLook.body);
+      px(bx + 12,y - 7,16,5,armorLook.bodyLight);
+      px(bx + 10,y + 1,4,10,armorLook.body);
+      px(bx + 27,y + 1,4,9,armorLook.body);
+      px(bx + 12,y + 1,17,2,armorLook.trim);
+      px(bx + 13,y + 3,2,5,armorLook.metal);
+      fillWeaponPolygon([[bx + 18,y - 12],[bx + 22,y - 17],[bx + 24,y - 11]],armorLook.trim);
+      break;
+    case "sunscale":
+      px(bx + 7,y - 1,25,5,armorLook.bodyShadow);
+      fillWeaponPolygon([
+        [bx + 9,y - 1],[bx + 12,y - 8],[bx + 16,y - 6],[bx + 19,y - 13],
+        [bx + 22,y - 6],[bx + 28,y - 8],[bx + 31,y - 1],[bx + 28,y + 9],[bx + 11,y + 9]
+      ],armorLook.metal);
+      px(bx + 11,y - 3,18,5,armorLook.bodyLight);
+      px(bx + 9,y + 1,4,10,armorLook.metal);
+      px(bx + 28,y + 1,4,9,armorLook.metal);
+      px(bx + 12,y + 1,17,2,armorLook.trim);
+      px(bx + 13,y + 3,2,5,armorLook.gem);
+      px(bx + 17,y - 16,5,5,armorLook.cape);
+      px(bx + 15,y - 19,9,4,armorLook.capeLight);
+      px(bx + 13,y - 21,12,3,armorLook.trim);
+      break;
+  }
+}
+
 function drawPlayer() {
   const visualRunFrame = lerp(player.prevRunFrame, player.runFrame, renderAlpha);
   const x = Math.round(renderX(player));
+  const elderCursedEyes = !!worldStates.elderHouse.curseActive;
   const crossCasting = crossSlashActive();
   const attacking = player.attackTimer > 0 || crossCasting;
   const attackMotion = playerAttackMotion({
@@ -6588,6 +7947,7 @@ function drawPlayer() {
   const takeoffSquash = player.jumpSquash > 0 ? player.jumpSquash / 5 * 1.5 : 0;
   const y = Math.round(renderY(player) + runBob + idleBob + airMotion.bodyY + attackMotion.crouch + takeoffSquash);
   const lean = Math.round((player.sprinting ? player.face * 6 : 0) + attackMotion.lunge + airMotion.bodyLean);
+  const armorLook = equippedArmorVisual();
   if (player.invincible > 0) {
     ctx.save();
     ctx.globalAlpha = .16 + Math.sin(performance.now() * .012) * .05;
@@ -6600,24 +7960,31 @@ function drawPlayer() {
     const shadowY = Math.round(renderY(player) + 65);
     ctx.save(); ctx.globalAlpha = .34; px(x - 5,shadowY,46,4,"#11131d");px(x + 3,shadowY - 1,30,2,"#352e3b");ctx.restore();
   }
-  const aura = player.transformTimer > 0 ? "#a23a50" : player.karma >= 500 ? "#4c234d" : "#7a3146";
+  const capeMain = player.transformTimer > 0
+    ? blendHex(armorLook.cape,"#a23a50",.56)
+    : player.karma >= 500
+      ? blendHex(armorLook.cape,"#4c234d",.52)
+      : armorLook.cape;
+  const capeLight = player.karma >= 500
+    ? blendHex(armorLook.capeLight,"#9c427c",.48)
+    : armorLook.capeLight;
   const cloakWave = Math.round(Math.sin(visualRunFrame * .7) * (player.sprinting ? 5 : 2));
   const capeLift = Math.round(airMotion.capeLift);
   const capeLag = player.sprinting ? player.face * 8 : attackMotion.lunge * .45;
   const capeX = x + (player.face > 0 ? -5 : 22) + lean - capeLag;
-  px(capeX - 1,y + 24 - capeLift,16 + Math.abs(cloakWave),35,"#241d2b");
-  px(capeX + 1,y + 26 - capeLift,12 + Math.abs(cloakWave),31,aura);
-  px(capeX + (player.face > 0 ? 3 : 1),y + 29 - capeLift,2,24,"rgba(246,116,121,.32)");
+  px(capeX - 1,y + 24 - capeLift,16 + Math.abs(cloakWave),35,armorLook.capeShadow);
+  px(capeX + 1,y + 26 - capeLift,12 + Math.abs(cloakWave),31,capeMain);
+  px(capeX + (player.face > 0 ? 3 : 1),y + 29 - capeLift,2,24,capeLight);
   px(capeX + 4,y + 31 - capeLift,1,18,"rgba(255,208,170,.16)");
-  px(x + (player.face > 0 ? -6 - cloakWave : 26),y + 50 - Math.round(capeLift * .55),11,8,"#3c2036");
-  px(x + (player.face > 0 ? -4 - cloakWave : 28),y + 55 - Math.round(capeLift * .6),7,6,aura);
+  px(x + (player.face > 0 ? -6 - cloakWave : 26),y + 50 - Math.round(capeLift * .55),11,8,armorLook.capeShadow);
+  px(x + (player.face > 0 ? -4 - cloakWave : 28),y + 55 - Math.round(capeLift * .6),7,6,capeMain);
   const restingSword = !attacking && player.guardTimer <= 0;
   if (restingSword) drawSword(x + (player.face > 0 ? 30 : 6) + lean, y + 31, player.face, false);
   if (attacking) {
     const counterOffset = Math.round(attackMotion.counterArm);
     const offArmX = x + (player.face > 0 ? 2 : 29) + lean - counterOffset;
-    px(offArmX,y + 25,6,17,"#263146");
-    px(offArmX + (player.face > 0 ? 1 : -1),y + 27,5,12,"#62758f");
+    px(offArmX,y + 25,6,17,armorLook.bodyShadow);
+    px(offArmX + (player.face > 0 ? 1 : -1),y + 27,5,12,armorLook.sleeves);
     px(offArmX + (player.face > 0 ? -1 : 1),y + 40,6,6,"#d1a07a");
   }
   const stride = Math.abs(player.vx) > .5 && player.grounded ? Math.round(Math.sin(visualRunFrame) * (player.sprinting ? 7 : 4)) : 0;
@@ -6631,78 +7998,53 @@ function drawPlayer() {
   if (airMotion.airborne) {
     const leftShinX = leftLegX + (leftFront ? -3 : 3) * player.face;
     const rightShinX = rightLegX + (leftFront ? 3 : -3) * player.face;
-    px(leftLegX,y + 49 - leftLift,8,9,"#1b2230");
-    px(rightLegX,y + 49 - rightLift,8,9,"#1b2230");
-    px(leftLegX + 2,y + 51 - leftLift,4,6,"#40506a");
-    px(rightLegX + 2,y + 51 - rightLift,4,6,"#40506a");
-    px(leftShinX,y + 56 - leftLift,7,8,"#202a39");
-    px(rightShinX,y + 56 - rightLift,7,8,"#202a39");
-    px(leftShinX - 3 + player.face * 3,y + 62 - leftLift,12,5,"#101620");
-    px(rightShinX - 2 + player.face * 2,y + 62 - rightLift,12,5,"#101620");
+    px(leftLegX,y + 49 - leftLift,8,9,armorLook.leggings);
+    px(rightLegX,y + 49 - rightLift,8,9,armorLook.leggings);
+    px(leftLegX + 2,y + 51 - leftLift,4,6,armorLook.legLight);
+    px(rightLegX + 2,y + 51 - rightLift,4,6,armorLook.legLight);
+    px(leftShinX,y + 56 - leftLift,7,8,armorLook.boots);
+    px(rightShinX,y + 56 - rightLift,7,8,armorLook.boots);
+    px(leftShinX - 3 + player.face * 3,y + 62 - leftLift,12,5,armorLook.boots);
+    px(rightShinX - 2 + player.face * 2,y + 62 - rightLift,12,5,armorLook.boots);
   } else {
-    px(leftLegX,y + 49,8,15,"#1b2230");
-    px(rightLegX,y + 49,8,15,"#1b2230");
-    px(leftLegX + 2,y + 51,4,11,"#40506a");
-    px(rightLegX + 2,y + 51,4,11,"#40506a");
-    px(leftLegX - 3,y + 62,13,5,"#101620");
-    px(rightLegX - 2,y + 62,13,5,"#101620");
-    px(leftLegX,y + 62,8,2,"#53627a");
-    px(rightLegX + 1,y + 62,7,2,"#53627a");
+    px(leftLegX,y + 49,8,15,armorLook.leggings);
+    px(rightLegX,y + 49,8,15,armorLook.leggings);
+    px(leftLegX + 2,y + 51,4,11,armorLook.legLight);
+    px(rightLegX + 2,y + 51,4,11,armorLook.legLight);
+    px(leftLegX - 3,y + 62,13,5,armorLook.boots);
+    px(rightLegX - 2,y + 62,13,5,armorLook.boots);
+    px(leftLegX,y + 62,8,2,armorLook.bootTrim);
+    px(rightLegX + 1,y + 62,7,2,armorLook.bootTrim);
   }
-  const armor = player.guardTimer > 0 ? "#4d708e" : "#465873";
-  px(x + 7 + lean,y + 20,24,5,"#202735");
-  px(x + 5 + lean,y + 24,28,8,"#202735");
-  px(x + 7 + lean,y + 32,24,18,"#202735");
-  px(x + 9 + lean,y + 49,20,5,"#202735");
-  px(x + 9 + lean,y + 22,20,5,"#70819d");
-  px(x + 8 + lean,y + 27,22,6,armor);
-  px(x + 10 + lean,y + 33,18,16,armor);
-  px(x + 12 + lean,y + 34,3,13,"#7f91ac");
-  px(x + 24 + lean,y + 34,3,13,"#34445c");
-  px(x + 16 + lean,y + 25,9,3,"#8290a8");
-  px(x + 18 + lean,y + 28,5,16,"#2b374c");
-  px(x + 11 + lean,y + 34,16,2,"#1f2939");
-  px(x + 10 + lean,y + 43,19,3,"#303b50");
-  px(x + 9 + lean,y + 47,20,3,"#222b3b");
-  px(x + 10 + lean,y + 42,19,3,"#c89847");
-  px(x + 17 + lean,y + 42,5,4,"#e6bd65");
-  px(x + 18 + lean,y + 43,3,2,"#fff0ac");
-  px(x + 4 + lean,y + 21,9,7,"#657997");
-  px(x + 2 + lean,y + 23,7,5,"#97a6b8");
-  px(x + 5 + lean,y + 24,3,2,"#d8e0de");
+  drawPlayerArmorBody(x,y,lean,armorLook,player.guardTimer > 0);
   drawFineFace(x + 19 + lean,y + 3,{
     skin:"#e1aa82",
     skinShadow:"#aa6d61",
     skinLight:"#f5c59a",
     hair:"#392f3c",
     face:player.face,
-    hostile:false,
-    eyeColor:player.karma >= 250 ? "#e74455" : "#304460"
+    hostile:elderCursedEyes,
+    eyeColor:elderCursedEyes || player.karma >= 250 ? "#e74455" : "#304460"
   });
-  px(x + 8 + lean,y - 1,22,4,"#30394e");
-  px(x + 10 + lean,y - 5,18,5,"#526681");
-  px(x + 13 + lean,y - 7,13,3,"#7a8aa0");
-  px(x + 9 + lean,y + 1,3,11,"#344056");
-  px(x + 28 + lean,y + 1,3,10,"#344056");
-  px(x + 11 + lean,y + 1,18,2,"#7e8fa7");
-  px(x + 12 + lean,y + 3,2,5,"#9fadc0");
-  px(x + 15 + lean,y - 10,9,4,player.karma >= 500 ? "#6f315f" : "#a95963");
-  px(x + 18 + lean,y - 14,4,5,player.karma >= 500 ? "#9c427c" : "#d37b72");
-  px(x + (player.face > 0 ? 27 : 9) + lean,y + 12,2,1,player.karma >= 250 ? "#ffd1ba" : "#fff6dc");
+  drawPlayerHeadgear(x,y,lean,armorLook);
+  px(
+    x + (player.face > 0 ? 27 : 9) + lean,y + 12,2,1,
+    elderCursedEyes || player.karma >= 250 ? "#ffd1ba" : "#fff6dc"
+  );
   if (restingSword) {
     const armX = x + (player.face > 0 ? 28 : 3) + lean;
-    px(armX,y + 23,6,14,"#263146");
-    px(armX + (player.face > 0 ? 0 : -1),y + 24,5,10,"#60728d");
+    px(armX,y + 23,6,14,armorLook.bodyShadow);
+    px(armX + (player.face > 0 ? 0 : -1),y + 24,5,10,armorLook.sleeves);
     px(armX + (player.face > 0 ? 1 : -1),y + 26,5,5,"#d0a07b");
     px(armX + (player.face > 0 ? 2 : -1),y + 27,3,3,"#f0c099");
   } else if (!attacking) {
     const armX = x + (player.face > 0 ? 29 : 2) + lean;
-    px(armX,y + 27,6,21,"#263146");
-    px(armX + (player.face > 0 ? 0 : -1),y + 29,5,15,"#60728d");
+    px(armX,y + 27,6,21,armorLook.bodyShadow);
+    px(armX + (player.face > 0 ? 0 : -1),y + 29,5,15,armorLook.sleeves);
     px(armX,y + 45,6,6,"#c99a75");
     px(armX + 2,y + 48,3,4,"#efbf98");
   } else {
-    drawPlayerAttackArm(x, y, player.face, lean);
+    drawPlayerAttackArm(x, y, player.face, lean, armorLook);
   }
   if (player.guardTimer > 0) {
     const abyssGuard = player.karma >= 500;
@@ -8241,6 +9583,15 @@ function drawMinimap() {
 function draw() {
   if (!zone) return;
   const drawStarted = performance.now();
+  const introVisible = introState.active && (
+    state === "intro" || (state === "console" && stateBeforeConsole === "intro")
+  );
+  if (introVisible) {
+    drawIntroCinematic(ctx,introState,{ width:W,height:H,now:performance.now() });
+    renderer.present();
+    metricDrawMs += (performance.now() - drawStarted - metricDrawMs) * .08;
+    return;
+  }
   renderCameraX = lerp(previousCameraX, cameraX, renderAlpha);
   renderCameraY = lerp(previousCameraY, cameraY, renderAlpha);
   ctx.clearRect(0,0,W,H);
@@ -8288,7 +9639,11 @@ function frame(time) {
     metricFrames = 0;
     metricWindowStart = time;
   }
-  if (!pausedByVisibility && state === "running") {
+  if (!pausedByVisibility && state === "intro") {
+    updateGameIntro(elapsed);
+    accumulator = 0;
+    renderAlpha = 1;
+  } else if (!pausedByVisibility && state === "running") {
     accumulator += elapsed;
     let steps = 0;
     while (accumulator >= STEP && steps < MAX_FIXED_STEPS && state === "running") {
@@ -8368,6 +9723,14 @@ async function executeDevCommand(input) {
       dom.consoleOutput.replaceChildren();
       return;
     }
+    if (parsed.command === "skip") {
+      if (!introState.active || stateBeforeConsole !== "intro") {
+        throw new Error("현재 재생 중인 새 게임 인트로가 없습니다");
+      }
+      consoleLine("INTRO SKIPPED · 현재 더스크베일 시작 상태로 이동합니다", "success");
+      finishGameIntro("skip");
+      return;
+    }
     if (parsed.command === "karma") {
       const value = consoleNumber(a);
       if (value == null) throw new Error("사용법: karma 500");
@@ -8437,7 +9800,7 @@ async function executeDevCommand(input) {
     } else if (parsed.command === "pos") {
       const value = consoleNumber(a);
       if (value == null) throw new Error("사용법: pos 1580");
-      player.x = clamp(value, 0, zone.width - player.w);
+      player.x = clamp(value, zonePlayerMinX(), zone.width - player.w);
       player.y = floorAt(player.x + player.w / 2) - player.h;
       player.vx = 0; player.vy = 0; player.grounded = true;
       changed = true;
@@ -8460,6 +9823,14 @@ async function executeDevCommand(input) {
       if (["consumable","reset"].includes(ITEMS[a].type)) player.counts[a] = (player.counts[a] || 0) + count;
       else player.owned[a] = true;
       changed = true; updateHud(); consoleLine(`${ITEMS[a].name} × ${count} 지급`, "success");
+    } else if (parsed.command === "equip") {
+      const item = ITEMS[a];
+      if (!item || !["weapon","armor","accessory"].includes(item.type)) throw new Error("사용법: equip moonblade");
+      player.owned[a] = true;
+      player.equipped[item.type] = a;
+      recalcStats(true);
+      changed = true;
+      consoleLine(`${item.name} 장착 · ${item.type.toUpperCase()} DESIGN ${equipmentVisual(a,item.type)?.design || "DEFAULT"}`, "success");
     } else if (parsed.command === "npc") {
       const npc = NPCS.find((entry) => entry.id === b);
       if (!["kill","revive"].includes(a) || !npc) throw new Error("사용법: npc kill|revive elder");
@@ -8497,7 +9868,25 @@ async function executeDevCommand(input) {
       consoleLine(`DUSKVALE 주민 ${deaths}명 제거 · GAREN ${garenAttackReady() ? "READY" : "LOCKED"}`, "success");
     } else if (parsed.command === "house") {
       if (!["intact","burning","burned"].includes(a)) throw new Error("사용법: house intact|burning|burned");
-      worldStates.elderHouse = a === "burning" ? { stage:a,fireDay:clock.day,fireMinute:clock.minute } : { stage:a,fireDay:null,fireMinute:null };
+      if (a === "burning") {
+        const doomed = !!npcStates.elder?.alive;
+        startElderHouseFire(worldStates,clock.day,clock.minute,{ elderDoomed:doomed });
+        if (doomed) {
+          const elder = elderNpc();
+          const ns = npcStates.elder;
+          ns.hostile = false;
+          ns.abyssHostile = false;
+          ns.burnX = elder.x;
+          ns.prevBurnX = elder.x;
+          ns.burnFace = -1;
+          enemies = enemies.filter((enemy) => enemy.npcId !== "elder");
+        }
+      } else {
+        worldStates.elderHouse = {
+          stage:a,fireDay:null,fireMinute:null,elderDoomed:false,
+          confronted:false,dialogueStep:0,curseActive:false,elderDiedInFire:false
+        };
+      }
       changed = true; consoleLine(`ELDER HOUSE = ${a}`, "success");
     } else if (parsed.command === "monsters") {
       if (!["clear","reset"].includes(a)) throw new Error("사용법: monsters clear|reset [zone]");
@@ -8618,6 +10007,10 @@ function handleKeyDown(event) {
     return;
   }
   if (state === "console") return;
+  if (state === "intro") {
+    if (!event.repeat && ["Enter","Space"].includes(event.code)) advanceGameIntro();
+    return;
+  }
   if (event.repeat && ["KeyF","KeyL","KeyM","KeyC","KeyI","KeyH","KeyQ","KeyW","KeyE","KeyR","Digit1","Digit2","Digit3","Digit4","Escape"].includes(event.code)) return;
   if (event.code === "Slash") {
     keys.add("Slash");
@@ -8646,6 +10039,9 @@ function handleKeyUp(event) {
 
 addEventListener("keydown", handleKeyDown);
 addEventListener("keyup", handleKeyUp);
+canvas.addEventListener("pointerup", () => {
+  if (state === "intro") advanceGameIntro();
+});
 addEventListener("blur", () => {
   keys.clear();
   dom.hostile.hidden = !npcAttackUnlocked(player.karma);
@@ -8671,6 +10067,7 @@ dom.start.addEventListener("click", async () => {
     dom.start.textContent = "모험 계속하기";
     dom.newGame.textContent = "게임 새로 시작하기";
   }
+  else if (introRequiredOnStart) startGameIntro();
   else beginGame();
 });
 dom.newGame.addEventListener("click", async () => {
@@ -8686,8 +10083,7 @@ dom.newGame.addEventListener("click", async () => {
   await resetNewGame();
   dom.newGame.dataset.confirm = "false";
   dom.newGame.textContent = "게임 새로 시작하기";
-  beginGame();
-  toast("새로운 운명이 시작되었습니다");
+  startGameIntro();
 });
 dom.stats.addEventListener("click", () => openPanel("stats"));
 dom.inventory.addEventListener("click", () => openPanel("inventory"));
@@ -8772,13 +10168,24 @@ window.__EMBERFALL_DEBUG__ = {
     state, zone: currentZoneId, player: {
       x: player.x, hp: player.hp, level: player.level, karma: player.karma,
       gold, mana: player.mana, stamina: player.stamina, sprinting: player.sprinting,
-      combo: player.attackCombo, comboWindow: player.comboWindow
+      combo: player.attackCombo, comboWindow: player.comboWindow,
+      equipped: { ...player.equipped },
+      weaponDesign: equippedWeaponVisual().design,
+      armorDesign: equippedArmorVisual().design
     },
     clock: clock.serialize(), npcs: structuredClone(npcStates), bosses: { ...bosses },
     worldStates: structuredClone(worldStates), zoneSpawnState: { ...zoneSpawnState },
     exploration: structuredClone(player.explored), secrets: structuredClone(player.foundSecrets),
     event: worldEvent ? { id: worldEvent.id, active: worldEvent.active, x: worldEvent.x } : null,
     weather: weatherId, minimapExpanded: minimap.expanded,
+    intro: {
+      active:introState.active,
+      completed:introState.completed,
+      skipped:introState.skipped,
+      scene:introCurrentScene(introState)?.id || "none",
+      sceneIndex:introState.sceneIndex,
+      sceneTime:introState.sceneTime
+    },
     renderer: renderer.gpu ? "WebGL2" : "Canvas2D", cachedZones: loader.cachedZones,
     pools: { particles: particles.items.length, projectiles: projectiles.items.length, hazards: hazards.items.length },
     visuals: {
@@ -8809,6 +10216,14 @@ window.__EMBERFALL_DEBUG__ = {
     unlockSkills();
     recalcStats();
   },
+  equip: (id) => {
+    const item = ITEMS[id];
+    if (!item || !["weapon","armor","accessory"].includes(item.type)) return false;
+    player.owned[id] = true;
+    player.equipped[item.type] = id;
+    recalcStats(true);
+    return true;
+  },
   save: (slot = "auto") => saves.save(slot, serialize())
 };
 
@@ -8816,6 +10231,7 @@ async function boot() {
   initNpcStates();
   const auto = saves.load("auto");
   if (auto) {
+    introRequiredOnStart = false;
     await loadSave(auto);
     dom.overlayTitle.textContent = "Emberfall로 돌아가기";
     dom.overlayCopy.textContent = `LV.${player.level} · DAY ${clock.day} · ${zone.name}에서 모험을 계속합니다.`;
@@ -8823,8 +10239,9 @@ async function boot() {
     dom.newGame.hidden = false;
   } else {
     await resetNewGame();
+    introRequiredOnStart = true;
     dom.overlayTitle.textContent = "Emberfall에 오신 걸 환영합니다";
-    dom.overlayCopy.textContent = "방향키 이동 · Shift 달리기 · A 장검 3연타 · F 상호작용 · M 지도";
+    dom.overlayCopy.textContent = "새 모험은 카르마의 기원을 보여주는 프롤로그에서 시작합니다.";
     dom.start.textContent = "새 모험 시작";
   }
   booted = true;

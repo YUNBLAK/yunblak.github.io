@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Emberfall | Vincent-Daniel Yun</title>
   <meta name="description" content="Emberfall — a sunset medieval pixel action RPG with a longsword knight and a living karma-driven world." />
-  <link rel="stylesheet" href="style.css?v=20260730n" />
+  <link rel="stylesheet" href="style.css?v=20260731d" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
@@ -17,8 +17,6 @@
     <header class="game2-hero"><div><div class="game2-kicker">A PIXEL KNIGHT'S TALE</div><h1>Emberfall</h1><p>노을이 지는 중세 왕국을 장검과 함께 여행하세요. 선택과 카르마가 마을과 전투를 영구적으로 바꿉니다.</p></div><div class="game2-badge"><i class="fa-solid fa-shield-halved"></i><span>GAME 2</span></div></header>
     <section class="game2-shell" aria-label="Emberfall game">
       <div class="game2-topbar">
-        <div class="game2-stat"><span>HP</span><div class="game2-hp-track"><div id="g2-hp-bar"></div></div><strong id="g2-hp">6 / 6</strong></div>
-        <div class="game2-stat game2-level-stat"><span>LV</span><strong id="g2-level">1</strong><div class="game2-xp-track"><div id="g2-xp-bar"></div></div></div>
         <div class="game2-stat"><span>ATK</span><strong id="g2-atk">1</strong></div>
         <div class="game2-stat"><span>GOLD</span><strong id="g2-score">0000</strong></div>
         <div class="game2-stat game2-clock-stat"><span>TIME</span><strong id="g2-time">DAY 1 · 17:00</strong></div>
@@ -35,8 +33,10 @@
         <canvas id="game2-canvas" width="960" height="540" tabindex="0" aria-label="Emberfall canvas"></canvas>
         <div id="g2-hostile" class="game2-hostile" hidden><i class="fa-solid fa-skull"></i> 적대 모드 · A로 NPC 공격</div>
         <div id="g2-resource-hud" class="game2-resource-hud">
-          <div><span>MP</span><i><b id="g2-mana-bar"></b></i><strong id="g2-mana">100</strong></div>
-          <div><span>ST</span><i><b id="g2-stamina-bar"></b></i><strong id="g2-stamina">100</strong></div>
+          <div class="game2-hud-row game2-hud-hp"><span>HP</span><i><b id="g2-hp-bar"></b></i><strong id="g2-hp">6 / 6</strong></div>
+          <div class="game2-hud-row game2-hud-level"><span>LV</span><i><b id="g2-xp-bar"></b></i><strong id="g2-level">1</strong></div>
+          <div class="game2-hud-row game2-hud-mana"><span>MP</span><i><b id="g2-mana-bar"></b></i><strong id="g2-mana">100</strong></div>
+          <div class="game2-hud-row game2-hud-stamina"><span>ST</span><i><b id="g2-stamina-bar"></b></i><strong id="g2-stamina">100</strong></div>
           <div class="game2-map-code"><span id="g2-map-code">map_01</span><small id="g2-map-time">DAY 1 · 17:00</small></div>
         </div>
         <div id="g2-minimap-wrap" class="game2-minimap-wrap">
@@ -74,5 +74,5 @@
       <div class="game2-controls"><span><kbd>←</kbd><kbd>→</kbd> 이동</span><span><kbd>SHIFT</kbd>+방향키 달리기</span><span><kbd>SPACE</kbd> 점프</span><span><kbd>A</kbd> 장검 3연타</span><span><kbd>F</kbd> 대화·이동</span><span><kbd>L</kbd> 죽은 NPC의 집 방화</span><span><kbd>/</kbd>+<kbd>A</kbd> NPC 공격</span><span><kbd>M</kbd> 지도</span><span><kbd>Q</kbd><kbd>W</kbd><kbd>E</kbd><kbd>R</kbd> 스킬</span><span><kbd>1</kbd>–<kbd>4</kbd> 아이템</span><span><kbd>H</kbd> 빠른 회복</span><span class="game2-tip"><i class="fa-solid fa-fire-flame-curved"></i> 비밀 장소와 일일 사건을 찾아보세요</span></div><div class="game2-touch" aria-label="Touch controls"><button data-key="left">◀</button><button data-key="right">▶</button><button data-key="run">RUN</button><button data-key="jump">↥</button><button data-key="interact">F</button><button data-key="skill">Q</button><button data-key="attack">⚔</button><button data-key="potion">♥</button></div>
     </section><p class="game2-note"><i class="fa-solid fa-gamepad"></i> 장검 기사와 함께하는 노을빛 픽셀 액션 RPG입니다.</p>
   </main><footer class="site-footer"><div class="footer-inner"><p>&copy; 2026 Vincent-Daniel Yun.</p></div></footer>
-  <script>(()=>{const r=document.documentElement,b=document.getElementById('theme-toggle'),a=t=>{r.setAttribute('data-theme',t);b.querySelector('i').className=t==='dark'?'fa-solid fa-sun':'fa-solid fa-moon'};a(localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));b.addEventListener('click',()=>{const n=r.getAttribute('data-theme')==='dark'?'light':'dark';localStorage.setItem('theme',n);a(n)})})();</script><script src="game2.bundle.js?v=2c7d3026f5"></script>
+  <script>(()=>{const r=document.documentElement,b=document.getElementById('theme-toggle'),a=t=>{r.setAttribute('data-theme',t);b.querySelector('i').className=t==='dark'?'fa-solid fa-sun':'fa-solid fa-moon'};a(localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));b.addEventListener('click',()=>{const n=r.getAttribute('data-theme')==='dark'?'light':'dark';localStorage.setItem('theme',n);a(n)})})();</script><script src="game2.bundle.js?v=8b88ec68ea"></script>
 </body></html>

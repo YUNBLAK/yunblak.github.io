@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { WorldClock } from "../core/clock.js";
 import { SaveManager } from "../core/save.js";
 import { ObjectPool } from "../core/pool.js";
@@ -6,11 +7,27 @@ import { corpseStage, karmaTier } from "../systems/karma.js";
 import { ZoneLoader } from "../world/zone-loader.js";
 import { SKILLS, DEFAULT_SKILL_SLOTS, DEFAULT_ITEM_SLOTS } from "../config/skills.js";
 import { ITEMS, SHOPS } from "../config/items.js";
+import {
+  WEAPON_VISUALS,
+  ARMOR_VISUALS,
+  weaponVisual,
+  armorVisual,
+  equipmentVisual
+} from "../config/equipment-visuals.js";
 import { WARDEN_PHASES, bossPhase } from "../config/boss.js";
 import { FIELD_EVENTS, WEATHER, dailyEvent, dailyWeather } from "../config/events.js";
 import { sprintDecision, sprintStaminaStep } from "../systems/movement.js";
 import { LOOT_RULES, potionDropDecision } from "../systems/loot.js";
-import { mergeWorldStates, elderHouseStage, startElderHouseFire, houseFireStage, startHouseFire } from "../systems/world-state.js";
+import {
+  mergeWorldStates,
+  elderHouseStage,
+  startElderHouseFire,
+  elderHouseCanEnter,
+  elderConfrontationReady,
+  completeElderConfrontation,
+  houseFireStage,
+  startHouseFire
+} from "../systems/world-state.js";
 import { WORLD_REGIONS } from "../world/regions/index.js";
 import { NPCS, VILLAGE_CIVILIAN_IDS } from "../config/npcs.js";
 import { ENEMIES } from "../config/enemies.js";
@@ -19,14 +36,25 @@ import { karmaAuraTier, npcAttackUnlocked, worldHostile } from "../systems/karma
 import { blessingForKarma, blessingDefense, blessingAttackMultiplier } from "../systems/blessing.js";
 import { mergePursuit, schedulePursuit, updatePursuitSchedule, beginPursuit, finishPursuit } from "../systems/pursuit.js";
 import { pursuitParty } from "../config/pursuit-parties.js";
-import { parseDevCommand, commandSuggestion } from "../systems/dev-console.js";
+import { DEV_COMMANDS, parseDevCommand, commandSuggestion } from "../systems/dev-console.js";
+import {
+  INTRO_SCENES,
+  createIntroState,
+  startIntroState,
+  introCurrentScene,
+  introSceneProgress,
+  updateIntroState,
+  advanceIntroState,
+  skipIntroState
+} from "../systems/intro.js";
 import { MAP_ORDER, mapCode } from "../config/maps.js";
 import { skillForKarma } from "../systems/karma-skills.js";
 import { ensureContinuousGround, groundCoverageGaps, groundKindForZone } from "../systems/platforms.js";
 import { daylightAt, sunsetGlowAt, interpolatePalette } from "../systems/daylight.js";
 import { resolveHorizontalMovement } from "../systems/collision.js";
 import {
-  verticalCameraTarget, playerVerticalCameraTarget, landingFloorBelowPlayer, easeCamera
+  horizontalCameraTarget, verticalCameraTarget, playerVerticalCameraTarget,
+  landingFloorBelowPlayer, fallingSupportFloorAt, easeCamera
 } from "../systems/camera.js";
 import { lerp, interpolated, playerSwordAngle, playerAttackMotion, playerAirMotion, enemyCombatMotion } from "../systems/animation.js";
 import { skillGrowth, scaledRange, scaledEffectSize, skillGrowthSummary } from "../systems/skill-scaling.js";
@@ -41,6 +69,7 @@ import { NPC_HOMES, homesForZone } from "../config/homes.js";
 import {
   WOUNDED_KNIGHT,
   mergeWoundedKnightState,
+  advanceWoundedKnightExecution,
   chooseWoundedKnight,
   finishWoundedKnightExecution,
   failWoundedKnightEscort,
@@ -89,15 +118,59 @@ assert.equal(mapCode("castleApproach"), "map_12");
 assert.equal(mapCode("castleHall"), "map_13");
 assert.equal(zones.village.exits[0].target, "elderHill");
 assert.equal(zones.village.exits[1].target, "outskirts1");
-assert.equal(zones.elderHill.exits.find((exit) => exit.target === "elderHouse")?.target, "elderHouse");
-assert.equal(zones.elderHill.exits.find((exit) => exit.target === "castleApproach")?.spawn, 2440);
-assert.ok(
-  Math.abs(
-    zones.elderHill.exits.find((exit) => exit.target === "castleApproach").x -
-    zones.elderHill.landmarks.find((landmark) => landmark.kind === "sealedCave").x
-  ) > 186
+const villageSunsetGate = zones.village.exits.find((exit) => exit.target === "elderHill");
+const villageInnHome = homesForZone("village").find((home) => home.ownerId === "inn");
+assert.equal(zones.village.cameraMinX,-180);
+assert.equal(zones.village.playerMinX,-78);
+assert.equal(zones.village.platforms[0].x,zones.village.cameraMinX);
+assert.equal(zones.village.platforms[0].x + zones.village.platforms[0].w,zones.village.width);
+assert.equal(villageSunsetGate.x,-60);
+assert.equal(villageSunsetGate.visualX,-60);
+assert.equal(villageSunsetGate.x,villageSunsetGate.visualX);
+assert.equal(zones.village.playerMinX + 18,villageSunsetGate.x);
+assert.ok(villageInnHome.x - 17 - (villageSunsetGate.visualX + 98) >= 45);
+assert.equal(
+  horizontalCameraTarget({
+    playerX:zones.village.spawn,
+    viewportWidth:960,
+    worldWidth:zones.village.width,
+    minX:zones.village.cameraMinX
+  }),
+  zones.village.cameraMinX
 );
-assert.equal(zones.elderHill.landmarks.find((landmark) => landmark.kind === "sealedCave")?.x, 175);
+assert.equal(
+  horizontalCameraTarget({ playerX:150,viewportWidth:960,worldWidth:2300 }),
+  0
+);
+assert.equal(zones.elderHill.exits.find((exit) => exit.target === "elderHouse")?.target, "elderHouse");
+const elderHouseProp = zones.elderHill.props.find((prop) => prop.type === "elderHouse");
+const elderHouseDoor = zones.elderHill.exits.find((exit) => exit.target === "elderHouse");
+const elderHouseLandmark = zones.elderHill.landmarks.find((landmark) => landmark.kind === "elderHouse");
+const elderHousePlateau = zones.elderHill.platforms.find((platform) =>
+  elderHouseProp.houseX >= platform.x && elderHouseProp.houseX <= platform.x + platform.w
+);
+assert.equal(zones.elderHill.exits.find((exit) => exit.target === "village")?.spawn,55);
+assert.equal(elderHouseProp.x,820);
+assert.equal(elderHouseProp.houseX,755);
+assert.equal(elderHouseProp.width,250);
+assert.equal(elderHouseProp.windmillX,1035);
+assert.equal(elderHouseDoor.x,880);
+assert.equal(elderHouseLandmark.x,elderHouseDoor.x);
+assert.equal(zones.elderHouse.exits[0].spawn,elderHouseDoor.x + 20);
+assert.ok(elderHouseProp.houseX - elderHousePlateau.x >= 35);
+assert.ok(elderHouseProp.houseX + elderHouseProp.width <= elderHousePlateau.x + elderHousePlateau.w);
+assert.ok(elderHouseProp.windmillX - (elderHouseProp.houseX + elderHouseProp.width) >= 25);
+assert.ok(elderHouseProp.windmillX + 82 <= elderHousePlateau.x + elderHousePlateau.w);
+assert.ok(elderHouseDoor.x >= elderHouseProp.houseX);
+assert.ok(elderHouseDoor.x <= elderHouseProp.houseX + elderHouseProp.width);
+assert.equal(zones.elderHill.props.some((prop) => prop.type === "windmill"),false);
+const elderCastlePass = zones.elderHill.exits.find((exit) => exit.target === "castleApproach");
+const elderSealedCave = zones.elderHill.landmarks.find((landmark) => landmark.kind === "sealedCave");
+assert.equal(elderCastlePass.spawn,2440);
+assert.equal(elderCastlePass.visualX,48);
+assert.equal(elderSealedCave.x,245);
+assert.ok(elderSealedCave.x - 61 - (elderCastlePass.visualX + 112) >= 24);
+assert.ok(Math.abs(elderCastlePass.x - elderSealedCave.x) - (92 + 94) >= 70);
 assert.ok(zones.elderHill.props.filter((prop) => prop.type === "grave").every((prop) => prop.x >= 400));
 assert.equal(zones.elderHouse.exits[0].target, "elderHill");
 assert.equal(zones.outskirts1.exits[1].target, "moonbriarForest");
@@ -175,6 +248,16 @@ assert.equal(
   "a platform becomes a landing candidate only after the player's feet pass above it"
 );
 assert.equal(landingFloorBelowPlayer(stackedCameraPlatforms,800,300),438);
+assert.equal(
+  fallingSupportFloorAt(stackedCameraPlatforms,600,310),
+  302,
+  "falling bodies retain a small collision tolerance at the platform surface"
+);
+assert.equal(
+  fallingSupportFloorAt(stackedCameraPlatforms,600,314),
+  438,
+  "a falling body that has passed a platform must continue toward the lower floor"
+);
 assert.equal(playerVerticalCameraTarget({ playerY:370,floorY:438,grounded:true }),0);
 assert.equal(playerVerticalCameraTarget({ playerY:330,floorY:438,grounded:false,velocityY:-10 }),-62);
 assert.equal(playerVerticalCameraTarget({ playerY:90,floorY:158,grounded:true }),-280);
@@ -410,6 +493,27 @@ for (const id of ["twilight_sword", "wraith_sword", "royal_sword"]) {
 }
 for (const id of ["moonblade","sunblade","moon_charm","sun_armor"]) assert.ok(ITEMS[id]);
 for (const id of ["moon","sunforge","sunmagic"]) assert.ok(SHOPS[id]?.items.length);
+const weaponItemIds = Object.keys(ITEMS).filter((id) => ITEMS[id].type === "weapon");
+const armorItemIds = Object.keys(ITEMS).filter((id) => ITEMS[id].type === "armor");
+assert.deepEqual(Object.keys(WEAPON_VISUALS).sort(),weaponItemIds.sort());
+assert.deepEqual(Object.keys(ARMOR_VISUALS).sort(),armorItemIds.sort());
+assert.equal(new Set(Object.values(WEAPON_VISUALS).map((visual) => visual.design)).size,weaponItemIds.length);
+assert.equal(new Set(Object.values(ARMOR_VISUALS).map((visual) => visual.design)).size,armorItemIds.length);
+for (const id of weaponItemIds) {
+  const visual = weaponVisual(id);
+  for (const key of ["design","length","width","blade","edge","shadow","guard","grip","accent","trail","trailCore"]) {
+    assert.ok(visual[key] !== undefined,`${id} weapon visual is missing ${key}`);
+  }
+}
+for (const id of armorItemIds) {
+  const visual = armorVisual(id);
+  for (const key of ["design","body","bodyLight","bodyShadow","trim","metal","gem","sleeves","leggings","boots","cape"]) {
+    assert.ok(visual[key] !== undefined,`${id} armor visual is missing ${key}`);
+  }
+}
+assert.equal(equipmentVisual("royal_sword","weapon").design,"royal");
+assert.equal(equipmentVisual("sun_armor","armor").design,"sunscale");
+assert.equal(equipmentVisual("magic_ring","accessory"),null);
 for (const threshold of [20, 40, 60, 100]) {
   assert.ok(Object.values(SKILLS).some((skill) => skill.karma === threshold));
 }
@@ -437,18 +541,40 @@ assert.equal(mergeWorldStates({ cemetery:{ sensed:true } }).cemetery.sensed,true
 assert.equal(worldStates.pursuit.active, false);
 assert.equal(worldStates.woundedKnight.status,"waiting");
 assert.equal(worldStates.woundedKnight.x,WOUNDED_KNIGHT.x);
-startElderHouseFire(worldStates, 2, 720);
+startElderHouseFire(worldStates, 2, 720, { elderDoomed:true });
+assert.equal(worldStates.elderHouse.elderDoomed,true);
+assert.equal(worldStates.elderHouse.dialogueStep,0);
+assert.equal(worldStates.elderHouse.curseActive,false);
 assert.equal(elderHouseStage(worldStates, 3, 719), "burning");
+assert.equal(elderHouseCanEnter(worldStates, 3, 719),true);
+assert.equal(elderConfrontationReady(worldStates, 3, 719),true);
+assert.equal(completeElderConfrontation(worldStates),true);
+assert.equal(worldStates.elderHouse.curseActive,true);
+assert.equal(elderConfrontationReady(worldStates, 3, 719),false);
+assert.equal(completeElderConfrontation(worldStates),false);
 assert.equal(elderHouseStage(worldStates, 3, 720), "burned");
+assert.equal(elderHouseCanEnter(worldStates, 3, 720),false);
 startHouseFire(worldStates, "inn", 3, 240);
 assert.equal(houseFireStage(worldStates, "inn", 4, 239), "burning");
 assert.equal(houseFireStage(worldStates, "inn", 4, 240), "burned");
 const executedKnight = mergeWoundedKnightState();
 assert.equal(chooseWoundedKnight(executedKnight,"execute",2,600),true);
 assert.equal(executedKnight.status,"executing");
+let executionFrame = null;
+for (let frame=0;frame<70;frame++) executionFrame = advanceWoundedKnightExecution(executedKnight,1);
+assert.equal(executionFrame.shouldHit,true);
+assert.equal(executedKnight.executionTimer,62);
 assert.equal(finishWoundedKnightExecution(executedKnight,2,620,"outskirts2",1648,1670,392),true);
 assert.equal(woundedKnightRemainsStage(executedKnight,5,619),"fresh");
 assert.equal(woundedKnightRemainsStage(executedKnight,5,620),"bones");
+const corruptedExecutionKnight = mergeWoundedKnightState();
+assert.equal(chooseWoundedKnight(corruptedExecutionKnight,"execute",2,600),true);
+corruptedExecutionKnight.executionTimer = Number.NaN;
+assert.equal(
+  advanceWoundedKnightExecution(corruptedExecutionKnight,1).shouldHit,
+  true,
+  "a malformed execution timer must recover at the impact frame instead of freezing"
+);
 const escortedKnight = mergeWoundedKnightState();
 assert.equal(chooseWoundedKnight(escortedKnight,"spare",3,200),true);
 assert.equal(escortedKnight.status,"escort");
@@ -514,7 +640,96 @@ assert.equal(parseDevCommand("jump").command, "jump");
 assert.equal(parseDevCommand("fall").command, "fall");
 assert.equal(parseDevCommand("massacre").command, "massacre");
 assert.equal(commandSuggestion("mass"), "massacre");
+assert.deepEqual(parseDevCommand("equip moonblade"), { command:"equip",args:["moonblade"],raw:"equip moonblade" });
 assert.deepEqual(parseDevCommand("garen spearStorm"), { command:"garen",args:["spearStorm"],raw:"garen spearStorm" });
+assert.equal(DEV_COMMANDS.includes("skip"),true);
+assert.deepEqual(parseDevCommand("skip"), { command:"skip",args:[],raw:"skip" });
+
+assert.deepEqual(
+  INTRO_SCENES.map((scene) => scene.id),
+  ["ashen-war","angelic-grace","karma-seed","red-night","the-marked","the-fugitive","duskvale"]
+);
+assert.equal(INTRO_SCENES.length,7);
+assert.ok(INTRO_SCENES.every((scene) => scene.title && scene.lines.length === 2 && scene.duration >= 10500));
+assert.deepEqual(INTRO_SCENES.map((scene) => scene.duration),[10600,10800,11000,11300,11000,10800,11800]);
+assert.equal(INTRO_SCENES.reduce((sum,scene) => sum + scene.duration,0),77300);
+assert.deepEqual(new Set(INTRO_SCENES.map((scene) => scene.style)),new Set(["illustration","ingame"]));
+const intro = startIntroState(createIntroState());
+assert.equal(intro.active,true);
+assert.equal(introCurrentScene(intro).id,"ashen-war");
+assert.equal(introSceneProgress(intro),0);
+assert.equal(updateIntroState(intro,1000).sceneChanged,false);
+assert.equal(intro.sceneIndex,0);
+assert.ok(introSceneProgress(intro) > 0);
+const introSceneRemainder = 170;
+assert.equal(
+  updateIntroState(intro,INTRO_SCENES[0].duration - 1000 + introSceneRemainder).sceneChanged,
+  true
+);
+assert.equal(introCurrentScene(intro).id,"angelic-grace");
+assert.equal(intro.sceneTime,introSceneRemainder);
+assert.equal(advanceIntroState(intro).sceneChanged,true);
+assert.equal(introCurrentScene(intro).id,"karma-seed");
+const skippedIntro = skipIntroState(intro);
+assert.equal(skippedIntro.finished,true);
+assert.equal(intro.active,false);
+assert.equal(intro.completed,true);
+assert.equal(intro.skipped,true);
+const completedIntro = startIntroState(createIntroState());
+const totalIntroDuration = INTRO_SCENES.reduce((sum,scene) => sum + scene.duration,0);
+assert.equal(updateIntroState(completedIntro,totalIntroDuration).finished,true);
+assert.equal(completedIntro.completed,true);
+assert.equal(completedIntro.skipped,false);
+assert.equal(completedIntro.sceneIndex,INTRO_SCENES.length - 1);
+
+const gameHtml = await readFile(new URL("../../game2.html",import.meta.url),"utf8");
+const gameMain = await readFile(new URL("../main.js",import.meta.url),"utf8");
+const gameStyles = await readFile(new URL("../../style.css",import.meta.url),"utf8");
+for (const id of ["g2-hp","g2-hp-bar","g2-level","g2-xp-bar","g2-mana","g2-stamina"]) {
+  assert.equal((gameHtml.match(new RegExp(`id="${id}"`,"g")) || []).length,1,`${id} must remain unique`);
+}
+assert.ok(gameHtml.indexOf('id="g2-hp"') < gameHtml.indexOf('id="g2-level"'));
+assert.ok(gameHtml.indexOf('id="g2-level"') < gameHtml.indexOf('id="g2-mana"'));
+assert.ok(gameHtml.indexOf('id="g2-mana"') < gameHtml.indexOf('id="g2-stamina"'));
+assert.match(gameMain,/game2-panel-resource game2-points-card/);
+assert.match(gameMain,/사용 가능한 스탯 포인트/);
+assert.match(gameMain,/game2-panel-resource game2-gold-card/);
+assert.match(gameMain,/보유 골드/);
+assert.match(gameStyles,/\.game2-hud-hp b/);
+assert.match(gameStyles,/\.game2-hud-level b/);
+assert.match(gameStyles,/\.game2-points-card\.available/);
+assert.match(gameStyles,/\.game2-gold-card/);
+assert.match(gameMain,/function zonePlayerMinX\(/);
+assert.match(gameMain,/nextX = clamp\(player\.x \+ player\.vx \* dt, zonePlayerMinX\(\), zone\.width - player\.w\)/);
+assert.match(gameMain,/function drawCastlePassMountain\(/);
+assert.ok(gameMain.indexOf("drawCastlePassMountain(2550,438);") < gameMain.indexOf('drawCavePassGate(2550,438,"DUSKVALE CAVE PASS","right");'));
+assert.match(gameMain,/const ELDER_CURSE_INTERVAL = 120/);
+assert.match(gameMain,/function updateElderHouseFireScene\(/);
+assert.match(gameMain,/function drawBurningElderHouseInterior\(/);
+assert.match(gameMain,/function drawBurningElderEffect\(/);
+for (const line of [
+  "나는 네가 그럴 줄 알았다.",
+  "마음 한켠으로 너를 받아들여야 하나 고민했다.",
+  "너는…… 결국 악마가 맞았구나……",
+  "내 너를 저주하며 이 집에서 죽어가겠다……"
+]) assert.ok(gameMain.includes(line));
+assert.match(gameStyles,/\.game2-elder-fire-dialogue\.curse/);
+assert.match(gameStyles,/\.game2-elder-curse-line/);
+assert.match(gameMain,/function equipmentArtMarkup\(/);
+assert.match(gameMain,/function drawWeaponBlade\(/);
+assert.match(gameMain,/function drawPlayerArmorBody\(/);
+assert.match(gameMain,/canvas\.dataset\.equippedWeapon/);
+assert.match(gameMain,/canvas\.dataset\.equippedArmor/);
+for (const design of Object.values(WEAPON_VISUALS).map((visual) => visual.design)) {
+  assert.match(gameStyles,new RegExp(`\\.game2-equipment-art\\.weapon\\.design-${design}`));
+}
+for (const design of Object.values(ARMOR_VISUALS).map((visual) => visual.design)) {
+  assert.match(gameStyles,new RegExp(`\\.game2-equipment-art\\.armor\\.design-${design}`));
+}
+assert.match(gameMain,/function drawElderManor\(/);
+assert.match(gameMain,/function drawElderManorWindmill\(/);
+assert.match(gameMain,/function drawBurnedElderManor\(/);
+assert.match(gameMain,/drawHouseFire\(home,progress,\{ roofOffset:27 \}\)/);
 
 const manager = new SaveManager();
 const payload = {

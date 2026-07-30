@@ -1,0 +1,59 @@
+EMBERFALL EXPLORATION & VISUAL LOOP CHECKLIST
+=============================================
+
+[x] 1. MINIMAP
+    [x] Pixel minimap overlay with player direction and terrain
+    [x] Explored-area fog of war persisted per zone
+    [x] Gates, living NPCs, shops, corpses, secrets, events, and nearby enemies
+    [x] M-key compact / expanded toggle
+    [x] Touch minimap toggle and fullscreen / mobile layout
+    [x] Cached terrain layer and throttled marker rendering
+
+[x] 2. SPRINT
+    [x] Left Shift + direction sprint
+    [x] Sprint stamina drain, recovery delay, and exhaustion lock
+    [x] Air momentum, guard / attack cancellation, terrain dust
+    [x] Faster run animation and cloak movement
+    [x] Mobile RUN control
+
+[x] 3. LONGSWORD COMBAT
+    [x] Replace all greatsword names and visuals with longswords
+    [x] Shorter blade, hip scabbard, and one-handed idle pose
+    [x] Timing-based three-hit A combo
+    [x] Distinct slash, reverse slash, and launcher animations
+    [x] Combo damage / reach / stamina / hit-stop balance
+    [x] Existing equipment save IDs remain compatible
+
+[x] 4. PIXEL ART UPGRADE
+    [x] Player helmet, face, armor, gloves, boots, cloak, and equipment highlights
+    [x] NPC role-specific silhouettes, props, and idle details
+    [x] Monster eyes, limbs, weapons, shadows, and attack silhouettes
+    [x] Ground props, flags, grass, crates, puddles, and ambient particles
+    [x] Day / night metallic highlights and torch lighting
+
+[x] 5. FUN SYSTEMS
+    [x] Hidden caches and secret-area discovery
+    [x] Deterministic daily field events
+    [x] Merchant rescue, ghost caravan, rare hunt, and wounded knight events
+    [x] Karma bounty pressure and high-karma elite judge
+    [x] Rare longswords with time / combo / night bonuses
+    [x] Inn rumor hints for the current day
+    [x] Weather ambience and simple elemental modifiers
+
+[x] 6. SAVE / OPTIMIZATION
+    [x] Save migration for explored zones, secrets, events, and weather
+    [x] Minimap terrain cache and ten-frame update throttle
+    [x] Existing entity culling / object pool / two-zone cache retained
+    [x] Classic production bundle rebuilt
+
+[x] 7. VERIFICATION
+    [x] Module syntax, bundle freshness, and smoke tests
+    [x] Adventure start still works
+    [x] Minimap toggle / fog / persistence test
+    [x] Sprint drain / recovery test
+    [x] Three-hit combo and longsword visual test
+    [x] Event / secret / bounty test
+    [x] Desktop and mobile visual regression
+    [x] Zero browser console errors
+
+[x] ALL CHECKS COMPLETE

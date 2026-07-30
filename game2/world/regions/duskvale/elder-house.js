@@ -6,6 +6,6 @@ export default {
   platforms:[{x:0,y:438,w:960,h:102,kind:"wood"}],
   enemies:[],nightEnemies:[],crystals:[],secrets:[],
   props:[{type:"bookshelf",x:450},{type:"maptable",x:680},{type:"hearth",x:825}],
-  exits:[{x:105,target:"elderHill",spawn:830,label:"언덕으로 나가기",kind:"door"}],
+  exits:[{x:105,target:"elderHill",spawn:900,label:"언덕으로 나가기",kind:"door"}],
   adjacent:["elderHill"],interior:true
 };

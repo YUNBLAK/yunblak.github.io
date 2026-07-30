@@ -1,0 +1,55 @@
+EMBERFALL LOOP ENGINEERING CHECKLIST
+====================================
+
+[x] 1. MAP / ZONES
+    [x] Village safe zone with medieval sunset scenery
+    [x] Village gate interaction and transition
+    [x] Outside field with monsters, platforms, loot, and return gate
+    [x] Dungeon entrance and separate dungeon zone
+    [x] Field and dungeon checkpoints
+    [x] Dungeon boss and completion portal
+
+[x] 2. VILLAGE / NPC
+    [x] Innkeeper: heal and set village respawn
+    [x] Alchemist: potion shop
+    [x] Elder: tutorial / main quest dialogue
+    [x] Guild receptionist: hunt quest and reward
+    [x] Blacksmith: weapon and armor shop
+    [x] Mage: magic items and skill shop
+    [x] Gate guard: field guidance
+    [x] Traveler: stat reset item shop
+    [x] E-key proximity prompt and dialogue panel
+
+[x] 3. SHOP / ECONOMY
+    [x] Shop item list, prices, level requirements, descriptions
+    [x] Purchase validation and gold deduction
+    [x] Potions and temporary consumables
+    [x] Weapons, armor, accessory, and magic skill purchases
+    [x] Inventory equipment controls and stat comparison
+
+[x] 4. LEVEL / STATS
+    [x] Remove immediate level-up choice modal
+    [x] Award 3 unspent stat points per level
+    [x] Stats: attack, health, defense, magic, attack speed
+    [x] Pending point allocation with Apply / Reset controls
+    [x] Derived combat values and attack-speed cap
+    [x] Stat reset via Memory Potion
+    [x] Progressive XP curve
+
+[x] 5. COMBAT / ITEMS
+    [x] Greatsword combat and improved swing animation
+    [x] Slime, wolf, bandit, skeleton, guard enemy types
+    [x] Defense-based damage reduction
+    [x] Magic-power fire-wave effect
+    [x] Potion and gold drops
+    [x] Death and checkpoint respawn flow
+
+[x] 6. PERSISTENCE / UX
+    [x] Save level, stats, inventory, equipment, gold, and checkpoint
+    [x] Continue saved adventure
+    [x] Keyboard and mobile controls
+    [x] Responsive status, inventory, dialogue, and shop panels
+    [x] Browser verification with no console errors
+    [x] Start, gate, NPC, shop, stat, inventory, potion, and combat regression tests
+
+[x] ALL CHECKS COMPLETE

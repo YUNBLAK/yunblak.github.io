@@ -3281,6 +3281,23 @@ section h2,
 
 /* Emberfall world, shop and stat allocation panels */
 .game2-panel{width:520px}.game2-stat-summary{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:10px}.game2-stat-summary span{padding:8px 5px;border:1px solid #574d5d;color:#f0c989;background:#292a39;text-align:center;font-size:.62rem}.game2-stat-summary span.pending{border-color:#d69a61;color:#fff1b8;background:#4b3740;box-shadow:inset 0 0 0 1px rgba(255,213,136,.12)}.game2-allocation{display:grid;gap:6px}.game2-allocation-row{display:grid;grid-template-columns:1fr 28px 46px 28px;align-items:center;gap:6px;padding:8px 9px;border-left:3px solid #815b68;background:#292a3a}.game2-allocation-row b,.game2-allocation-row small{display:block}.game2-allocation-row b{color:#edd2ac;font-size:.73rem}.game2-allocation-row small{margin-top:2px;color:#958a99;font-size:.57rem}.game2-allocation-row strong{color:#ffe09e;text-align:center}.game2-allocation-row strong.pending{color:#fff0ae;text-shadow:0 0 7px rgba(255,194,103,.5)}.game2-allocation-row button,.game2-panel-actions button{border:1px solid #846879;color:#efd4b3;background:#443747;font:700 .72rem monospace;cursor:pointer}.game2-allocation-row button{width:28px;height:28px}.game2-allocation-row button:disabled,.game2-panel-actions button:disabled{opacity:.35;cursor:not-allowed}.game2-panel-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:11px}.game2-panel-actions button{padding:8px 12px}.game2-panel-actions button.primary{border-color:#d69a61;color:#302634;background:#e7b56e}.game2-inventory-section h3{margin:12px 0 7px;color:#b99783;font:700 .65rem monospace;letter-spacing:.12em}.game2-inventory-section:first-child h3{margin-top:0}.game2-skill-owned{padding:10px;border:1px solid #8f644f;color:#ffc27f;background:#3d303b;font-size:.68rem}.game2-shop-list{display:grid;gap:7px}.game2-shop-row{display:grid;grid-template-columns:42px 1fr 54px 68px;align-items:center;gap:8px;padding:9px;border:2px solid #51495a;background:#292a39}.game2-shop-icon{display:grid;place-items:center;width:38px;height:38px;border:1px solid #796276;color:#f3ca89;background:#3d394a;font-size:1.2rem}.game2-shop-row b,.game2-shop-row small{display:block}.game2-shop-row b{color:#efd3aa;font-size:.72rem}.game2-shop-row small{margin-top:3px;color:#9e929f;font-size:.57rem}.game2-shop-row>strong{color:#ffd07b;text-align:right;font-size:.68rem}.game2-shop-row button{padding:7px 5px;border:1px solid #bd765f;color:#ffe1b0;background:#784052;font:700 .62rem monospace;cursor:pointer}.game2-shop-row button:disabled{opacity:.38;cursor:not-allowed}.game2-dialogue{display:grid;grid-template-columns:68px 1fr;gap:12px;min-height:100px;padding:12px;border:2px solid #554b5d;background:#292a39}.game2-dialogue-portrait{display:grid;place-items:center;width:62px;height:74px;border:2px solid #a77a68;color:#f2d19d;background:var(--npc);font-size:2rem;box-shadow:inset -5px -5px 0 rgba(22,22,35,.3)}.game2-dialogue p{margin:4px 0 12px;color:#d7c6bd;font-size:.7rem;line-height:1.55}.game2-dialogue-action{display:block;margin:10px 0 0 auto;padding:8px 13px;border:2px solid #c48660;color:#322837;background:#e5b56d;font:700 .7rem monospace;cursor:pointer}
+.game2-equipment-art{position:relative;overflow:hidden;isolation:isolate;background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--eq-main) 30%,#4a4658),#302f40 70%);image-rendering:pixelated}.game2-equipment-art::after{position:absolute;inset:2px;z-index:-1;border:1px solid color-mix(in srgb,var(--eq-accent) 30%,transparent);content:""}.game2-equipment-sprite{position:relative;display:block;width:38px;height:38px;filter:drop-shadow(2px 2px 0 rgba(13,14,23,.72))}.game2-shop-icon .game2-equipment-sprite{transform:scale(.86)}.game2-equipment-sprite i{position:absolute;display:block;margin:0;padding:0}
+.game2-equipment-art.weapon .game2-equipment-sprite{transform:rotate(43deg)}.game2-equipment-art.weapon .eq-main{left:16px;top:1px;width:7px;height:26px;background:var(--eq-main);clip-path:polygon(22% 0,78% 0,100% 86%,50% 100%,0 86%);box-shadow:inset -2px 0 0 var(--eq-shadow)}.game2-equipment-art.weapon .eq-light{left:18px;top:4px;width:2px;height:20px;background:var(--eq-light);opacity:.92}.game2-equipment-art.weapon .eq-trim{left:9px;top:25px;width:21px;height:4px;background:var(--eq-trim);box-shadow:inset 0 1px 0 color-mix(in srgb,var(--eq-trim) 38%,#fff)}.game2-equipment-art.weapon .eq-trim::after{position:absolute;left:8px;top:3px;width:5px;height:9px;background:var(--eq-grip);box-shadow:inset -2px 0 0 var(--eq-shadow);content:""}.game2-equipment-art.weapon .eq-accent{left:17px;top:35px;width:6px;height:4px;background:var(--eq-accent);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.game2-equipment-art.weapon.design-rusted .eq-main{left:17px;width:6px;clip-path:polygon(25% 0,75% 0,100% 20%,72% 31%,100% 48%,72% 62%,100% 86%,50% 100%,0 84%,18% 58%,0 42%,23% 24%);background:linear-gradient(90deg,var(--eq-shadow),var(--eq-main) 56%,var(--eq-light))}.game2-equipment-art.weapon.design-rusted .eq-light{top:7px;height:5px;box-shadow:0 9px 0 var(--eq-accent);opacity:.7}.game2-equipment-art.weapon.design-rusted .eq-trim{left:11px;width:17px;transform:skew(-12deg)}
+.game2-equipment-art.weapon.design-iron .eq-main{height:27px}.game2-equipment-art.weapon.design-iron .eq-trim{left:8px;width:23px}.game2-equipment-art.weapon.design-iron .eq-accent{background:var(--eq-trim)}
+.game2-equipment-art.weapon.design-knight .eq-main{left:15px;width:10px;height:28px;clip-path:polygon(31% 0,69% 0,100% 84%,50% 100%,0 84%)}.game2-equipment-art.weapon.design-knight .eq-light{left:19px;height:22px}.game2-equipment-art.weapon.design-knight .eq-trim{left:6px;width:28px;clip-path:polygon(0 0,42% 28%,50% 0,58% 28%,100% 0,88% 100%,12% 100%)}.game2-equipment-art.weapon.design-knight .eq-accent{top:27px;width:5px;height:5px;border-radius:50%}
+.game2-equipment-art.weapon.design-cursed .game2-equipment-sprite{filter:drop-shadow(0 0 4px var(--eq-accent)) drop-shadow(2px 2px 0 #140c17)}.game2-equipment-art.weapon.design-cursed .eq-main{left:14px;width:12px;height:29px;clip-path:polygon(18% 0,65% 0,100% 13%,72% 25%,100% 38%,72% 51%,100% 67%,65% 100%,25% 85%,0 70%,24% 55%,0 38%,25% 23%)}.game2-equipment-art.weapon.design-cursed .eq-light{left:20px;top:5px;height:19px;background:var(--eq-accent);box-shadow:-5px 8px 0 -1px var(--eq-accent)}.game2-equipment-art.weapon.design-cursed .eq-trim{left:5px;width:30px;clip-path:polygon(0 0,42% 28%,50% 100%,58% 28%,100% 0,76% 100%,24% 100%)}.game2-equipment-art.weapon.design-cursed .eq-accent{top:26px;border-radius:50%;box-shadow:0 0 5px var(--eq-accent)}
+.game2-equipment-art.weapon.design-twilight .eq-main{left:15px;width:10px;height:28px;background:linear-gradient(90deg,var(--eq-shadow),var(--eq-main) 48%,var(--eq-accent));clip-path:polygon(35% 0,65% 0,100% 78%,71% 100%,50% 86%,29% 100%,0 78%)}.game2-equipment-art.weapon.design-twilight .eq-light{left:20px;top:5px;height:18px;background:var(--eq-accent)}.game2-equipment-art.weapon.design-twilight .eq-trim{left:7px;width:26px;border-radius:50% 50% 20% 20%}.game2-equipment-art.weapon.design-twilight .eq-accent{top:26px;box-shadow:0 0 5px var(--eq-accent)}
+.game2-equipment-art.weapon.design-wraith .game2-equipment-sprite{filter:drop-shadow(0 0 4px var(--eq-light))}.game2-equipment-art.weapon.design-wraith .eq-main{left:15px;width:10px;height:29px;opacity:.84;clip-path:polygon(44% 0,77% 13%,58% 26%,92% 42%,64% 58%,100% 78%,51% 100%,12% 82%,34% 61%,0 43%,37% 28%)}.game2-equipment-art.weapon.design-wraith .eq-light{left:19px;top:3px;height:21px;opacity:.8}.game2-equipment-art.weapon.design-wraith .eq-trim{left:8px;width:24px;opacity:.82;box-shadow:-5px -3px 0 -1px var(--eq-accent),5px 3px 0 -1px var(--eq-main)}
+.game2-equipment-art.weapon.design-royal .eq-main{left:15px;width:10px;height:29px;background:linear-gradient(90deg,var(--eq-shadow),var(--eq-main) 42%,var(--eq-light) 75%);clip-path:polygon(35% 0,65% 0,100% 88%,50% 100%,0 88%)}.game2-equipment-art.weapon.design-royal .eq-light{left:19px;width:3px;height:23px}.game2-equipment-art.weapon.design-royal .eq-trim{left:4px;width:32px;height:5px;clip-path:polygon(0 0,39% 25%,50% 100%,61% 25%,100% 0,84% 100%,16% 100%)}.game2-equipment-art.weapon.design-royal .eq-accent{top:25px;width:6px;height:6px;border-radius:50%;box-shadow:0 0 4px var(--eq-accent)}
+.game2-equipment-art.weapon.design-moon .game2-equipment-sprite{filter:drop-shadow(0 0 4px var(--eq-accent))}.game2-equipment-art.weapon.design-moon .eq-main{left:14px;width:12px;height:30px;transform:skewX(-8deg);background:linear-gradient(90deg,var(--eq-shadow),var(--eq-main) 55%,var(--eq-light));clip-path:polygon(64% 0,92% 8%,68% 26%,100% 88%,44% 100%,8% 83%,33% 38%,0 20%)}.game2-equipment-art.weapon.design-moon .eq-light{left:21px;top:5px;height:20px;transform:skewX(-8deg)}.game2-equipment-art.weapon.design-moon .eq-trim{left:7px;width:26px;border-radius:50%;clip-path:polygon(0 0,46% 35%,50% 100%,56% 34%,100% 0,77% 100%,23% 100%)}.game2-equipment-art.weapon.design-moon .eq-accent{top:25px;border-radius:50%;box-shadow:0 0 5px var(--eq-accent)}
+.game2-equipment-art.weapon.design-sun .game2-equipment-sprite{filter:drop-shadow(0 0 5px var(--eq-accent))}.game2-equipment-art.weapon.design-sun .eq-main{left:13px;width:14px;height:29px;background:linear-gradient(90deg,var(--eq-shadow),var(--eq-main) 44%,var(--eq-light));clip-path:polygon(36% 0,64% 0,100% 20%,76% 34%,100% 56%,73% 100%,27% 100%,0 56%,24% 34%,0 20%)}.game2-equipment-art.weapon.design-sun .eq-light{left:19px;top:4px;width:3px;height:22px}.game2-equipment-art.weapon.design-sun .eq-trim{left:4px;width:32px;height:5px;clip-path:polygon(0 50%,30% 12%,42% 38%,50% 0,58% 38%,70% 12%,100% 50%,70% 88%,58% 62%,50% 100%,42% 62%,30% 88%)}.game2-equipment-art.weapon.design-sun .eq-accent{top:25px;width:7px;height:7px;border-radius:50%;box-shadow:0 0 6px var(--eq-accent)}
+.game2-equipment-art.armor .eq-main{left:9px;top:12px;width:22px;height:24px;background:var(--eq-main);clip-path:polygon(17% 0,83% 0,100% 20%,86% 100%,14% 100%,0 20%);box-shadow:inset -4px 0 0 var(--eq-shadow)}.game2-equipment-art.armor .eq-light{left:12px;top:15px;width:4px;height:17px;background:var(--eq-light);opacity:.82}.game2-equipment-art.armor .eq-trim{left:4px;top:11px;width:32px;height:8px;background:var(--eq-metal);clip-path:polygon(0 40%,28% 0,50% 40%,72% 0,100% 40%,91% 100%,9% 100%)}.game2-equipment-art.armor .eq-accent{left:17px;top:18px;width:6px;height:7px;background:var(--eq-accent);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.game2-equipment-art.armor.design-traveler .eq-main{left:10px;width:20px;background:linear-gradient(135deg,var(--eq-main) 0 48%,var(--eq-trim) 49% 57%,var(--eq-shadow) 58%)}.game2-equipment-art.armor.design-traveler .eq-trim{left:7px;width:16px;background:var(--eq-light);clip-path:polygon(0 0,100% 0,76% 100%,15% 75%)}.game2-equipment-art.armor.design-traveler .eq-accent{left:24px;top:25px;width:5px;height:8px;background:var(--eq-trim)}
+.game2-equipment-art.armor.design-chain .eq-main{background-color:var(--eq-main);background-image:linear-gradient(45deg,var(--eq-light) 25%,transparent 25% 75%,var(--eq-light) 75%),linear-gradient(45deg,var(--eq-light) 25%,transparent 25% 75%,var(--eq-light) 75%);background-position:0 0,3px 3px;background-size:6px 6px}.game2-equipment-art.armor.design-chain .eq-trim{height:9px;border-radius:45%}.game2-equipment-art.armor.design-chain .eq-accent{top:19px;border-radius:50%;background:var(--eq-trim)}
+.game2-equipment-art.armor.design-dusk .eq-main{left:8px;width:24px;clip-path:polygon(25% 0,75% 0,100% 25%,82% 100%,50% 87%,18% 100%,0 25%);background:linear-gradient(90deg,var(--eq-shadow),var(--eq-main) 50%,var(--eq-light))}.game2-equipment-art.armor.design-dusk .eq-trim{left:2px;width:36px;height:10px;clip-path:polygon(0 0,32% 25%,40% 0,50% 70%,60% 0,68% 25%,100% 0,88% 100%,12% 100%)}.game2-equipment-art.armor.design-dusk .eq-accent{top:19px;height:9px;box-shadow:0 0 5px var(--eq-accent)}
+.game2-equipment-art.armor.design-sunscale .game2-equipment-sprite{filter:drop-shadow(0 0 4px var(--eq-accent)) drop-shadow(2px 2px 0 rgba(13,14,23,.72))}.game2-equipment-art.armor.design-sunscale .eq-main{left:7px;width:26px;background-color:var(--eq-main);background-image:radial-gradient(circle at 3px 1px,var(--eq-light) 0 2px,transparent 2px);background-size:7px 6px;clip-path:polygon(22% 0,78% 0,100% 22%,85% 100%,15% 100%,0 22%)}.game2-equipment-art.armor.design-sunscale .eq-trim{left:1px;width:38px;height:11px;background:var(--eq-trim);clip-path:polygon(0 45%,20% 0,38% 28%,50% 0,62% 28%,80% 0,100% 45%,85% 100%,15% 100%)}.game2-equipment-art.armor.design-sunscale .eq-accent{left:16px;top:18px;width:8px;height:8px;border-radius:50%;box-shadow:0 0 6px var(--eq-accent)}
+.game2-item-slot.equipped .game2-equipment-art{border-color:var(--eq-accent);box-shadow:inset -3px -3px 0 #272838,0 0 9px color-mix(in srgb,var(--eq-accent) 42%,transparent)}.game2-item-slot.equipped .game2-equipment-art::before{position:absolute;right:2px;bottom:1px;z-index:3;color:#fff4ba;content:"◆";font-size:8px;text-shadow:0 0 4px var(--eq-accent)}
 @media(max-width:760px){.game2-panel{width:auto}.game2-stat-summary{grid-template-columns:repeat(3,1fr)}.game2-allocation-row{grid-template-columns:1fr 26px 42px 26px}.game2-allocation-row small{display:none}.game2-shop-row{grid-template-columns:34px 1fr 44px 54px;gap:5px;padding:6px}.game2-shop-icon{width:32px;height:32px}.game2-shop-row small{font-size:.52rem}.game2-dialogue{grid-template-columns:50px 1fr}.game2-dialogue-portrait{width:46px;height:60px}}
 
 /* Emberfall modular expansion */
@@ -3315,4 +3332,189 @@ section h2,
 .game2-knight-actions{flex-wrap:wrap}
 .game2-panel-actions button.danger{border-color:#ef6a63;color:#ffe5cf;background:#7d2f42;box-shadow:inset -2px -2px 0 #421d2d}
 .game2-panel-actions button.danger:hover{filter:brightness(1.12)}
+.game2-elder-fire-dialogue{display:grid;grid-template-columns:88px 1fr;gap:14px;min-height:146px;padding:14px;border:2px solid #9d503f;background:linear-gradient(145deg,#3b252b,#211f2b 64%);box-shadow:inset 0 0 34px rgba(209,57,31,.14)}
+.game2-elder-fire-dialogue.curse{border-color:#e24b4f;background:linear-gradient(145deg,#4d2027,#211b27 68%);box-shadow:inset 0 0 44px rgba(238,46,36,.22),0 0 16px rgba(182,34,39,.18)}
+.game2-elder-fire-dialogue small{display:block;margin:1px 0 9px;color:#c9896f;font:700 .58rem monospace;letter-spacing:.06em}
+.game2-elder-fire-dialogue p{min-height:48px;margin:0 0 12px;color:#f1d1b2;font:700 .82rem/1.65 monospace;text-shadow:1px 2px 0 #26171e}
+.game2-elder-fire-portrait{position:relative;display:grid;width:78px;height:104px;place-items:center;overflow:hidden;border:2px solid #d35c45;color:#e2c3a6;background:linear-gradient(180deg,#492531 0 30%,#8c332a 31% 68%,#e75c2b 69% 100%);box-shadow:inset -7px -7px 0 rgba(34,19,27,.42),0 0 16px rgba(237,77,36,.25);font-size:2.4rem;animation:g2-elder-fire-pulse .72s steps(2,end) infinite}
+.game2-elder-fire-portrait::before,.game2-elder-fire-portrait::after{position:absolute;bottom:-5px;width:23px;height:64px;background:#ff7a32;box-shadow:0 -16px 0 -7px #ffc25a,0 -31px 0 -11px #ed3d2d;content:"";transform:skew(-7deg)}
+.game2-elder-fire-portrait::before{left:5px}.game2-elder-fire-portrait::after{right:4px;transform:scaleX(-1) skew(-7deg)}
+.game2-elder-fire-portrait i{position:relative;z-index:1;color:#dac4b3;font-style:normal;text-shadow:2px 2px 0 #321d25}
+.game2-elder-fire-eyes{position:absolute;z-index:2;top:39px;left:28px;color:#ff3d49;font:900 1rem monospace;letter-spacing:7px;text-shadow:0 0 7px #ff263c}
+.game2-elder-curse-line{color:#ff5d63!important;font-size:.9rem!important;text-shadow:0 0 10px rgba(255,52,60,.52),2px 2px 0 #3a141d!important;animation:g2-elder-curse-text .55s steps(2,end) infinite}
+.game2-elder-dialogue-progress{display:flex;gap:5px;margin:0 0 9px}.game2-elder-dialogue-progress span{width:24px;height:4px;border:1px solid #51343d;background:#24212d}.game2-elder-dialogue-progress span.active{border-color:#d7634a;background:#ee7446;box-shadow:0 0 6px rgba(238,82,55,.35)}
+.game2-elder-fire-dialogue .game2-dialogue-action.danger{border-color:#f05a58;color:#ffe6ce;background:#8c2c3a;box-shadow:inset -3px -3px 0 #4e1d29}
+@keyframes g2-elder-fire-pulse{50%{filter:brightness(1.16);transform:translateY(-1px)}}@keyframes g2-elder-curse-text{50%{opacity:.82}}
+@media(max-width:760px){.game2-elder-fire-dialogue{grid-template-columns:62px 1fr;gap:9px;padding:9px}.game2-elder-fire-portrait{width:58px;height:84px}.game2-elder-fire-eyes{top:31px;left:18px}.game2-elder-fire-dialogue p{font-size:.7rem}}
 @media(max-width:560px){.game2-knight-choice{grid-template-columns:56px 1fr}.game2-knight-portrait{width:52px;height:70px}.game2-knight-actions{justify-content:stretch}.game2-knight-actions button{flex:1}}
+
+/* Emberfall new-game prologue */
+.game2-resource-hud,.game2-hotbar,.game2-hostile,.game2-minimap-wrap,.game2-topbar,.game2-controls{transition:opacity .32s ease,filter .32s ease}
+.game2-shell.intro-active .game2-resource-hud,
+.game2-shell.intro-active .game2-hotbar,
+.game2-shell.intro-active .game2-hostile,
+.game2-shell.intro-active .game2-minimap-wrap{opacity:0;pointer-events:none}
+.game2-shell.intro-active .game2-topbar{opacity:.26;filter:saturate(.35)}
+.game2-shell.intro-active .game2-controls{opacity:.34;filter:saturate(.25)}
+.game2-shell.intro-active .game2-touch{visibility:hidden}
+.game2-shell.intro-active .game2-canvas-wrap{background:#080812}
+@media(max-width:560px){.game2-shell.intro-active .game2-topbar,.game2-shell.intro-active .game2-controls{opacity:.16}}
+
+/* Emberfall high-visibility combat resources and panel currency */
+.game2-topbar{min-height:54px}
+.game2-resource-hud{
+  top:12px;
+  left:12px;
+  width:220px;
+  gap:6px;
+  padding:10px;
+  border-color:rgba(187,143,109,.78);
+  background:linear-gradient(180deg,rgba(30,29,43,.94),rgba(21,22,34,.91));
+  box-shadow:0 0 0 2px rgba(14,15,25,.72),4px 5px 0 rgba(11,11,20,.32);
+}
+.game2-resource-hud>div.game2-hud-row{
+  grid-template-columns:24px 1fr 44px;
+  min-height:15px;
+  gap:7px;
+}
+.game2-resource-hud .game2-hud-row span{
+  color:#e4d6d5;
+  font-size:.62rem;
+  letter-spacing:.08em;
+}
+.game2-resource-hud .game2-hud-row i{
+  height:9px;
+  border:2px solid #111321;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+}
+.game2-resource-hud .game2-hud-row strong{
+  color:#fff0cf;
+  font-size:.66rem;
+  text-shadow:1px 1px 0 #11121d;
+}
+.game2-resource-hud .game2-hud-hp{padding-bottom:2px}
+.game2-resource-hud .game2-hud-hp i{height:11px;border-color:#351824}
+.game2-resource-hud>div.game2-hud-hp b{background:linear-gradient(90deg,#a92f50,#ee675f 68%,#ffc36e)}
+.game2-resource-hud .game2-hud-hp strong{color:#ffd7c2;font-size:.7rem}
+.game2-resource-hud .game2-hud-level{
+  margin-bottom:2px;
+  padding-bottom:7px;
+  border-bottom:1px solid rgba(137,111,129,.46);
+}
+.game2-resource-hud .game2-hud-level span,
+.game2-resource-hud .game2-hud-level strong{color:#f0c375}
+.game2-resource-hud .game2-hud-level strong{font-size:.84rem}
+.game2-resource-hud>div.game2-hud-level b{background:linear-gradient(90deg,#6f54ad,#d081d1)}
+.game2-resource-hud .game2-hud-mana b{background:linear-gradient(90deg,#4e5db0,#898ce9)}
+.game2-resource-hud .game2-hud-stamina b{background:linear-gradient(90deg,#a9762d,#e6bc50)}
+.game2-resource-hud .game2-map-code{
+  margin-top:1px;
+  padding-top:6px;
+}
+.game2-hostile{top:154px}
+
+.game2-panel-resource{
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  align-items:center;
+  gap:9px;
+  margin-bottom:14px;
+  padding:13px 14px;
+  border:2px solid #735968;
+  background:linear-gradient(135deg,#332f41,#292a3a);
+  box-shadow:inset -3px -3px 0 rgba(17,18,29,.36),3px 3px 0 rgba(17,15,25,.25);
+}
+.game2-panel-resource span,
+.game2-panel-resource small{display:block}
+.game2-panel-resource span{color:#e8d1b4;font:700 .72rem monospace;letter-spacing:.04em}
+.game2-panel-resource small{margin-top:4px;color:#9f939e;font:500 .57rem/1.35 monospace}
+.game2-panel-resource strong{
+  min-width:62px;
+  color:#ffe29a;
+  font:700 1.65rem/1 monospace;
+  text-align:right;
+  text-shadow:2px 2px 0 #352535,0 0 12px rgba(255,197,93,.22);
+}
+.game2-panel-resource em{
+  align-self:end;
+  padding-bottom:2px;
+  color:#bf9980;
+  font:700 .62rem monospace;
+  font-style:normal;
+}
+.game2-gold-card{
+  border-color:#a77a4c;
+  background:linear-gradient(135deg,#44383b,#302d3b);
+}
+.game2-gold-card::before{
+  content:"◆";
+  display:grid;
+  grid-row:1;
+  grid-column:1;
+  place-items:center;
+  width:30px;
+  height:30px;
+  margin-right:38px;
+  border:2px solid #d7a757;
+  color:#ffd477;
+  background:#6c4c35;
+  box-shadow:inset -3px -3px 0 #47313a;
+  font-size:.85rem;
+}
+.game2-gold-card>div{grid-row:1;grid-column:1;padding-left:42px}
+.game2-gold-card strong{color:#ffd36e;font-size:1.75rem}
+.game2-points-card.available{
+  border-color:#d19358;
+  background:linear-gradient(135deg,#49373f,#302d3d);
+  animation:g2-point-glow 2.2s ease-in-out infinite;
+}
+.game2-points-card.available strong{color:#fff0a8}
+.game2-points-card.empty{opacity:.82}
+@keyframes g2-point-glow{
+  50%{box-shadow:inset -3px -3px 0 rgba(17,18,29,.36),0 0 16px rgba(224,158,79,.22)}
+}
+@media(max-width:900px){
+  .game2-resource-hud{top:8px;left:8px;width:190px}
+  .game2-hostile{top:148px}
+}
+@media(max-width:760px){
+  .game2-topbar{grid-template-columns:auto auto minmax(105px,1fr) minmax(90px,1fr) auto}
+  .game2-topbar>.game2-stat{order:initial}
+  .game2-topbar>.game2-menu-buttons{grid-row:2;grid-column:1/-1}
+  .game2-topbar>.game2-icon-button{grid-row:1;grid-column:5}
+  .game2-panel-resource{padding:11px 12px}
+}
+@media(max-width:560px){
+  .game2-topbar{
+    grid-template-columns:repeat(4,minmax(0,1fr)) 27px;
+    gap:4px;
+    overflow:hidden;
+  }
+  .game2-topbar>.game2-stat{
+    min-width:0;
+    gap:3px;
+    overflow:hidden;
+  }
+  .game2-topbar>.game2-stat span{flex:none;font-size:.48rem}
+  .game2-topbar>.game2-stat strong{
+    min-width:0;
+    overflow:hidden;
+    font-size:.55rem;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .game2-topbar>.game2-menu-buttons{min-width:0}
+  .game2-topbar .game2-menu-button{min-width:0;padding:0 3px;font-size:.55rem}
+  .game2-resource-hud{top:7px;left:7px;width:164px;padding:7px;gap:4px}
+  .game2-resource-hud>div.game2-hud-row{grid-template-columns:21px 1fr 38px;gap:4px;min-height:13px}
+  .game2-resource-hud .game2-hud-row span{font-size:.54rem}
+  .game2-resource-hud .game2-hud-row strong{font-size:.57rem}
+  .game2-resource-hud .game2-hud-level strong{font-size:.72rem}
+  .game2-resource-hud .game2-map-code{padding-top:4px}
+  .game2-hostile{top:128px}
+  .game2-panel-resource{grid-template-columns:1fr auto auto;gap:6px;margin-bottom:10px;padding:9px}
+  .game2-panel-resource strong{min-width:48px;font-size:1.35rem}
+  .game2-panel-resource small{font-size:.52rem}
+  .game2-gold-card::before{width:25px;height:25px;margin-right:31px}
+  .game2-gold-card>div{padding-left:35px}
+}

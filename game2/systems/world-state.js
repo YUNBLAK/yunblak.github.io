@@ -2,7 +2,16 @@ import { mergePursuit } from "./pursuit.js";
 import { mergeWoundedKnightState } from "./wounded-knight.js";
 
 export const DEFAULT_WORLD_STATES = {
-  elderHouse: { stage: "intact", fireDay: null, fireMinute: null },
+  elderHouse: {
+    stage: "intact",
+    fireDay: null,
+    fireMinute: null,
+    elderDoomed: false,
+    confronted: false,
+    dialogueStep: 0,
+    curseActive: false,
+    elderDiedInFire: false
+  },
   cemetery: { sensed: false },
   houseFires: {},
   guardRevenge: { triggered: false, defeated: false },
@@ -36,9 +45,37 @@ export function elderHouseStage(worldStates, day, minute) {
   return elapsedWorldDays(house.fireDay, house.fireMinute, day, minute) >= 1 ? "burned" : "burning";
 }
 
-export function startElderHouseFire(worldStates, day, minute) {
-  worldStates.elderHouse = { stage: "burning", fireDay: day, fireMinute: minute };
+export function startElderHouseFire(worldStates, day, minute, { elderDoomed = false } = {}) {
+  worldStates.elderHouse = {
+    stage: "burning",
+    fireDay: day,
+    fireMinute: minute,
+    elderDoomed: !!elderDoomed,
+    confronted: false,
+    dialogueStep: 0,
+    curseActive: false,
+    elderDiedInFire: false
+  };
   return worldStates.elderHouse;
+}
+
+export function elderHouseCanEnter(worldStates, day, minute) {
+  return elderHouseStage(worldStates,day,minute) !== "burned";
+}
+
+export function elderConfrontationReady(worldStates, day, minute) {
+  const house = worldStates.elderHouse;
+  return elderHouseStage(worldStates,day,minute) === "burning"
+    && !!house.elderDoomed
+    && !house.confronted;
+}
+
+export function completeElderConfrontation(worldStates) {
+  const house = worldStates.elderHouse;
+  if (house.stage !== "burning" || !house.elderDoomed || house.confronted) return false;
+  house.confronted = true;
+  house.curseActive = true;
+  return true;
 }
 
 export function houseFireStage(worldStates, ownerId, day, minute) {

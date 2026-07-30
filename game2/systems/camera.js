@@ -1,5 +1,20 @@
 export const CAMERA_BASE_FLOOR = 438;
 
+export function horizontalCameraTarget({
+  playerX,
+  viewportWidth,
+  worldWidth,
+  minX = 0,
+  anchor = .36
+} = {}) {
+  const viewport = Math.max(0,Number(viewportWidth) || 0);
+  const width = Math.max(viewport,Number(worldWidth) || viewport);
+  const minimum = Number.isFinite(minX) ? minX : 0;
+  const maximum = Math.max(minimum,width - viewport);
+  const target = (Number(playerX) || 0) - viewport * anchor;
+  return Math.max(minimum,Math.min(maximum,target));
+}
+
 export function landingFloorBelowPlayer(
   platforms = [],
   x,
@@ -20,6 +35,16 @@ export function landingFloorBelowPlayer(
     support = Math.min(support,platform.y);
   }
   return Number.isFinite(support) ? support : fallback;
+}
+
+export function fallingSupportFloorAt(
+  platforms = [],
+  x,
+  bodyY,
+  { fallback = CAMERA_BASE_FLOOR, tolerance = 10 } = {}
+) {
+  const probeY = Number.isFinite(bodyY) ? bodyY - tolerance : fallback;
+  return landingFloorBelowPlayer(platforms,x,probeY,{ fallback });
 }
 
 export function verticalCameraTarget(

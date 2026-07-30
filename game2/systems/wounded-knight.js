@@ -79,6 +79,21 @@ export function chooseWoundedKnight(state, choice, day, minute) {
   return true;
 }
 
+export function advanceWoundedKnightExecution(state, dt = 1) {
+  if (!state || state.status !== "executing") {
+    return { active:false,timer:0,windup:false,shouldHit:false };
+  }
+  const timer = Number.isFinite(state.executionTimer) ? state.executionTimer : 0;
+  const step = Number.isFinite(dt) && dt > 0 ? dt : 1;
+  state.executionTimer = Math.max(0,timer - step);
+  return {
+    active:true,
+    timer:state.executionTimer,
+    windup:state.executionTimer < 96 && state.executionTimer > 62,
+    shouldHit:!state.executionHit && state.executionTimer <= 62
+  };
+}
+
 export function finishWoundedKnightExecution(state, day, minute, zone, x, headX, headY) {
   if (!state || !["executing", "waiting"].includes(state.status)) return false;
   state.status = "executed";

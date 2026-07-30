@@ -11,6 +11,7 @@ const checkOnly = process.argv.includes("--check");
 
 const moduleFiles = [
   "config/items.js",
+  "config/equipment-visuals.js",
   "config/skills.js",
   "config/npcs.js",
   "config/enemies.js",
@@ -31,6 +32,7 @@ const moduleFiles = [
   "systems/blessing.js",
   "systems/pursuit.js",
   "systems/dev-console.js",
+  "systems/intro.js",
   "systems/karma-skills.js",
   "systems/wounded-knight.js",
   "systems/world-state.js",
@@ -48,6 +50,7 @@ const moduleFiles = [
   "systems/npc-roaming.js",
   "systems/garen-effects.js",
   "world/regions/index.js",
+  "render/intro-cinematic.js",
   "render/gpu-renderer.js"
 ];
 
