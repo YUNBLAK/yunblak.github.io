@@ -1005,6 +1005,28 @@ section h2::after {
   border-bottom-color: #1f547c;
 }
 
+.recent-news .news-github {
+  display: inline-flex;
+  width: 25px;
+  height: 25px;
+  margin-left: 8px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #cbd8e1;
+  border-radius: 50%;
+  color: #29343d;
+  font-size: 0.88rem;
+  line-height: 1;
+  vertical-align: -2px;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.recent-news .news-github:hover {
+  border-color: #2f6f9f;
+  color: #2f6f9f;
+  background: rgba(47, 111, 159, 0.06);
+}
+
 .recent-news .news-sublist {
   margin: 10px 0 2px;
   padding-left: 14px;
@@ -1929,6 +1951,17 @@ section h2,
 [data-theme="dark"] .recent-news .news-action:hover {
   color: #bae6fd;
   border-bottom-color: #bae6fd;
+}
+
+[data-theme="dark"] .recent-news .news-github {
+  border-color: #3c5668;
+  color: #d8e9f1;
+}
+
+[data-theme="dark"] .recent-news .news-github:hover {
+  border-color: #7dd3fc;
+  color: #bae6fd;
+  background: rgba(125, 211, 252, 0.08);
 }
 
 [data-theme="dark"] .recent-news .news-sublist li {

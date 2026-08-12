@@ -23,11 +23,11 @@
 
     /* ---- Home: profile ---- */
     "home.role": "연구자 | 효율적 머신러닝",
-    "home.subtitle": "서던캘리포니아대학교(USC) 인공지능(AI) 석사과정 재학",
+    "home.subtitle": "서던캘리포니아대학교(USC) 컴퓨터과학 석사과정 재학",
     "home.address": "미국 캘리포니아주 로스앤젤레스",
 
     /* ---- Home: bio ---- */
-    "bio.p1": "안녕하세요, 다니엘입니다. 저는 서던캘리포니아대학교(USC) 인공지능 석사과정 1년차로, <strong>효율적 머신러닝</strong>과 <strong>효율적 멀티에이전트 시스템</strong>을 연구하고 있습니다. 감사하게도 <a href=\"https://spkreddy.org/\">Sai Praneeth Karimireddy 교수님</a>과 <a href=\"https://vatsalsharan.github.io/\">Vatsal Sharan 교수님</a>의 지도를 받고 있습니다. 현재 <a href=\"https://scholar.google.com/citations?user=__waCuYAAAAJ&amp;hl=en\">유승주 교수님</a>의 지도 아래 <a href=\"https://cmalab.snu.ac.kr/\">서울대학교</a> 방문 연구원으로 연구하는 동시에, 인하대학교의 <a href=\"https://sites.google.com/view/sunwoolee/home\">이선우 교수님</a>과 긴밀히 협력하고 있습니다. 연구와 함께 삼성전자에서 강사로 활동하고 있습니다.",
+    "bio.p1": "안녕하세요, 다니엘입니다. 저는 서던캘리포니아대학교(USC) 컴퓨터과학 석사과정 2년차로, <strong>효율적 머신러닝</strong>과 <strong>효율적 멀티에이전트 시스템</strong>을 연구하고 있습니다. 감사하게도 <a href=\"https://spkreddy.org/\">Sai Praneeth Karimireddy 교수님</a>과 <a href=\"https://viterbi.usc.edu/directory/faculty/Annavaram/Murali\">Murali Annavaram 교수님</a>의 지도를 받고 있습니다. 2026년 여름에는 <a href=\"https://scholar.google.com/citations?user=__waCuYAAAAJ&amp;hl=en\">유승주 교수님</a>의 지도 아래 <a href=\"https://cmalab.snu.ac.kr/\">서울대학교</a> 방문 연구원으로 연구했으며, 삼성전자에서 강사로 활동했습니다. 인하대학교의 <a href=\"https://sites.google.com/view/sunwoolee/home\">이선우 교수님</a>과 긴밀히 협력하고 있습니다.",
     "bio.p2": "대규모 언어 모델(LLM)을 비롯한 최근 AI의 발전은 대부분 모델의 규모를 키우는 스케일링에 기대어 왔지만, 그만큼 막대한 연산량과 메모리 비용을 동반합니다. 이러한 문제의식은 제 연구의 핵심을 이루는 보다 근본적인 질문으로 이어집니다.",
     "bio.rq": "현대의 신경망이 본질적으로 과도하게 매개변수화되어 있고 연산적으로도 중복이 많다는 점을 고려할 때, 우리는 이를 어떻게 구조적·연산적으로 최적인 시스템으로 변모시킬 수 있을까?",
     "bio.p3": "그래서 제 연구는 신경망이 데이터를 더 가볍고 빠르게, 그리고 더 효율적으로 학습할 수 있도록 최적화·일반화·모델 압축 기법을 개선하는 데 초점을 두고 있습니다.",
@@ -45,6 +45,7 @@
     /* ---- Home: section headings ---- */
     "edu.h": "학력",
     "news.h": "최근 소식",
+    "news.date.aug26": "2026년 8월",
     "news.date.jul26": "2026년 7월",
     "news.date.jun26": "2026년 6월",
     "news.date.may26": "2026년 5월",
@@ -57,6 +58,7 @@
     "news.date.nov24": "2024년 11월",
     "news.date.sep24": "2024년 9월",
     "news.date.mar24": "2024년 3월",
+    "news.item.output_aware": "<span class=\"news-label\">새 논문</span> Output-Aware Rotation for INT2 KV-Cache Quantization <a class=\"news-action\" href=\"https://arxiv.org/abs/2608.02691\" target=\"_blank\" rel=\"noopener noreferrer\">논문</a> <a class=\"news-github\" href=\"https://github.com/daniel-eai/Output-Aware-INT2-KV-Cache-Quantization\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"GitHub 저장소 열기\" title=\"GitHub 저장소\"><i class=\"fa-brands fa-github\" aria-hidden=\"true\"></i></a>",
     "news.item.samsung": "<span class=\"news-label\">삼성전자</span> 본사에서 강사로 멀티에이전트 시스템과 루프 엔지니어링 여름 강의를 진행합니다.",
     "news.item.snu": "<span class=\"news-label\">서울대학교</span> <a href=\"https://scholar.google.com/citations?user=__waCuYAAAAJ&amp;hl=en\">유승주 교수님</a>의 지도 아래 컴퓨팅·메모리 아키텍처 연구실에 방문연구원으로 합류했습니다.",
     "news.item.emnlp26": "EMNLP 2026에 여러 논문을 제출했습니다.",
@@ -86,7 +88,7 @@
     "edu.t0": "서울대학교",
     "edu.d0": "방문 연구원 · <a href=\"https://cmalab.snu.ac.kr/\">컴퓨팅·메모리 아키텍처 연구실(CMAL)</a> · 효율적 LLM을 위한 KV-cache 압축<br>지도교수: <a href=\"https://scholar.google.com/citations?user=__waCuYAAAAJ&hl=en\">유승주 교수님</a>",
     "edu.t2": "서던캘리포니아대학교(USC)",
-    "edu.d2": "인공지능 이학석사(컴퓨터과학)<br>지도교수: <a href=\"https://spkreddy.org/\">Sai Praneeth Karimireddy 교수님</a>, <a href=\"https://vatsalsharan.github.io/\">Vatsal Sharan 교수님</a>",
+    "edu.d2": "컴퓨터과학 이학석사<br>지도교수: <a href=\"https://spkreddy.org/\">Sai Praneeth Karimireddy 교수님</a>, <a href=\"https://viterbi.usc.edu/directory/faculty/Annavaram/Murali\">Murali Annavaram 교수님</a>",
     "edu.t3": "뉴욕주립대학교 스토니브룩 캠퍼스",
     "edu.d3": "컴퓨터과학(AI 전공) · 응용수학 복수전공 이학사 · 병역으로 2년 휴학<br>지도교수: <a href=\"https://chaochen.github.io/index.html\">Chao Chen 교수님</a>",
 
