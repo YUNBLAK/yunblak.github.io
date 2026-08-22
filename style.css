@@ -23,6 +23,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Keep every Korean translation in the same clean system typeface. */
+html[lang="ko"] body,
+html[lang="ko"] [data-i18n] {
+  font-family: "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", Arial, sans-serif !important;
+}
+
 /* =========================
    Home: geometric ambient network
    ========================= */
@@ -65,6 +71,163 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .ambient-network {
     transition: none;
+  }
+}
+
+/* =========================
+   Gallery
+   ========================= */
+.gallery-page {
+  max-width: 1000px;
+  min-height: calc(100vh - 132px);
+  padding-top: 64px;
+}
+
+.gallery-hero {
+  max-width: 690px;
+  margin: 0 auto 42px;
+  text-align: center;
+}
+
+.gallery-kicker {
+  margin-bottom: 12px;
+  color: #2f6f9f;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.gallery-title {
+  margin-bottom: 14px;
+  color: #1a1a1a;
+  font-family: 'Roboto Slab', serif;
+  font-size: clamp(2.6rem, 6vw, 4.4rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.gallery-intro {
+  color: #5b646d;
+  font-family: 'Roboto Slab', serif;
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.gallery-coming {
+  position: relative;
+  min-height: 410px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  padding: 54px 28px;
+  border: 1px solid #dce7ee;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(47, 111, 159, 0.13), transparent 28%),
+    radial-gradient(circle at 84% 76%, rgba(113, 101, 176, 0.12), transparent 30%),
+    rgba(255, 255, 255, 0.64);
+  box-shadow: 0 20px 55px rgba(34, 69, 94, 0.08);
+  text-align: center;
+}
+
+.gallery-coming::before,
+.gallery-coming::after {
+  position: absolute;
+  width: 260px;
+  height: 180px;
+  border: 1px solid rgba(47, 111, 159, 0.16);
+  border-radius: 18px;
+  content: '';
+  transform: rotate(-8deg);
+}
+
+.gallery-coming::before {
+  top: -76px;
+  left: -62px;
+}
+
+.gallery-coming::after {
+  right: -58px;
+  bottom: -82px;
+  transform: rotate(9deg);
+}
+
+.gallery-coming-content {
+  position: relative;
+  z-index: 1;
+  max-width: 520px;
+}
+
+.gallery-camera {
+  display: inline-grid;
+  width: 68px;
+  height: 68px;
+  margin-bottom: 24px;
+  place-items: center;
+  border: 1px solid #b8cedc;
+  border-radius: 50%;
+  color: #2f6f9f;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 10px 26px rgba(47, 111, 159, 0.12);
+  font-size: 1.35rem;
+}
+
+.gallery-coming h2 {
+  margin-bottom: 12px;
+  color: #20262c;
+  font-family: 'Roboto Slab', serif;
+  font-size: 1.5rem;
+}
+
+.gallery-coming p {
+  color: #626c75;
+  line-height: 1.75;
+}
+
+[data-theme="dark"] .gallery-title,
+[data-theme="dark"] .gallery-coming h2 {
+  color: #f1f3f5;
+}
+
+[data-theme="dark"] .gallery-intro,
+[data-theme="dark"] .gallery-coming p {
+  color: #aeb8c1;
+}
+
+[data-theme="dark"] .gallery-coming {
+  border-color: #294557;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(125, 211, 252, 0.13), transparent 28%),
+    radial-gradient(circle at 84% 76%, rgba(172, 161, 255, 0.11), transparent 30%),
+    rgba(16, 31, 43, 0.72);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.26);
+}
+
+[data-theme="dark"] .gallery-coming::before,
+[data-theme="dark"] .gallery-coming::after {
+  border-color: rgba(125, 211, 252, 0.17);
+}
+
+[data-theme="dark"] .gallery-camera {
+  border-color: #346785;
+  color: #7dd3fc;
+  background: rgba(19, 42, 57, 0.88);
+}
+
+@media (max-width: 640px) {
+  .gallery-page {
+    padding-top: 42px;
+  }
+
+  .gallery-hero {
+    margin-bottom: 30px;
+  }
+
+  .gallery-coming {
+    min-height: 360px;
+    padding: 44px 22px;
+    border-radius: 18px;
   }
 }
 
@@ -2044,7 +2207,7 @@ section h2,
   border: 0;
 }
 
-/* E-AI page (magazine) — dark */
+/* E-AI page (magazine): dark */
 [data-theme="dark"] .ef-mast,
 [data-theme="dark"] .ef-cite {
   border-color: #346785;

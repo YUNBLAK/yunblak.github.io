@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>E-AI Project | Vincent-Daniel Yun</title>
-  <meta name="description" content="E-AI (Efficient & Robust AI) — building lightweight, fast, and reliable AI: LLM compression, pruning, and robust multi-agent systems." />
+  <meta name="description" content="E-AI (Efficient & Robust AI): building lightweight, fast, and reliable AI through LLM compression, pruning, and robust multi-agent systems." />
   <meta name="google" content="notranslate" />
   <link rel="canonical" href="https://www.worldwidedaniel.com/eai-project" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=20260821h" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
@@ -23,6 +23,7 @@
           <li><a href="/" data-i18n="nav.home">Home</a></li>
           <li><a href="/publications" data-i18n="nav.publications">Publications</a></li>
           <li><a href="/eai-project" class="active" data-i18n="nav.eai">E-AI Project</a></li>
+          <li><a href="/gallery" data-i18n="nav.gallery">Gallery</a></li>
         </ul>
         <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language">한국어</button>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
@@ -49,21 +50,21 @@
     <!-- ===== Lede / Vision ===== -->
     <section class="ef-lede">
       <p class="ef-dropcap" data-i18n="eai.vision_p1">
-        Modern AI is powerful but heavy. State-of-the-art models are enormous and their inference is slow &mdash;
+        Modern AI is powerful but heavy. State-of-the-art models are enormous and their inference is slow,
         still far from human intuition, and far too slow and unreliable to trust in urgent, high-stakes moments.
       </p>
       <p data-i18n="eai.vision_p2">
         Two obstacles stand between today's models and AI we can trust in the field. Individually, each model is too
         large and too slow to run where it is actually needed. Collectively, when many models or agents work together,
         a single faulty or adversarial member can quietly derail the whole system. <strong>E-AI</strong> attacks both
-        &mdash; making every model lightweight and fast, and keeping teams of agents reliable even when some of them fail.
+        making every model lightweight and fast while keeping teams of agents reliable even when some of them fail.
       </p>
       <p data-i18n="eai.vision_p3">
         I started the <strong>E-AI (Efficient-AI)</strong> project to build compact yet powerful AI that can assist
-        people in disaster scenarios &mdash; responding to dangerous accidents quickly and reliably when every second counts.
+        people in disaster scenarios, responding to dangerous accidents quickly and reliably when every second counts.
       </p>
       <blockquote class="ef-pullquote" data-i18n="eai.vision_quote">
-        E-AI is the central theme of all my research &mdash; every project I work on is a step toward making it real.
+        E-AI is the central theme of all my research. Every project I work on is a step toward making it real.
       </blockquote>
     </section>
 
@@ -71,7 +72,7 @@
     <div class="ef-sectionlabel"><span data-i18n="eai.research_h">Research under E-AI</span></div>
     <p class="ef-sectionintro" data-i18n="eai.research_sub">
       The work splits into two threads: keeping teams of LLM agents robust when individual agents fail, and shrinking
-      and accelerating the models themselves &mdash; without losing what makes them powerful.
+      and accelerating the models themselves without losing what makes them powerful.
     </p>
 
     <!-- Track I -->
@@ -93,7 +94,7 @@
           When LLM agents collaborate over a network, a few unreliable or adversarial ("Byzantine") agents can mislead
           the rest and corrupt the group's answer. Self-Anchored Consensus (SAC) is a fully decentralized
           filter-and-refine protocol where agents iteratively share, evaluate, and filter each other's messages
-          &mdash; with graph conditions that guarantee honest agents keep reliable information flowing, even under
+          with graph conditions that guarantee honest agents keep reliable information flowing, even under
           adversarial attacks.
         </p>
         <a class="ef-feature-link" href="https://arxiv.org/abs/2605.09076" target="_blank" data-i18n="eai.readpaper">Read the paper &rarr;</a>
@@ -136,7 +137,7 @@
         <p class="ef-feature-desc" data-i18n="eai.c1_d">
           Layer pruning removes whole Transformer blocks to shrink an LLM, but creates a mismatch at the pruning
           boundary that hurts accuracy. Ghosted Layers is a training-free module that solves a closed-form
-          activation-alignment problem to recover the lost information &mdash; keeping the speedup of pruning
+          activation-alignment problem to recover the lost information while keeping the speedup of pruning
           while restoring quality.
         </p>
         <a class="ef-feature-link" href="https://arxiv.org/abs/2605.15491" target="_blank" data-i18n="eai.readpaper">Read the paper &rarr;</a>
@@ -153,7 +154,7 @@
         <div class="ef-venue-badge">Accepted &middot; EMNLP 2026 Main</div>
         <h3 class="ef-feature-title" data-i18n="eai.c2_t">Locality-Aware Redundancy Pruning (LoRP)</h3>
         <p class="ef-feature-desc" data-i18n="eai.c2_d">
-          Where redundancy lives inside an LLM depends on its architecture &mdash; it can be localized or spread
+          Where redundancy lives inside an LLM depends on its architecture. It can be localized or spread
           globally (think Llama vs. Qwen). LoRP measures inter-layer similarity to compute a Representation
           Locality Score, then prunes each model according to its own redundancy structure instead of a
           one-size-fits-all rule.
@@ -173,7 +174,7 @@
         <p class="ef-feature-desc" data-i18n="eai.c3_d">
           Under aggressive sparsity, naive pruning destroys accuracy because important weights are spread thin.
           WCR is a training-time regularizer that concentrates a model's energy onto a small set of informative
-          parameters, so magnitude pruning can safely remove the rest &mdash; making models far more robust to
+          parameters, so magnitude pruning can safely remove the rest and make models far more robust to
           high-sparsity compression.
         </p>
         <a class="ef-feature-link" href="https://arxiv.org/abs/2511.14282" target="_blank" data-i18n="eai.readpaper">Read the paper &rarr;</a>
@@ -190,7 +191,7 @@
         <h3 class="ef-feature-title" data-i18n="eai.c4_t">Rethinking Layer Redundancy: Calibration over Search</h3>
         <p class="ef-feature-desc" data-i18n="eai.c4_d">
           Most depth-pruning methods chase clever search algorithms to find removable layers. We show the opposite:
-          under a fixed calibration set, complex search barely beats simple one-shot pruning &mdash; it is the
+          under a fixed calibration set, complex search barely beats simple one-shot pruning. It is the
           calibration configuration that really shapes which layers are redundant. A call to prioritize data
           over search.
         </p>
@@ -336,6 +337,6 @@
   </script>
 
   <!-- ========== i18n (KR / EN) ========== -->
-  <script src="i18n.js"></script>
+  <script src="i18n.js?v=20260821j"></script>
 </body>
 </html>

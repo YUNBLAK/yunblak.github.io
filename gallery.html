@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery | Vincent-Daniel Yun</title>
+  <meta name="description" content="A visual archive of research, talks, collaborations, and moments from Vincent-Daniel Yun." />
+  <meta name="google" content="notranslate" />
+  <link rel="canonical" href="https://www.worldwidedaniel.com/gallery" />
+  <link rel="stylesheet" href="style.css?v=20260821h" />
+  <link rel="stylesheet" href="gallery.css?v=20260821b" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&amp;family=Roboto:wght@300;400;500;700&amp;family=Roboto+Slab:wght@400;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- ========== Navbar ========== -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-brand"><img src="image/usc-logo.png" alt="USC" class="nav-logo" />Vincent-Daniel Yun</a>
+      <div class="nav-right">
+        <ul class="nav-links" id="nav-links">
+          <li><a href="/" data-i18n="nav.home">Home</a></li>
+          <li><a href="/publications" data-i18n="nav.publications">Publications</a></li>
+          <li><a href="/eai-project" data-i18n="nav.eai">E-AI Project</a></li>
+          <li><a href="/gallery" class="active" data-i18n="nav.gallery">Gallery</a></li>
+        </ul>
+        <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language">한국어</button>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button id="nav-hamburger" class="nav-hamburger" type="button" aria-label="Menu" aria-expanded="false">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container gallery-magazine">
+    <div class="mag-issue-bar" aria-label="Gallery issue information">
+      <span data-i18n="gallery.issue">Field Notes · Issue 01</span>
+      <span>2024–2026</span>
+    </div>
+
+    <section class="mag-cover" aria-labelledby="gallery-title">
+      <figure class="mag-cover-image">
+        <button class="mag-shot-button" type="button"
+          data-full="Gallery/ICASSP 2026 Spain Barcelona/8A76FD60-2996-4A10-B2AB-46C74BE96A32_1_105_c.jpeg"
+          data-caption="ICASSP 2026 · Barcelona, Spain"
+          aria-label="Open cover photograph from ICASSP 2026">
+          <img src="Gallery/ICASSP 2026 Spain Barcelona/8A76FD60-2996-4A10-B2AB-46C74BE96A32_1_105_c.jpeg"
+            alt="Vincent-Daniel Yun at ICASSP 2026 in Barcelona" fetchpriority="high" />
+        </button>
+        <figcaption>ICASSP 2026 · Barcelona, Spain</figcaption>
+      </figure>
+      <div class="mag-cover-copy">
+        <p class="mag-kicker" data-i18n="gallery.kicker">A Visual Research Journal</p>
+        <h1 id="gallery-title" data-i18n="gallery.title">Research,<br><em>on the road.</em></h1>
+        <p class="mag-deck" data-i18n="gallery.intro">A visual record of papers leaving the page through talks, poster sessions, collaborations, and the cities that held them.</p>
+        <div class="mag-cover-rule"></div>
+        <p class="mag-cover-note" data-i18n="gallery.cover_note">From Yokohama and Seattle in 2024 to Barcelona and Seoul in 2026, each stop became part of the same pursuit: making AI lighter, faster, and more reliable.</p>
+      </div>
+    </section>
+
+    <section class="mag-contents" aria-labelledby="gallery-contents-title">
+      <header class="mag-contents-header">
+        <p class="mag-contents-kicker" data-i18n="gallery.contents_kicker">Contents</p>
+        <h2 id="gallery-contents-title" data-i18n="gallery.contents_title">Journeys by date</h2>
+        <p class="mag-contents-note" data-i18n="gallery.contents_note">The newest field notes appear first.</p>
+      </header>
+      <ol class="mag-contents-list">
+        <li><a href="#event-icml-2026"><span class="mag-contents-index">01</span><span><strong>ICML 2026</strong><small>Seoul · July 2026</small></span></a></li>
+        <li><a href="#event-icassp-2026"><span class="mag-contents-index">02</span><span><strong>ICASSP 2026</strong><small>Barcelona · May 2026</small></span></a></li>
+        <li><a href="#event-fortml-2026"><span class="mag-contents-index">03</span><span><strong>USC FoRT-ML</strong><small>Los Angeles · Spring 2026</small></span></a></li>
+        <li><a href="#event-neurips-2025"><span class="mag-contents-index">04</span><span><strong>NeurIPS 2025</strong><small>San Diego · December 2025</small></span></a></li>
+        <li><a href="#event-aaai-2025"><span class="mag-contents-index">05</span><span><strong>AAAI 2025</strong><small>Philadelphia · March 2025</small></span></a></li>
+        <li><a href="#event-bigdata-2024"><span class="mag-contents-index">06</span><span><strong>IEEE BigData 2024</strong><small>Washington, D.C. · December 2024</small></span></a></li>
+        <li><a href="#event-esa-2024"><span class="mag-contents-index">07</span><span><strong>ESA SPAICE 2024</strong><small>United Kingdom · September 2024</small></span></a></li>
+        <li><a href="#event-ijcnn-2024"><span class="mag-contents-index">08</span><span><strong>IJCNN 2024</strong><small>Yokohama · Summer 2024</small></span></a></li>
+        <li><a href="#event-cvpr-2024"><span class="mag-contents-index">09</span><span><strong>CVPR 2024</strong><small>Seattle · June 2024</small></span></a></li>
+      </ol>
+    </section>
+
+    <nav class="mag-year-nav" aria-label="Gallery years">
+      <a href="#year-2026">2026</a>
+      <a href="#year-2025">2025</a>
+      <a href="#year-2024">2024</a>
+    </nav>
+
+    <!-- ==================== 2026 ==================== -->
+    <section class="mag-year" id="year-2026">
+      <header class="mag-year-head">
+        <span class="mag-year-number">2026</span>
+        <p data-i18n="gallery.year26">A year of systems: efficient inference, robust agents, and a summer of research across Los Angeles, Barcelona, and Seoul.</p>
+      </header>
+
+      <article class="mag-story mag-story--lead" id="event-icml-2026">
+        <header class="mag-story-head">
+          <div class="mag-story-meta"><span>01</span><small>Seoul · July 2026</small></div>
+          <div>
+            <p class="mag-section-label">ICML 2026 · COEX</p>
+            <h2 data-i18n="gallery.icml_title">A Summer of Systems</h2>
+          </div>
+        </header>
+        <p class="mag-story-lede" data-i18n="gallery.icml_body">A summer based in Seoul included a visiting scholarship at SNU’s Computing &amp; Memory Architecture Lab and lectures at Samsung Electronics, then converged at ICML week. Posters on pruning, optimization, and robust multi-agent systems placed several branches of the E-AI project in one shared room.</p>
+        <div class="mag-photo-grid">
+          <figure class="mag-shot mag-shot--main">
+            <button class="mag-shot-button" type="button" data-full="Gallery/ICML 2026 Korea/19FB0060-11EF-4E2B-A208-EB81043C978A_1_105_c.jpeg" data-caption="ICML 2026 poster session · Seoul" aria-label="Open ICML poster photograph">
+              <img src="Gallery/ICML 2026 Korea/19FB0060-11EF-4E2B-A208-EB81043C978A_1_105_c.jpeg" alt="Vincent-Daniel Yun presenting at an ICML 2026 poster session" loading="lazy" decoding="async" />
+            </button>
+            <figcaption data-i18n="gallery.cap_icml_poster">Multiple research threads, one poster hall.</figcaption>
+          </figure>
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/ICML 2026 Korea/4A889F39-35C2-44D6-A3E3-0C99029F7828_1_105_c.jpeg" data-caption="ICML 2026 · Seoul" aria-label="Open ICML group photograph">
+              <img src="Gallery/ICML 2026 Korea/4A889F39-35C2-44D6-A3E3-0C99029F7828_1_105_c.jpeg" alt="A group photograph at ICML 2026 in Seoul" loading="lazy" decoding="async" />
+            </button>
+            <figcaption>ICML 2026 · Seoul</figcaption>
+          </figure>
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/ICML 2026 Korea/6D92CF77-0A4D-47A6-939B-3923D4C78A75_1_105_c.jpeg" data-caption="The conference floor at COEX" aria-label="Open ICML conference hall photograph">
+              <img src="Gallery/ICML 2026 Korea/6D92CF77-0A4D-47A6-939B-3923D4C78A75_1_105_c.jpeg" alt="The busy ICML 2026 conference floor at COEX" loading="lazy" decoding="async" />
+            </button>
+            <figcaption data-i18n="gallery.cap_icml_floor">The conference floor at COEX.</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="mag-story mag-story--reverse" id="event-icassp-2026">
+        <header class="mag-story-head">
+          <div class="mag-story-meta"><span>02</span><small>Barcelona · May 2026</small></div>
+          <div>
+            <p class="mag-section-label">ICASSP 2026 · Main Conference</p>
+            <h2 data-i18n="gallery.icassp_title">Signals in Barcelona</h2>
+          </div>
+        </header>
+        <p class="mag-story-lede" data-i18n="gallery.icassp_body">At ICASSP 2026, “Sharpness-Aware Minimization with Z-Score Gradient Filtering” moved from manuscript to conversation. Supported by a USC GSG Travel Grant, the presentation connected optimization research with the broader signal-processing community, making Barcelona part of the work itself.</p>
+        <div class="mag-photo-grid mag-photo-grid--reverse">
+          <figure class="mag-shot mag-shot--main">
+            <button class="mag-shot-button" type="button" data-full="Gallery/ICASSP 2026 Spain Barcelona/D27BE2A9-B5C3-4322-9CDA-263B6861B6A6_1_105_c.jpeg" data-caption="Presenting at ICASSP 2026" aria-label="Open ICASSP poster photograph">
+              <img src="Gallery/ICASSP 2026 Spain Barcelona/D27BE2A9-B5C3-4322-9CDA-263B6861B6A6_1_105_c.jpeg" alt="Vincent-Daniel Yun presenting a research poster at ICASSP 2026" loading="lazy" decoding="async" />
+            </button>
+            <figcaption data-i18n="gallery.cap_icassp_poster">The poster session: where results become questions.</figcaption>
+          </figure>
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/ICASSP 2026 Spain Barcelona/F2CFCDAF-C2D9-4877-8766-C1402A5EDE17_1_105_c.jpeg" data-caption="Sagrada Família · Barcelona" aria-label="Open Barcelona photograph">
+              <img src="Gallery/ICASSP 2026 Spain Barcelona/F2CFCDAF-C2D9-4877-8766-C1402A5EDE17_1_105_c.jpeg" alt="Vincent-Daniel Yun near the Sagrada Família in Barcelona" loading="lazy" decoding="async" />
+            </button>
+            <figcaption>Sagrada Família · Barcelona</figcaption>
+          </figure>
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/ICASSP 2026 Spain Barcelona/B066A865-C3D3-47FA-B132-1001EB72E2FC_1_105_c.jpeg" data-caption="Between sessions, Barcelona" aria-label="Open Barcelona street photograph">
+              <img src="Gallery/ICASSP 2026 Spain Barcelona/B066A865-C3D3-47FA-B132-1001EB72E2FC_1_105_c.jpeg" alt="A Barcelona street during ICASSP 2026" loading="lazy" decoding="async" />
+            </button>
+            <figcaption data-i18n="gallery.cap_between_sessions">Between sessions.</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="mag-story mag-story--compact" id="event-fortml-2026">
+        <header class="mag-story-head">
+          <div class="mag-story-meta"><span>03</span><small>Los Angeles · Spring 2026</small></div>
+          <div>
+            <p class="mag-section-label">USC FoRT-ML</p>
+            <h2 data-i18n="gallery.fort_title">The Work Between the Papers</h2>
+          </div>
+        </header>
+        <p class="mag-story-lede" data-i18n="gallery.fort_body">Research is also the community built between deadlines. A spring picnic and a bowling night with USC’s FoRT-ML group capture the quieter infrastructure behind the papers: trust, critique, and time spent together.</p>
+        <div class="mag-duo">
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/FoRTML 2026 Spring/FORT-ML-Picnic.jpeg" data-caption="FoRT-ML spring picnic · 2026" aria-label="Open FoRT-ML picnic photograph">
+              <img src="Gallery/FoRTML 2026 Spring/FORT-ML-Picnic.jpeg" alt="USC FoRT-ML group at a spring picnic" loading="lazy" decoding="async" />
+            </button>
+            <figcaption>FoRT-ML spring picnic · 2026</figcaption>
+          </figure>
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/FoRTML 2026 Spring/542002C1-4A57-4E31-8FAB-B045CAF24B62_1_105_c.jpeg" data-caption="FoRT-ML, off the clock" aria-label="Open FoRT-ML group photograph">
+              <img src="Gallery/FoRTML 2026 Spring/542002C1-4A57-4E31-8FAB-B045CAF24B62_1_105_c.jpeg" alt="USC FoRT-ML group during a bowling night" loading="lazy" decoding="async" />
+            </button>
+            <figcaption data-i18n="gallery.cap_fort">FoRT-ML, off the clock.</figcaption>
+          </figure>
+        </div>
+      </article>
+    </section>
+
+    <aside class="mag-interlude">
+      <span data-i18n="gallery.interlude_label">Field note</span>
+      <blockquote data-i18n="gallery.interlude">“A conference is not only where work is presented. It is where an idea learns how to speak to people outside the room where it began.”</blockquote>
+    </aside>
+
+    <!-- ==================== 2025 ==================== -->
+    <section class="mag-year" id="year-2025">
+      <header class="mag-year-head">
+        <span class="mag-year-number">2025</span>
+        <p data-i18n="gallery.year25">Optimization moved to the foreground, from workshop posters in San Diego to a first AAAI gathering in Philadelphia.</p>
+      </header>
+
+      <article class="mag-story" id="event-neurips-2025">
+        <header class="mag-story-head">
+          <div class="mag-story-meta"><span>04</span><small>San Diego · December 2025</small></div>
+          <div>
+            <p class="mag-section-label">NeurIPS 2025 · OPT Workshop</p>
+            <h2 data-i18n="gallery.neurips_title">Optimization in Conversation</h2>
+          </div>
+        </header>
+        <p class="mag-story-lede" data-i18n="gallery.neurips_body">At the NeurIPS OPT workshop, work on low-precision training, Z-score gradient filtering, and auto-scaled normalization met an audience focused on the mechanics of learning itself. The most useful moments happened beside the posters, where assumptions were challenged in real time.</p>
+        <div class="mag-photo-grid">
+          <figure class="mag-shot mag-shot--main">
+            <button class="mag-shot-button" type="button" data-full="Gallery/NeurIPS 2025 San Diego/A5813F4F-28D9-46BB-8FBB-C9338C6C7EA0_1_105_c.jpeg" data-caption="Discussing optimization at NeurIPS 2025" aria-label="Open NeurIPS discussion photograph">
+              <img src="Gallery/NeurIPS 2025 San Diego/A5813F4F-28D9-46BB-8FBB-C9338C6C7EA0_1_105_c.jpeg" alt="Researchers discussing a poster at NeurIPS 2025" loading="lazy" decoding="async" />
+            </button>
+            <figcaption data-i18n="gallery.cap_neurips_talk">The discussion beside the poster.</figcaption>
+          </figure>
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/NeurIPS 2025 San Diego/56DE2666-9C00-476F-B6D4-C0985956531B_1_105_c.jpeg" data-caption="NeurIPS 2025 · San Diego" aria-label="Open NeurIPS poster photograph">
+              <img src="Gallery/NeurIPS 2025 San Diego/56DE2666-9C00-476F-B6D4-C0985956531B_1_105_c.jpeg" alt="Vincent-Daniel Yun beside workshop posters at NeurIPS 2025" loading="lazy" decoding="async" />
+            </button>
+            <figcaption>NeurIPS 2025 · San Diego</figcaption>
+          </figure>
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/NeurIPS 2025 San Diego/F130DC28-6507-4B3A-B748-F9AB5ADE24D2_1_105_c.jpeg" data-caption="Inside the NeurIPS venue" aria-label="Open NeurIPS venue photograph">
+              <img src="Gallery/NeurIPS 2025 San Diego/F130DC28-6507-4B3A-B748-F9AB5ADE24D2_1_105_c.jpeg" alt="The NeurIPS 2025 venue in San Diego" loading="lazy" decoding="async" />
+            </button>
+            <figcaption data-i18n="gallery.cap_inside_venue">Inside the venue.</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="mag-story mag-story--reverse" id="event-aaai-2025">
+        <header class="mag-story-head">
+          <div class="mag-story-meta"><span>05</span><small>Philadelphia · March 2025</small></div>
+          <div>
+            <p class="mag-section-label">AAAI 2025 · Workshop</p>
+            <h2 data-i18n="gallery.aaai_title">A First Look at AAAI</h2>
+          </div>
+        </header>
+        <p class="mag-story-lede" data-i18n="gallery.aaai_body">The AAAI workshop brought ZNorm, a gradient normalization method for faster skip-connected network training, into a broader AI conversation. Philadelphia supplied the setting: a compact trip between a new research community and the city’s older institutions.</p>
+        <div class="mag-photo-grid mag-photo-grid--reverse">
+          <figure class="mag-shot mag-shot--main">
+            <button class="mag-shot-button" type="button" data-full="Gallery/AAAI 2025 Pensyl/63C6FAE6-5D02-4E7F-AEC2-87FEA43331CF_1_105_c.jpeg" data-caption="AAAI 2025 · Philadelphia" aria-label="Open AAAI conference photograph">
+              <img src="Gallery/AAAI 2025 Pensyl/63C6FAE6-5D02-4E7F-AEC2-87FEA43331CF_1_105_c.jpeg" alt="Vincent-Daniel Yun at AAAI 2025" loading="lazy" decoding="async" />
+            </button>
+            <figcaption>AAAI 2025 · Philadelphia</figcaption>
+          </figure>
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/AAAI 2025 Pensyl/4AD3D423-EBAC-4198-9F75-6FE59644589E_1_105_c.jpeg" data-caption="Philadelphia between sessions" aria-label="Open Philadelphia city photograph">
+              <img src="Gallery/AAAI 2025 Pensyl/4AD3D423-EBAC-4198-9F75-6FE59644589E_1_105_c.jpeg" alt="A Philadelphia street during AAAI 2025" loading="lazy" decoding="async" />
+            </button>
+            <figcaption data-i18n="gallery.cap_philadelphia">Philadelphia between sessions.</figcaption>
+          </figure>
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/AAAI 2025 Pensyl/3D1103D5-D0C6-46AF-B411-312EFADA86C6_1_105_c.jpeg" data-caption="Old institutions, new questions" aria-label="Open Philadelphia landmark photograph">
+              <img src="Gallery/AAAI 2025 Pensyl/3D1103D5-D0C6-46AF-B411-312EFADA86C6_1_105_c.jpeg" alt="A historic landmark in Philadelphia" loading="lazy" decoding="async" />
+            </button>
+            <figcaption data-i18n="gallery.cap_old_new">Old institutions, new questions.</figcaption>
+          </figure>
+        </div>
+      </article>
+    </section>
+
+    <!-- ==================== 2024 ==================== -->
+    <section class="mag-year" id="year-2024">
+      <header class="mag-year-head">
+        <span class="mag-year-number">2024</span>
+        <p data-i18n="gallery.year24">Four stages, four research worlds: optimization, space AI, neural networks, and medical imaging.</p>
+      </header>
+
+      <article class="mag-story" id="event-bigdata-2024">
+        <header class="mag-story-head">
+          <div class="mag-story-meta"><span>06</span><small>Washington, D.C. · December 2024</small></div>
+          <div>
+            <p class="mag-section-label">IEEE BigData 2024 · BPOD</p>
+            <h2 data-i18n="gallery.bigdata_title">Gradients in the Capital</h2>
+          </div>
+        </header>
+        <p class="mag-story-lede" data-i18n="gallery.bigdata_body">At the BPOD optimization workshop, the focus was gradient overlap in deep residual networks and how normalization can reshape difficult non-convex training. The final conference trip of 2024 paired a focused technical talk with a winter walk through Washington.</p>
+        <div class="mag-photo-grid">
+          <figure class="mag-shot mag-shot--main">
+            <button class="mag-shot-button" type="button" data-full="Gallery/BigData 2025 Washington DC/7ED510FE-6FE4-487D-AE0D-94BC522ADBB1_1_105_c.jpeg" data-caption="Presenting at IEEE BigData 2024" aria-label="Open IEEE BigData presentation photograph">
+              <img src="Gallery/BigData 2025 Washington DC/7ED510FE-6FE4-487D-AE0D-94BC522ADBB1_1_105_c.jpeg" alt="Vincent-Daniel Yun presenting at IEEE BigData 2024" loading="lazy" decoding="async" />
+            </button>
+            <figcaption data-i18n="gallery.cap_bigdata_talk">The BPOD workshop presentation.</figcaption>
+          </figure>
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/BigData 2025 Washington DC/3AA505F7-FB57-48B5-A508-44B7906C252D_1_105_c.jpeg" data-caption="IEEE BigData 2024 · Washington, D.C." aria-label="Open IEEE BigData conference photograph">
+              <img src="Gallery/BigData 2025 Washington DC/3AA505F7-FB57-48B5-A508-44B7906C252D_1_105_c.jpeg" alt="Vincent-Daniel Yun at IEEE BigData 2024" loading="lazy" decoding="async" />
+            </button>
+            <figcaption>IEEE BigData 2024</figcaption>
+          </figure>
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/BigData 2025 Washington DC/5EDC4690-1038-4200-A624-B2A833847023_1_105_c.jpeg" data-caption="The U.S. Capitol · Washington, D.C." aria-label="Open Washington Capitol photograph">
+              <img src="Gallery/BigData 2025 Washington DC/5EDC4690-1038-4200-A624-B2A833847023_1_105_c.jpeg" alt="Vincent-Daniel Yun in front of the United States Capitol" loading="lazy" decoding="async" />
+            </button>
+            <figcaption>Washington, D.C.</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="mag-story mag-story--reverse" id="event-esa-2024">
+        <header class="mag-story-head">
+          <div class="mag-story-meta"><span>07</span><small>United Kingdom · September 2024</small></div>
+          <div>
+            <p class="mag-section-label">ESA SPAICE 2024</p>
+            <h2 data-i18n="gallery.esa_title">AI, Looking Toward the Sun</h2>
+          </div>
+        </header>
+        <p class="mag-story-lede" data-i18n="gallery.esa_body">At ESA’s SPAICE conference, AI left the usual benchmark landscape for solar science. The work combined computer vision and ARIMA-LSTM modeling to analyze and predict solar coronal holes. It was a reminder that efficient, reliable learning matters far beyond conventional computing.</p>
+        <div class="mag-photo-grid mag-photo-grid--reverse">
+          <figure class="mag-shot mag-shot--main">
+            <button class="mag-shot-button" type="button" data-full="Gallery/ESA 2024 United Kingdom/CD006EDF-BFF4-4BB8-A0B5-AF5828A6675B_1_105_c.jpeg" data-caption="Presenting solar AI research at ESA SPAICE 2024" aria-label="Open ESA SPAICE presentation photograph">
+              <img src="Gallery/ESA 2024 United Kingdom/CD006EDF-BFF4-4BB8-A0B5-AF5828A6675B_1_105_c.jpeg" alt="Vincent-Daniel Yun presenting solar AI research at ESA SPAICE 2024" loading="lazy" decoding="async" />
+            </button>
+            <figcaption data-i18n="gallery.cap_esa_talk">Solar data, terrestrial conversation.</figcaption>
+          </figure>
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/ESA 2024 United Kingdom/E173816F-A371-40E1-87D3-E07DA9DF1872_1_105_c.jpeg" data-caption="ESA SPAICE 2024" aria-label="Open ESA SPAICE venue photograph">
+              <img src="Gallery/ESA 2024 United Kingdom/E173816F-A371-40E1-87D3-E07DA9DF1872_1_105_c.jpeg" alt="Vincent-Daniel Yun at the ESA SPAICE 2024 venue" loading="lazy" decoding="async" />
+            </button>
+            <figcaption>ESA SPAICE 2024</figcaption>
+          </figure>
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/ESA 2024 United Kingdom/5181AB48-57A9-4785-8983-DC5086AC2483_1_105_c.jpeg" data-caption="London after the conference" aria-label="Open London photograph">
+              <img src="Gallery/ESA 2024 United Kingdom/5181AB48-57A9-4785-8983-DC5086AC2483_1_105_c.jpeg" alt="Vincent-Daniel Yun in London near Big Ben" loading="lazy" decoding="async" />
+            </button>
+            <figcaption data-i18n="gallery.cap_london">London after the conference.</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="mag-story" id="event-ijcnn-2024">
+        <header class="mag-story-head">
+          <div class="mag-story-meta"><span>08</span><small>Yokohama · Summer 2024</small></div>
+          <div>
+            <p class="mag-section-label">IJCNN 2024 · Oral</p>
+            <h2 data-i18n="gallery.ijcnn_title">The First Oral Stage</h2>
+          </div>
+        </header>
+        <p class="mag-story-lede" data-i18n="gallery.ijcnn_body">“Robust Neural Pruning with Gradient Sampling Optimization for Residual Neural Networks” was presented as an oral paper at IJCNN 2024. Yokohama marked an early moment when model-compression work stepped onto an international stage. It was also when a research direction began to look like a sustained program.</p>
+        <div class="mag-photo-grid">
+          <figure class="mag-shot mag-shot--main">
+            <button class="mag-shot-button" type="button" data-full="Gallery/IJCNN 2024 Japan Yokohama/BE809A35-C0E2-4E23-B6A9-6281F43A8F4F_1_105_c.jpeg" data-caption="IJCNN 2024 · Yokohama" aria-label="Open IJCNN conference photograph">
+              <img src="Gallery/IJCNN 2024 Japan Yokohama/BE809A35-C0E2-4E23-B6A9-6281F43A8F4F_1_105_c.jpeg" alt="Vincent-Daniel Yun at the IJCNN 2024 conference display in Yokohama" loading="lazy" decoding="async" />
+            </button>
+            <figcaption>IJCNN 2024 · Yokohama</figcaption>
+          </figure>
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/IJCNN 2024 Japan Yokohama/EB23C3C3-8F16-4642-82D4-75B8D31DFBBB_4_5005_c.jpeg" data-caption="IJCNN 2024 oral presentation" aria-label="Open IJCNN oral presentation photograph">
+              <img src="Gallery/IJCNN 2024 Japan Yokohama/EB23C3C3-8F16-4642-82D4-75B8D31DFBBB_4_5005_c.jpeg" alt="Vincent-Daniel Yun delivering an oral presentation at IJCNN 2024" loading="lazy" decoding="async" />
+            </button>
+            <figcaption data-i18n="gallery.cap_ijcnn_talk">The oral stage at IJCNN 2024.</figcaption>
+          </figure>
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/IJCNN 2024 Japan Yokohama/D0CA1F6D-765E-4A87-9002-22F4E0F44494_4_5005_c.jpeg" data-caption="Yokohama at night" aria-label="Open Yokohama skyline photograph">
+              <img src="Gallery/IJCNN 2024 Japan Yokohama/D0CA1F6D-765E-4A87-9002-22F4E0F44494_4_5005_c.jpeg" alt="The Yokohama skyline and ferris wheel at night" loading="lazy" decoding="async" />
+            </button>
+            <figcaption data-i18n="gallery.cap_yokohama">Yokohama at night.</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="mag-story mag-story--reverse" id="event-cvpr-2024">
+        <header class="mag-story-head">
+          <div class="mag-story-meta"><span>09</span><small>Seattle · June 2024</small></div>
+          <div>
+            <p class="mag-section-label">CVPR 2024 · CVMI Workshop</p>
+            <h2 data-i18n="gallery.cvpr_title">Uncertainty, Made Visible</h2>
+          </div>
+        </header>
+        <p class="mag-story-lede" data-i18n="gallery.cvpr_body">At the CVPR CVMI workshop, uncertainty estimation met medical imaging through tumor prediction with unlabeled data. The Seattle trip widened the research lens: reliable AI is not only about efficiency, but also about knowing when a model should hesitate.</p>
+        <div class="mag-photo-grid mag-photo-grid--reverse">
+          <figure class="mag-shot mag-shot--main">
+            <button class="mag-shot-button" type="button" data-full="Gallery/CVPR 2024 Seattle/D4A8C72E-D60C-4E27-8C74-24BB15B6AA5F_1_105_c.jpeg" data-caption="CVPR 2024 CVMI poster session" aria-label="Open CVPR poster photograph">
+              <img src="Gallery/CVPR 2024 Seattle/D4A8C72E-D60C-4E27-8C74-24BB15B6AA5F_1_105_c.jpeg" alt="Vincent-Daniel Yun presenting a medical imaging poster at CVPR 2024" loading="lazy" decoding="async" />
+            </button>
+            <figcaption data-i18n="gallery.cap_cvpr_poster">Reliable AI at the CVMI poster session.</figcaption>
+          </figure>
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/CVPR 2024 Seattle/362C74EF-33D7-4EB5-BBA6-1E1B6F8223C3_1_105_c.jpeg" data-caption="CVPR 2024 workshop presentation" aria-label="Open CVPR workshop presentation photograph">
+              <img src="Gallery/CVPR 2024 Seattle/362C74EF-33D7-4EB5-BBA6-1E1B6F8223C3_1_105_c.jpeg" alt="A workshop presentation at CVPR 2024" loading="lazy" decoding="async" />
+            </button>
+            <figcaption>CVPR 2024 · Seattle</figcaption>
+          </figure>
+          <figure class="mag-shot">
+            <button class="mag-shot-button" type="button" data-full="Gallery/CVPR 2024 Seattle/4D56F38B-10B3-427E-BADE-253A0CFAF389_4_5005_c.jpeg" data-caption="The Seattle Spheres" aria-label="Open Seattle Spheres photograph">
+              <img src="Gallery/CVPR 2024 Seattle/4D56F38B-10B3-427E-BADE-253A0CFAF389_4_5005_c.jpeg" alt="The Seattle Spheres during CVPR 2024" loading="lazy" decoding="async" />
+            </button>
+            <figcaption data-i18n="gallery.cap_seattle">A walk through Seattle.</figcaption>
+          </figure>
+        </div>
+      </article>
+    </section>
+
+    <footer class="mag-endnote">
+      <span>END NOTE</span>
+      <p data-i18n="gallery.endnote">The archive continues, one paper, one conversation, and one city at a time.</p>
+    </footer>
+  </main>
+
+  <dialog class="mag-lightbox" id="gallery-lightbox" aria-label="Expanded gallery image">
+    <button class="mag-lightbox-close" type="button" aria-label="Close image">&times;</button>
+    <img src="" alt="" />
+    <p></p>
+  </dialog>
+
+  <footer class="site-footer">
+    &copy; 2026 Vincent-Daniel Yun
+  </footer>
+
+  <!-- ========== Dark mode toggle ========== -->
+  <script>
+    (function () {
+      const STORAGE_KEY = "theme";
+      const root = document.documentElement;
+
+      const apply = (theme) => {
+        root.setAttribute("data-theme", theme);
+        const icon = document.querySelector("#theme-toggle i");
+        if (icon) icon.className = theme === "dark" ? "fa-solid fa-sun" : "fa-solid fa-moon";
+      };
+
+      const saved = localStorage.getItem(STORAGE_KEY);
+      const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      apply(saved || (prefersDark ? "dark" : "light"));
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const button = document.getElementById("theme-toggle");
+        apply(root.getAttribute("data-theme"));
+        if (!button) return;
+        button.addEventListener("click", () => {
+          const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          localStorage.setItem(STORAGE_KEY, next);
+          apply(next);
+        });
+      });
+    })();
+  </script>
+
+  <script src="gallery.js?v=20260821a"></script>
+  <script src="i18n.js?v=20260821j"></script>
+</body>
+</html>
