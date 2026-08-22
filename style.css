@@ -24,6 +24,51 @@ body {
 }
 
 /* =========================
+   Home: geometric ambient network
+   ========================= */
+.home-page {
+  isolation: isolate;
+}
+
+.ambient-network {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 0.9s ease;
+}
+
+.ambient-network.is-ready {
+  opacity: 0.96;
+}
+
+.home-page > .container,
+.home-page > .site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+[data-theme="dark"] .ambient-network.is-ready {
+  opacity: 0.96;
+}
+
+@media (max-width: 640px) {
+  .ambient-network.is-ready {
+    opacity: 0.82;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-network {
+    transition: none;
+  }
+}
+
+/* =========================
    Ambient snowfall
    ========================= */
 .snowfall {
@@ -1332,6 +1377,22 @@ section h2::after {
   margin-bottom: 6px;
 }
 
+.ef-venue-badge {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 12px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: #2f6f9f;
+  box-shadow: 0 6px 16px rgba(47, 111, 159, 0.2);
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 .ef-feature-title {
   font-family: 'Roboto Slab', serif;
   font-size: 1.55rem;
@@ -2032,6 +2093,12 @@ section h2,
 
 [data-theme="dark"] .ef-feature-no {
   color: #294f66;
+}
+
+[data-theme="dark"] .ef-venue-badge {
+  background: #7dd3fc;
+  box-shadow: 0 6px 18px rgba(125, 211, 252, 0.14);
+  color: #0d1721;
 }
 
 /* Keep figures on a light surface so the white-background charts stay legible */

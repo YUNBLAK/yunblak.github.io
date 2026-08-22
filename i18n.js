@@ -61,7 +61,7 @@
     "news.item.output_aware": "<span class=\"news-label\">새 논문</span> Output-Aware Rotation for INT2 KV-Cache Quantization <a class=\"news-action\" href=\"https://arxiv.org/abs/2608.02691\" target=\"_blank\" rel=\"noopener noreferrer\">논문</a> <a class=\"news-github\" href=\"https://github.com/daniel-eai/Output-Aware-INT2-KV-Cache-Quantization\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"GitHub 저장소 열기\" title=\"GitHub 저장소\"><i class=\"fa-brands fa-github\" aria-hidden=\"true\"></i></a>",
     "news.item.samsung": "<span class=\"news-label\">삼성전자</span> 본사에서 강사로 멀티에이전트 시스템과 루프 엔지니어링 여름 강의를 진행합니다.",
     "news.item.snu": "<span class=\"news-label\">서울대학교</span> <a href=\"https://scholar.google.com/citations?user=__waCuYAAAAJ&amp;hl=en\">유승주 교수님</a>의 지도 아래 컴퓨팅·메모리 아키텍처 연구실에 방문연구원으로 합류했습니다.",
-    "news.item.emnlp26": "EMNLP 2026에 여러 논문을 제출했습니다.",
+    "news.item.emnlp26": "<span class=\"news-label\">EMNLP 2026 Main</span> 제1저자로 참여한 논문 2편이 메인 콘퍼런스에 채택되었습니다:<ul class=\"news-sublist\"><li><a class=\"news-paper\" href=\"https://scholar.google.com/citations?view_op=view_citation&amp;hl=ko&amp;user=mlfYKfgAAAAJ&amp;sortby=pubdate&amp;citation_for_view=mlfYKfgAAAAJ:NhqRSupF_l8C\" target=\"_blank\" rel=\"noopener noreferrer\">Locality-Aware Redundancy Pruning for LLM Depth Compression</a></li><li><a class=\"news-paper\" href=\"https://scholar.google.com/citations?view_op=view_citation&amp;hl=ko&amp;user=mlfYKfgAAAAJ&amp;citation_for_view=mlfYKfgAAAAJ:pyW8ca7W8N0C\" target=\"_blank\" rel=\"noopener noreferrer\">Robust Multi-Agent LLMs under Byzantine Faults</a></li></ul>",
     "news.item.icml26": "<span class=\"news-label\">ICML 2026 워크숍</span> 여러 논문이 ICML 2026 워크숍에 채택되었습니다:<ul class=\"news-sublist\"><li><span class=\"news-paper\">Rethinking Layer Redundancy in Large Language Models: Calibration Objectives and Search for Depth Pruning</span> <span class=\"news-wks\">AdaptFM</span> <span class=\"news-tag\">프루닝</span></li><li><span class=\"news-paper\">Weight Concentration Regularization for Improving Pruning Robustness Under High Sparsity</span> <span class=\"news-wks\">AdaptFM</span> <span class=\"news-tag\">프루닝</span></li><li><span class=\"news-paper\">Ghosted Layers: Unconstrained Activation Alignment for Recovering Layer-Pruned LLMs</span> <span class=\"news-wks\">AdaptFM</span> <span class=\"news-tag\">프루닝</span></li><li><span class=\"news-paper\">Robust Multi-Agent LLMs under Byzantine Faults</span> <span class=\"news-wks\">Agents in the Wild</span> <span class=\"news-tag\">에이전트</span></li><li><span class=\"news-paper\">On How Muon Reshapes Skill Learning Dynamics</span> <span class=\"news-wks\">HiLD</span> <span class=\"news-tag\">최적화</span></li></ul>",
     "news.item.neurips26": "NeurIPS 2026에 여러 논문을 제출했습니다.",
     "news.item.michigan": "<a href=\"https://joonlee16.github.io/\">Haejoon Lee 박사과정 연구원</a> 및 <a href=\"https://scholar.google.com/citations?user=ny1yTusAAAAJ&amp;hl=en\">Dimitra Panagou 교수님</a>과 함께 미시간대학교 앤아버 캠퍼스와 강건한 멀티에이전트 AI 시스템 연구 협력을 시작했습니다.",
@@ -199,7 +199,9 @@
     "eai.c3_t": "Weight Concentration Regularization (WCR)",
     "eai.c3_d": "높은 희소성에서는 중요한 가중치가 넓게 퍼져 있어 단순 프루닝이 정확도를 무너뜨립니다. WCR은 학습 단계의 정규화로 모델의 에너지를 소수의 중요한 파라미터에 집중시켜, 크기 기반 프루닝이 나머지를 안전하게 제거하도록 합니다 — 고희소성 압축에 훨씬 강건해집니다.",
     "eai.c4_t": "Rethinking Layer Redundancy: 탐색보다 보정(calibration)",
-    "eai.c4_d": "대부분의 깊이 프루닝 기법은 제거할 레이어를 찾기 위해 정교한 탐색 알고리즘에 집중합니다. 하지만 우리는 그 반대를 보입니다 — 동일한 보정 집합에서는 복잡한 탐색이 단순한 one-shot 프루닝과 거의 차이가 없으며, 어떤 레이어가 중복인지를 실제로 좌우하는 것은 보정 구성입니다. 탐색보다 데이터를 우선하라는 제언입니다."
+    "eai.c4_d": "대부분의 깊이 프루닝 기법은 제거할 레이어를 찾기 위해 정교한 탐색 알고리즘에 집중합니다. 하지만 우리는 그 반대를 보입니다 — 동일한 보정 집합에서는 복잡한 탐색이 단순한 one-shot 프루닝과 거의 차이가 없으며, 어떤 레이어가 중복인지를 실제로 좌우하는 것은 보정 구성입니다. 탐색보다 데이터를 우선하라는 제언입니다.",
+    "eai.c5_t": "Output-Aware Rotation for INT2 KV-Cache Quantization",
+    "eai.c5_d": "INT2 KV-cache 양자화는 메모리를 크게 절감하지만, 기존 회전 기반 기법은 완전한 어텐션 출력이 만들어지기 전 단계의 대리 오차를 최적화합니다. OptR은 출력 투영 이후의 어텐션 오차를 최소화하도록 헤드별 직교 보정 회전을 학습하고, 어텐션 결과를 바꾸지 않는 키 재매개변수화로 채널별 이상치를 줄입니다. Paged KV-cache 호환성과 거의 무시할 수준의 서빙 오버헤드를 유지하면서 추론·코딩·장문 검색 성능을 개선합니다."
   };
 
   const original = new WeakMap();
@@ -325,6 +327,7 @@
 
   function initSnowfall() {
     if (document.querySelector(".snowfall")) return;
+    if (document.querySelector(".ambient-network")) return;
     if (document.querySelector(".game-page")) return;
     if (window.matchMedia &&
         window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;

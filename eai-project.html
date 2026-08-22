@@ -87,6 +87,7 @@
       </div>
       <div class="ef-feature-text">
         <div class="ef-feature-no">01</div>
+        <div class="ef-venue-badge">Accepted &middot; EMNLP 2026 Main</div>
         <h3 class="ef-feature-title" data-i18n="eai.c0_t">Robust Multi-Agent LLMs under Byzantine Faults</h3>
         <p class="ef-feature-desc" data-i18n="eai.c0_d">
           When LLM agents collaborate over a network, a few unreliable or adversarial ("Byzantine") agents can mislead
@@ -105,13 +106,32 @@
       <span class="ef-track-name" data-i18n="eai.track2">Efficient Models &amp; Compression</span>
     </div>
 
-    <!-- 02 Ghosted Layers -->
+    <!-- 02 Output-Aware Rotation for INT2 KV-Cache Quantization -->
     <article class="ef-feature reverse">
+      <div class="ef-feature-media">
+        <img src="image/ef-optr.png" alt="OptR output-aware INT2 KV-cache quantization pipeline" />
+      </div>
+      <div class="ef-feature-text">
+        <div class="ef-feature-no">02</div>
+        <h3 class="ef-feature-title" data-i18n="eai.c5_t">Output-Aware Rotation for INT2 KV-Cache Quantization</h3>
+        <p class="ef-feature-desc" data-i18n="eai.c5_d">
+          INT2 KV-cache quantization saves substantial memory, but existing rotation methods optimize proxy errors
+          before the full attention output is formed. OptR instead learns per-head orthogonal corrections that
+          minimize post-projection attention-output error, while an attention-equivalent key reparameterization
+          reduces channel-wise outliers. It improves reasoning, coding, and long-context retrieval while preserving
+          paged KV-cache compatibility with negligible serving overhead.
+        </p>
+        <a class="ef-feature-link" href="https://arxiv.org/pdf/2608.02691" target="_blank" data-i18n="eai.readpaper">Read the paper &rarr;</a>
+      </div>
+    </article>
+
+    <!-- 03 Ghosted Layers -->
+    <article class="ef-feature">
       <div class="ef-feature-media">
         <img src="image/ef-ghosted.png" alt="Ghosted Layers architecture diagram" />
       </div>
       <div class="ef-feature-text">
-        <div class="ef-feature-no">02</div>
+        <div class="ef-feature-no">03</div>
         <h3 class="ef-feature-title" data-i18n="eai.c1_t">Ghosted Layers: Recovering Layer-Pruned LLMs</h3>
         <p class="ef-feature-desc" data-i18n="eai.c1_d">
           Layer pruning removes whole Transformer blocks to shrink an LLM, but creates a mismatch at the pruning
@@ -123,13 +143,14 @@
       </div>
     </article>
 
-    <!-- 03 LoRP -->
-    <article class="ef-feature">
+    <!-- 04 LoRP -->
+    <article class="ef-feature reverse">
       <div class="ef-feature-media">
         <img src="image/ef-lorp.png" alt="Inter-layer similarity heatmaps across LLM architectures" />
       </div>
       <div class="ef-feature-text">
-        <div class="ef-feature-no">03</div>
+        <div class="ef-feature-no">04</div>
+        <div class="ef-venue-badge">Accepted &middot; EMNLP 2026 Main</div>
         <h3 class="ef-feature-title" data-i18n="eai.c2_t">Locality-Aware Redundancy Pruning (LoRP)</h3>
         <p class="ef-feature-desc" data-i18n="eai.c2_d">
           Where redundancy lives inside an LLM depends on its architecture &mdash; it can be localized or spread
@@ -141,13 +162,13 @@
       </div>
     </article>
 
-    <!-- 04 WCR -->
-    <article class="ef-feature reverse">
+    <!-- 05 WCR -->
+    <article class="ef-feature">
       <div class="ef-feature-media">
         <img src="image/ef-wcr.png" alt="3D weight-magnitude landscape before and after concentration" />
       </div>
       <div class="ef-feature-text">
-        <div class="ef-feature-no">04</div>
+        <div class="ef-feature-no">05</div>
         <h3 class="ef-feature-title" data-i18n="eai.c3_t">Weight Concentration Regularization (WCR)</h3>
         <p class="ef-feature-desc" data-i18n="eai.c3_d">
           Under aggressive sparsity, naive pruning destroys accuracy because important weights are spread thin.
@@ -159,13 +180,13 @@
       </div>
     </article>
 
-    <!-- 05 Rethinking Layer Redundancy -->
-    <article class="ef-feature">
+    <!-- 06 Rethinking Layer Redundancy -->
+    <article class="ef-feature reverse">
       <div class="ef-feature-media">
         <img src="image/ef-rethink.png" alt="Pruned layer patterns across calibration configurations" />
       </div>
       <div class="ef-feature-text">
-        <div class="ef-feature-no">05</div>
+        <div class="ef-feature-no">06</div>
         <h3 class="ef-feature-title" data-i18n="eai.c4_t">Rethinking Layer Redundancy: Calibration over Search</h3>
         <p class="ef-feature-desc" data-i18n="eai.c4_d">
           Most depth-pruning methods chase clever search algorithms to find removable layers. We show the opposite:
@@ -186,10 +207,10 @@
           <span>Robust Multi-Agent LLMs</span>
           <button class="ef-copy" type="button" data-i18n="eai.copy">Copy</button>
         </div>
-        <pre>@article{lee2026robust,
+        <pre>@inproceedings{lee2026robust,
   title   = {Robust Multi-Agent LLMs under Byzantine Faults},
   author  = {Lee, Haejoon and Yun, Vincent-Daniel and Oh, Hyeonho and Panagou, Dimitra and Karimireddy, Sai Praneeth},
-  journal = {arXiv preprint arXiv:2605.09076},
+  booktitle = {Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing},
   year    = {2026}
 }</pre>
       </div>
@@ -212,10 +233,10 @@
           <span>Locality-Aware Redundancy Pruning (LoRP)</span>
           <button class="ef-copy" type="button" data-i18n="eai.copy">Copy</button>
         </div>
-        <pre>@article{yun2026lorp,
+        <pre>@inproceedings{yun2026lorp,
   title   = {Locality-Aware Redundancy Pruning for LLM Depth Compression},
   author  = {Yun, Vincent-Daniel and Kim, Youngrae and Lim, Woosang and Heo, Youngjin and Kim, Minkyu and Lee, Sunwoo},
-  journal = {arXiv preprint arXiv:2605.27786},
+  booktitle = {Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing},
   year    = {2026}
 }</pre>
       </div>
@@ -242,6 +263,19 @@
   title   = {Rethinking Layer Redundancy: Calibration Matters More Than Search in LLM Depth Pruning},
   author  = {Kim, Minkyu and Yun, Vincent-Daniel and Kim, Youngrae and Cho, Suin and Lim, Woosang and Lee, Sunwoo},
   journal = {arXiv preprint arXiv:2604.24938},
+  year    = {2026}
+}</pre>
+      </div>
+
+      <div class="ef-bib">
+        <div class="ef-bib-head">
+          <span>Output-Aware Rotation for INT2 KV-Cache Quantization</span>
+          <button class="ef-copy" type="button" data-i18n="eai.copy">Copy</button>
+        </div>
+        <pre>@article{yun2026outputaware,
+  title   = {Output-Aware Rotation for INT2 KV-Cache Quantization},
+  author  = {Yun, Vincent-Daniel and Lim, Woosang and Cheong, Minsoo and Lee, Sunwoo and Annavaram, Murali and Karimireddy, Sai Praneeth and Yoo, Sungjoo},
+  journal = {arXiv preprint arXiv:2608.02691},
   year    = {2026}
 }</pre>
       </div>

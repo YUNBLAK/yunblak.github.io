@@ -15,13 +15,15 @@
   <meta property="og:image" content="https://www.worldwidedaniel.com/image/New.jpeg" />
   <meta property="og:locale" content="en_US" />
   <meta name="twitter:card" content="summary" />
-  <link rel="stylesheet" href="style.css?v=20260812b" />
+  <link rel="stylesheet" href="style.css?v=20260821b" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body>
+<body class="home-page">
+  <canvas id="ambient-network" class="ambient-network" aria-hidden="true"></canvas>
+
   <!-- ========== Navbar ========== -->
   <nav class="navbar">
     <div class="nav-container">
@@ -214,6 +216,15 @@
       <table class="news-table" id="news-table">
         <tr>
           <td class="news-date" data-i18n="news.date.aug26">Aug, 2026</td>
+          <td class="news-item" data-i18n="news.item.emnlp26"><span class="news-label">EMNLP 2026 Main</span> Two first-author papers were accepted to the main conference:
+            <ul class="news-sublist">
+              <li><a class="news-paper" href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=ko&amp;user=mlfYKfgAAAAJ&amp;sortby=pubdate&amp;citation_for_view=mlfYKfgAAAAJ:NhqRSupF_l8C" target="_blank" rel="noopener noreferrer">Locality-Aware Redundancy Pruning for LLM Depth Compression</a></li>
+              <li><a class="news-paper" href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=ko&amp;user=mlfYKfgAAAAJ&amp;citation_for_view=mlfYKfgAAAAJ:pyW8ca7W8N0C" target="_blank" rel="noopener noreferrer">Robust Multi-Agent LLMs under Byzantine Faults</a></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="news-date" data-i18n="news.date.aug26">Aug, 2026</td>
           <td class="news-item" data-i18n="news.item.output_aware"><span class="news-label">New Paper</span> Output-Aware Rotation for INT2 KV-Cache Quantization <a class="news-action" href="https://arxiv.org/abs/2608.02691" target="_blank" rel="noopener noreferrer">Paper</a> <a class="news-github" href="https://github.com/daniel-eai/Output-Aware-INT2-KV-Cache-Quantization" target="_blank" rel="noopener noreferrer" aria-label="Open the GitHub repository" title="GitHub repository"><i class="fa-brands fa-github" aria-hidden="true"></i></a></td>
         </tr>
         <tr>
@@ -223,10 +234,6 @@
         <tr>
           <td class="news-date" data-i18n="news.date.jun26">Jun, 2026</td>
           <td class="news-item" data-i18n="news.item.snu"><span class="news-label">Seoul National University</span> Joined the Computing &amp; Memory Architecture Lab as a visiting scholar under the supervision of <a href="https://scholar.google.com/citations?user=__waCuYAAAAJ&amp;hl=en">Prof. Sungjoo Yoo</a>.</td>
-        </tr>
-        <tr>
-          <td class="news-date" data-i18n="news.date.jun26">Jun, 2026</td>
-          <td class="news-item" data-i18n="news.item.emnlp26">Several papers were submitted to EMNLP 2026.</td>
         </tr>
         <tr>
           <td class="news-date" data-i18n="news.date.jun26">Jun, 2026</td>
@@ -513,7 +520,10 @@
     });
   </script>
 
+  <!-- ========== Geometric ambient background ========== -->
+  <script src="ambient-network.js?v=20260821f"></script>
+
   <!-- ========== i18n (KR / EN) ========== -->
-  <script src="i18n.js?v=20260812f"></script>
+  <script src="i18n.js?v=20260821a"></script>
 </body>
 </html>
