@@ -18,8 +18,6 @@ body {
   line-height: 1.6;
   color: #1c2024;
   background-color: #f7fafc;
-  background-image: radial-gradient(1200px 400px at 100% -10%, rgba(47, 111, 159, 0.06), transparent 60%);
-  background-repeat: no-repeat;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -27,51 +25,6 @@ body {
 html[lang="ko"] body,
 html[lang="ko"] [data-i18n] {
   font-family: "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", Arial, sans-serif !important;
-}
-
-/* =========================
-   Home: geometric ambient network
-   ========================= */
-.home-page {
-  isolation: isolate;
-}
-
-.ambient-network {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  pointer-events: none;
-  user-select: none;
-  transition: opacity 0.9s ease;
-}
-
-.ambient-network.is-ready {
-  opacity: 0.96;
-}
-
-.home-page > .container,
-.home-page > .site-footer {
-  position: relative;
-  z-index: 1;
-}
-
-[data-theme="dark"] .ambient-network.is-ready {
-  opacity: 0.96;
-}
-
-@media (max-width: 640px) {
-  .ambient-network.is-ready {
-    opacity: 0.82;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ambient-network {
-    transition: none;
-  }
 }
 
 /* =========================
@@ -228,56 +181,6 @@ html[lang="ko"] [data-i18n] {
     min-height: 360px;
     padding: 44px 22px;
     border-radius: 18px;
-  }
-}
-
-/* =========================
-   Ambient snowfall
-   ========================= */
-.snowfall {
-  position: fixed;
-  inset: 0;
-  z-index: 1100;
-  overflow: hidden;
-  pointer-events: none;
-  user-select: none;
-}
-
-.snowflake {
-  position: absolute;
-  top: -24px;
-  left: var(--snow-left);
-  width: var(--snow-size);
-  height: var(--snow-size);
-  border-radius: 50%;
-  background: rgba(133, 151, 181, 0.48);
-  box-shadow: 0 0 var(--snow-glow) rgba(255, 255, 255, 0.55);
-  opacity: var(--snow-opacity);
-  filter: blur(var(--snow-blur));
-  animation: snow-fall var(--snow-duration) linear var(--snow-delay) infinite;
-  will-change: transform;
-}
-
-@keyframes snow-fall {
-  0% {
-    transform: translate3d(0, -5vh, 0) rotate(0deg);
-  }
-  50% {
-    transform: translate3d(var(--snow-drift), 52vh, 0) rotate(180deg);
-  }
-  100% {
-    transform: translate3d(var(--snow-return), 108vh, 0) rotate(360deg);
-  }
-}
-
-html[data-theme="dark"] .snowflake {
-  background: rgba(255, 255, 255, 0.82);
-  box-shadow: 0 0 var(--snow-glow) rgba(255, 255, 255, 0.48);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .snowfall {
-    display: none;
   }
 }
 
@@ -2345,10 +2248,6 @@ section h2,
 
 [data-theme="dark"] .ef-bib pre {
   color: #c4cad1;
-}
-
-[data-theme="dark"] body {
-  background-image: radial-gradient(1200px 400px at 100% -10%, rgba(125, 211, 252, 0.08), transparent 60%);
 }
 
 /* =========================
