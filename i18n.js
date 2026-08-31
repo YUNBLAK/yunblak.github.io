@@ -34,8 +34,8 @@
     "contact.intro": "문의는 아래 이메일로 연락해 주세요.",
     "contact.email_label": "이메일",
     "contact.email_note": "가장 빠르고 정확하게 연락하실 수 있는 방법입니다.",
-    "contact.call_title": "전화 전 이메일 부탁드립니다",
-    "contact.call_body": "전화하시기 전에 먼저 이메일을 보내주시기를 정중히 부탁드립니다. 미팅 중이거나 예정된 일정을 진행하는 동안 전화가 오는 경우가 있어, 이메일로 미리 알려주시면 내용을 충분히 확인하고 편한 통화 시간을 정하는 데 도움이 됩니다. 너른 양해에 감사드립니다.",
+    "contact.call_title": "이메일 연락을 선호합니다",
+    "contact.call_body": "이메일은 제가 가장 선호하는 연락 방법입니다. 미팅 중이거나 예정된 일정을 진행할 때는 전화를 받기 어려울 수 있어, 이메일로 내용을 보내주시면 충분히 확인한 뒤 필요한 경우 편한 통화 시간을 정할 수 있습니다. 너른 양해에 감사드립니다.",
     "contact.coffee_title": "Coffee Chat",
     "contact.coffee_body": "USC 또는 Stony Brook 입학 예정 학생분들의 Coffee Chat 요청을 환영합니다. 다른 학교 학생분들과의 만남도 언제든 환영합니다. 서로 편한 시간을 정할 수 있도록 사전에 이메일로 연락해 주세요.",
 
@@ -126,10 +126,8 @@
     "bio.interests_label": "주요 연구 관심사",
     "bio.int0": "최적화 (학습 동역학)",
     "bio.int1": "효율적 머신러닝 및 멀티에이전트 시스템",
-    "bio.int2": "딥러닝 기초 이론",
     "bio.affil_label": "현재 소속",
-    "bio.affil1": "서던캘리포니아대학교 FoRT-ML 그룹 (<a href=\"https://spkreddy.org/group/\">USC FoRT-ML Group</a>)",
-    "bio.affil_scip": "서던캘리포니아대학교 SCIP 연구실 (<a href=\"https://scip-lab.usc.edu/\">SCIP Lab</a>)",
+    "bio.affil1": "서던캘리포니아대학교 <a href=\"https://spkreddy.org/group/\">FoRT-ML Lab</a> 및 <a href=\"https://scip-lab.usc.edu/\">SCIP Lab</a>",
     "bio.affil2": "인하대학교 대규모 머신러닝 시스템 연구실 (<a href=\"https://lmls-lab.github.io/\">LMLS</a>)",
 
     /* ---- Home: section headings ---- */
@@ -170,6 +168,10 @@
     "news.item.spaice24": "<span class=\"news-label\">ESA SPAICE 2024</span> 논문 “Analysis and Predictive Modeling of Solar Coronal Holes Using Computer Vision and ARIMA-LSTM Networks”가 SPAICE 2024에 채택되었습니다. <a class=\"news-action\" href=\"https://arxiv.org/pdf/2405.09802\">논문</a> <a class=\"news-action\" href=\"https://spaice.esa.int/2024/\">학회</a>",
     "news.item.ijcnn24": "<span class=\"news-label\">IJCNN 2024</span> 논문 “Robust Neural Pruning with Gradient Sampling Optimization for Residual Neural Networks”가 IJCNN 2024 구두 발표 논문으로 채택되었습니다. <a class=\"news-action\" href=\"https://ieeexplore.ieee.org/abstract/document/10650301\">논문</a>",
     "news.item.cvprw24": "<span class=\"news-label\">CVPRW 2024</span> 논문 “Uncertainty Estimation for Tumor Prediction with Unlabeled Data”가 IEEE/CVF CVPR 워크숍에 채택되었습니다. <a class=\"news-action\" href=\"https://openaccess.thecvf.com/content/CVPR2024W/CVMI/papers/Yun_Uncertainty_Estimation_for_Tumor_Prediction_with_Unlabeled_Data_CVPRW_2024_paper.pdf\">논문</a>",
+
+    /* ---- Home: selected publications ---- */
+    "selected.h": "주요 논문",
+    "selected.equal": "* 공동 기여를 나타냅니다.",
     "svc.h": "학술 활동",
     "awards.h": "수상 및 주요 성과",
     "awards.lg": "LG 공식 선발 및 초청으로 전액 지원 Efficient AI 시카고 방문",
