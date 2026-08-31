@@ -19,6 +19,7 @@
     "nav.publications": "논문",
     "nav.eai": "E-AI 프로젝트",
     "nav.gallery": "갤러리",
+    "nav.contact": "연락처",
     "nav.game": "게임",
     "nav.projects": "프로젝트",
 
@@ -26,6 +27,17 @@
     "home.role": "연구자 | 효율적 머신러닝",
     "home.subtitle": "서던캘리포니아대학교(USC) 컴퓨터과학 석사과정 재학",
     "home.address": "미국 캘리포니아주 로스앤젤레스",
+
+    /* ---- Contact ---- */
+    "contact.kicker": "연락 안내",
+    "contact.title": "연락처",
+    "contact.intro": "문의는 아래 이메일로 연락해 주세요.",
+    "contact.email_label": "이메일",
+    "contact.email_note": "가장 빠르고 정확하게 연락하실 수 있는 방법입니다.",
+    "contact.call_title": "전화 전 이메일 부탁드립니다",
+    "contact.call_body": "전화하시기 전에 먼저 이메일을 보내주시기를 정중히 부탁드립니다. 미팅 중이거나 예정된 일정을 진행하는 동안 전화가 오는 경우가 있어, 이메일로 미리 알려주시면 내용을 충분히 확인하고 편한 통화 시간을 정하는 데 도움이 됩니다. 너른 양해에 감사드립니다.",
+    "contact.coffee_title": "Coffee Chat",
+    "contact.coffee_body": "USC 또는 Stony Brook 입학 예정 학생분들의 Coffee Chat 요청을 환영합니다. 다른 학교 학생분들과의 만남도 언제든 환영합니다. 서로 편한 시간을 정할 수 있도록 사전에 이메일로 연락해 주세요.",
 
     /* ---- Gallery ---- */
     "gallery.issue": "연구 여정 · 첫 번째 기록",
@@ -104,20 +116,21 @@
     "gallery.endnote": "논문 한 편과 대화 한 번, 그리고 새로운 도시 하나씩. 연구의 기록은 계속됩니다.",
 
     /* ---- Home: bio ---- */
-    "bio.p1": "안녕하세요, 다니엘입니다. 저는 서던캘리포니아대학교(USC) 컴퓨터과학 석사과정 2년차로, <strong>효율적 머신러닝</strong>과 <strong>효율적 멀티에이전트 시스템</strong>을 연구하고 있습니다. 감사하게도 <a href=\"https://spkreddy.org/\">Sai Praneeth Karimireddy 교수님</a>과 <a href=\"https://viterbi.usc.edu/directory/faculty/Annavaram/Murali\">Murali Annavaram 교수님</a>의 지도를 받고 있습니다. 2026년 여름에는 <a href=\"https://scholar.google.com/citations?user=__waCuYAAAAJ&amp;hl=en\">유승주 교수님</a>의 지도 아래 <a href=\"https://cmalab.snu.ac.kr/\">서울대학교</a> 방문 연구원으로 연구했으며, 삼성전자에서 강사로 활동했습니다. 인하대학교의 <a href=\"https://sites.google.com/view/sunwoolee/home\">이선우 교수님</a>과 긴밀히 협력하고 있습니다.",
+    "bio.p1": "안녕하세요, 다니엘입니다. 저는 서던캘리포니아대학교(USC) 컴퓨터과학 석사과정 2년차로, <strong>효율적 머신러닝</strong>과 <strong>효율적 멀티에이전트 시스템</strong>을 연구하고 있습니다. 감사하게도 <a href=\"https://spkreddy.org/\">Sai Praneeth Karimireddy 교수님</a>과 <a href=\"https://viterbi.usc.edu/directory/faculty/Annavaram/Murali\">Murali Annavaram 교수님</a>의 지도를 받고 있습니다.",
+    "bio.more_button": "더 보기...",
+    "bio.less_button": "접기...",
+    "bio.more": "2026년 여름에는 <a href=\"https://scholar.google.com/citations?user=__waCuYAAAAJ&amp;hl=en\">유승주 교수님</a>의 지도 아래 <a href=\"https://cmalab.snu.ac.kr/\">서울대학교</a> 방문 연구원으로 연구했으며, 삼성전자에서 강사로 활동했습니다. 인하대학교의 <a href=\"https://sites.google.com/view/sunwoolee/home\">이선우 교수님</a>과 긴밀히 협력하고 있습니다.",
     "bio.p2": "대규모 언어 모델(LLM)을 비롯한 최근 AI의 발전은 대부분 모델의 규모를 키우는 스케일링에 기대어 왔지만, 그만큼 막대한 연산량과 메모리 비용을 동반합니다. 이러한 문제의식은 제 연구의 핵심을 이루는 보다 근본적인 질문으로 이어집니다.",
-    "bio.rq": "현대의 신경망이 본질적으로 과도하게 매개변수화되어 있고 연산적으로도 중복이 많다는 점을 고려할 때, 우리는 이를 어떻게 구조적·연산적으로 최적인 시스템으로 변모시킬 수 있을까?",
-    "bio.p3": "그래서 제 연구는 신경망이 데이터를 더 가볍고 빠르게, 그리고 더 효율적으로 학습할 수 있도록 최적화·일반화·모델 압축 기법을 개선하는 데 초점을 두고 있습니다.",
+    "bio.rq": "신경망을 구조적으로, 그리고 계산적으로 최적화하려면 어떻게 해야 할까?",
+    "bio.p3": "그래서 제 연구는 최적화, 일반화, 모델 압축 기법을 개선해 학습과 추론 전 과정에서 신경망을 더 가볍고 빠르며 효율적으로 만드는 데 초점을 두고 있습니다.",
     "bio.interests_label": "주요 연구 관심사",
-    "bio.int0": "효율적 멀티에이전트 시스템",
-    "bio.int1": "LLM 최적화 및 추론",
-    "bio.int2": "효율적 머신러닝",
-    "bio.int3": "모델 프루닝, 양자화, 압축 기법",
-    "bio.int4": "딥러닝 기초 이론",
+    "bio.int0": "최적화 (학습 동역학)",
+    "bio.int1": "효율적 머신러닝 및 멀티에이전트 시스템",
+    "bio.int2": "딥러닝 기초 이론",
     "bio.affil_label": "현재 소속",
     "bio.affil1": "서던캘리포니아대학교 FoRT-ML 그룹 (<a href=\"https://spkreddy.org/group/\">USC FoRT-ML Group</a>)",
-    "bio.affil_cmal": "서울대학교 컴퓨팅·메모리 아키텍처 연구실, 방문 (<a href=\"https://cmalab.snu.ac.kr/\">CMAL</a>)",
-    "bio.affil2": "인하대학교 대규모 머신러닝 시스템 연구실 (<a href=\"https://sites.google.com/view/lmls-lab\">LMLS</a>)",
+    "bio.affil_scip": "서던캘리포니아대학교 SCIP 연구실 (<a href=\"https://scip-lab.usc.edu/\">SCIP Lab</a>)",
+    "bio.affil2": "인하대학교 대규모 머신러닝 시스템 연구실 (<a href=\"https://lmls-lab.github.io/\">LMLS</a>)",
 
     /* ---- Home: section headings ---- */
     "edu.h": "학력",
@@ -138,7 +151,8 @@
     "news.item.output_aware": "<span class=\"news-label\">새 논문</span> Output-Aware Rotation for INT2 KV-Cache Quantization <a class=\"news-action\" href=\"https://arxiv.org/abs/2608.02691\" target=\"_blank\" rel=\"noopener noreferrer\">논문</a> <a class=\"news-github\" href=\"https://github.com/daniel-eai/Output-Aware-INT2-KV-Cache-Quantization\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"GitHub 저장소 열기\" title=\"GitHub 저장소\"><i class=\"fa-brands fa-github\" aria-hidden=\"true\"></i></a>",
     "news.item.samsung": "<span class=\"news-label\">삼성전자</span> 본사에서 강사로 멀티에이전트 시스템과 루프 엔지니어링 여름 강의를 진행합니다.",
     "news.item.snu": "<span class=\"news-label\">서울대학교</span> <a href=\"https://scholar.google.com/citations?user=__waCuYAAAAJ&amp;hl=en\">유승주 교수님</a>의 지도 아래 컴퓨팅·메모리 아키텍처 연구실에 방문연구원으로 합류했습니다.",
-    "news.item.emnlp26": "<span class=\"news-label\">EMNLP 2026 Main</span> 제1저자로 참여한 논문 2편이 메인 콘퍼런스에 채택되었습니다:<ul class=\"news-sublist\"><li><a class=\"news-paper\" href=\"https://scholar.google.com/citations?view_op=view_citation&amp;hl=ko&amp;user=mlfYKfgAAAAJ&amp;sortby=pubdate&amp;citation_for_view=mlfYKfgAAAAJ:NhqRSupF_l8C\" target=\"_blank\" rel=\"noopener noreferrer\">Locality-Aware Redundancy Pruning for LLM Depth Compression</a></li><li><a class=\"news-paper\" href=\"https://scholar.google.com/citations?view_op=view_citation&amp;hl=ko&amp;user=mlfYKfgAAAAJ&amp;citation_for_view=mlfYKfgAAAAJ:pyW8ca7W8N0C\" target=\"_blank\" rel=\"noopener noreferrer\">Robust Multi-Agent LLMs under Byzantine Faults</a></li></ul>",
+    "news.item.lg_chicago": "<span class=\"news-label\">LG · 공식 초청</span> Efficient AI 논의를 위한 공식 초청 대상자로 선발되어 시카고를 방문하며, 모든 출장 경비를 지원받습니다. CTO와의 만찬을 통해 LG의 AI 비전과 장기적인 목표를 직접 듣고 의견을 나눌 예정입니다.",
+    "news.item.emnlp26": "<span class=\"news-label\">EMNLP 2026 Main</span> 제1저자로 참여한 논문 2편이 메인 컨퍼런스에 채택되었습니다:<ul class=\"news-sublist\"><li><a class=\"news-paper\" href=\"https://scholar.google.com/citations?view_op=view_citation&amp;hl=ko&amp;user=mlfYKfgAAAAJ&amp;sortby=pubdate&amp;citation_for_view=mlfYKfgAAAAJ:NhqRSupF_l8C\" target=\"_blank\" rel=\"noopener noreferrer\">Locality-Aware Redundancy Pruning for LLM Depth Compression</a></li><li><a class=\"news-paper\" href=\"https://scholar.google.com/citations?view_op=view_citation&amp;hl=ko&amp;user=mlfYKfgAAAAJ&amp;citation_for_view=mlfYKfgAAAAJ:pyW8ca7W8N0C\" target=\"_blank\" rel=\"noopener noreferrer\">Robust Multi-Agent LLMs under Byzantine Faults</a></li></ul>",
     "news.item.icml26": "<span class=\"news-label\">ICML 2026 워크숍</span> 여러 논문이 ICML 2026 워크숍에 채택되었습니다:<ul class=\"news-sublist\"><li><span class=\"news-paper\">Rethinking Layer Redundancy in Large Language Models: Calibration Objectives and Search for Depth Pruning</span> <span class=\"news-wks\">AdaptFM</span> <span class=\"news-tag\">프루닝</span></li><li><span class=\"news-paper\">Weight Concentration Regularization for Improving Pruning Robustness Under High Sparsity</span> <span class=\"news-wks\">AdaptFM</span> <span class=\"news-tag\">프루닝</span></li><li><span class=\"news-paper\">Ghosted Layers: Unconstrained Activation Alignment for Recovering Layer-Pruned LLMs</span> <span class=\"news-wks\">AdaptFM</span> <span class=\"news-tag\">프루닝</span></li><li><span class=\"news-paper\">Robust Multi-Agent LLMs under Byzantine Faults</span> <span class=\"news-wks\">Agents in the Wild</span> <span class=\"news-tag\">에이전트</span></li><li><span class=\"news-paper\">On How Muon Reshapes Skill Learning Dynamics</span> <span class=\"news-wks\">HiLD</span> <span class=\"news-tag\">최적화</span></li></ul>",
     "news.item.neurips26": "NeurIPS 2026에 여러 논문을 제출했습니다.",
     "news.item.michigan": "<a href=\"https://joonlee16.github.io/\">Haejoon Lee 박사과정 연구원</a> 및 <a href=\"https://scholar.google.com/citations?user=ny1yTusAAAAJ&amp;hl=en\">Dimitra Panagou 교수님</a>과 함께 미시간대학교 앤아버 캠퍼스와 강건한 멀티에이전트 AI 시스템 연구 협력을 시작했습니다.",
@@ -157,7 +171,9 @@
     "news.item.ijcnn24": "<span class=\"news-label\">IJCNN 2024</span> 논문 “Robust Neural Pruning with Gradient Sampling Optimization for Residual Neural Networks”가 IJCNN 2024 구두 발표 논문으로 채택되었습니다. <a class=\"news-action\" href=\"https://ieeexplore.ieee.org/abstract/document/10650301\">논문</a>",
     "news.item.cvprw24": "<span class=\"news-label\">CVPRW 2024</span> 논문 “Uncertainty Estimation for Tumor Prediction with Unlabeled Data”가 IEEE/CVF CVPR 워크숍에 채택되었습니다. <a class=\"news-action\" href=\"https://openaccess.thecvf.com/content/CVPR2024W/CVMI/papers/Yun_Uncertainty_Estimation_for_Tumor_Prediction_with_Unlabeled_Data_CVPRW_2024_paper.pdf\">논문</a>",
     "svc.h": "학술 활동",
-    "awards.h": "수상 내역",
+    "awards.h": "수상 및 주요 성과",
+    "awards.lg": "LG 공식 선발 및 초청으로 전액 지원 Efficient AI 시카고 방문",
+    "awards.grant": "Brian Impact Foundation으로부터 최적화 연구를 위한 $6,000 연구비 수혜",
 
     /* ---- Home: education ---- */
     "edu.t1": "박사 과정: 2027년 가을학기 입학 지원 중",
@@ -167,7 +183,7 @@
     "edu.t2": "서던캘리포니아대학교(USC)",
     "edu.d2": "컴퓨터과학 이학석사<br>지도교수: <a href=\"https://spkreddy.org/\">Sai Praneeth Karimireddy 교수님</a>, <a href=\"https://viterbi.usc.edu/directory/faculty/Annavaram/Murali\">Murali Annavaram 교수님</a>",
     "edu.t3": "뉴욕주립대학교 스토니브룩 캠퍼스",
-    "edu.d3": "컴퓨터과학(AI 전공) · 응용수학 복수전공 이학사 · 병역으로 2년 휴학<br>지도교수: <a href=\"https://chaochen.github.io/index.html\">Chao Chen 교수님</a>",
+    "edu.d3": "<ul class=\"edu-degree-list\"><li>컴퓨터과학 이학사(AI 전공)</li><li>응용수학 이학사</li><li>병역으로 2년 휴학</li></ul>지도교수: <a href=\"https://chaochen.github.io/index.html\">Chao Chen 교수님</a>",
 
     /* ---- Buttons ---- */
     "btn.showmore": "더 보기",

@@ -15,7 +15,7 @@
   <meta property="og:image" content="https://www.worldwidedaniel.com/image/New.jpeg" />
   <meta property="og:locale" content="en_US" />
   <meta name="twitter:card" content="summary" />
-  <link rel="stylesheet" href="style.css?v=20260821h" />
+  <link rel="stylesheet" href="style.css?v=20260830m" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
@@ -34,6 +34,7 @@
           <li><a href="/publications" data-i18n="nav.publications">Publications</a></li>
           <li><a href="/eai-project" data-i18n="nav.eai">E-AI Project</a></li>
           <li><a href="/gallery" data-i18n="nav.gallery">Gallery</a></li>
+          <li><a href="/contact" data-i18n="nav.contact">Contact</a></li>
         </ul>
         <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language">한국어</button>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
@@ -84,41 +85,48 @@
 
     <!-- ========== Bio ========== -->
     <section class="bio">
-      <p data-i18n="bio.p1">
-        Hi, I'm Daniel, a second-year M.S. student in Computer Science at the University of Southern California,
-        where I research <strong>Efficient Machine Learning</strong> and <strong>Efficient Multi-Agent Systems</strong>.
-        I am fortunate to be advised by
-        <a href="https://spkreddy.org/">Prof. Sai Praneeth Karimireddy</a> and
-        <a href="https://viterbi.usc.edu/directory/faculty/Annavaram/Murali">Prof. Murali Annavaram</a>. During summer 2026, I was a visiting scholar at
-        <a href="https://cmalab.snu.ac.kr/">Seoul National University</a> under the supervision of
-        <a href="https://scholar.google.com/citations?user=__waCuYAAAAJ&amp;hl=en">Prof. Sungjoo Yoo</a> and served as a lecturer at Samsung Electronics.
-        I collaborate closely with <a href="https://sites.google.com/view/sunwoolee/home">Prof. Sunwoo Lee</a>
-        at Inha University in South Korea.
+      <p class="bio-intro">
+        <span data-i18n="bio.p1">
+          Hi, I'm Daniel, a second-year M.S. student in Computer Science at the University of Southern California,
+          where I research <strong>Efficient Machine Learning</strong> and <strong>Efficient Multi-Agent Systems</strong>.
+          I am fortunate to be advised by
+          <a href="https://spkreddy.org/">Prof. Sai Praneeth Karimireddy</a> and
+          <a href="https://viterbi.usc.edu/directory/faculty/Annavaram/Murali">Prof. Murali Annavaram</a>.
+        </span>
+        <button id="bio-more-toggle" class="bio-more-inline" type="button" aria-controls="bio-more-content" aria-expanded="false" data-i18n="bio.more_button">More...</button>
+        <span id="bio-more-content" class="bio-more-inline-content" hidden>
+          <span data-i18n="bio.more">
+            During summer 2026, I was a visiting scholar at
+            <a href="https://cmalab.snu.ac.kr/">Seoul National University</a> under the supervision of
+            <a href="https://scholar.google.com/citations?user=__waCuYAAAAJ&amp;hl=en">Prof. Sungjoo Yoo</a> and served as a lecturer at Samsung Electronics.
+            I collaborate closely with <a href="https://sites.google.com/view/sunwoolee/home">Prof. Sunwoo Lee</a>
+            at Inha University in South Korea.
+          </span>
+          <button id="bio-less-toggle" class="bio-more-inline" type="button" aria-controls="bio-more-content" data-i18n="bio.less_button">Less...</button>
+        </span>
       </p>
       <p data-i18n="bio.p2">
         Recent progress in AI such as large language models has been driven largely by scaling, but this comes with
         significant computational and memory costs. This motivates a broader question at the core of my research:
       </p>
       <p class="research-question" data-i18n="bio.rq">
-        Given that modern neural networks are inherently overparameterized and computationally redundant, how can we transform them into structurally and computationally optimal systems?
+        How can we make neural networks structurally and computationally optimal?
       </p>
       <p data-i18n="bio.p3">
         Therefore, my research focuses on improving optimization, generalization, and model compression techniques to make
-        neural networks lighter, faster, and more efficient in learning from data.
+        neural networks lighter, faster, and more efficient across both training and inference.
       </p>
       <p style="font-weight: 500;" data-i18n="bio.interests_label">My current research interests:</p>
       <ul style="margin: 0 0 18px 22px;">
-        <li data-i18n="bio.int2">Efficient Machine Learning</li>
-        <li data-i18n="bio.int0">Efficient Multi-Agent System</li>
-        <li data-i18n="bio.int4">Deep learning foundation</li>
-        <li data-i18n="bio.int3">Model pruning, quantization, and compression techniques</li>
-        <li data-i18n="bio.int1">LLM Optimization &amp; Reasoning</li>
+        <li data-i18n="bio.int0">Optimization (Training Dynamics)</li>
+        <li data-i18n="bio.int1">Efficient Machine Learning &amp; Multi-Agent System</li>
+        <li data-i18n="bio.int2">Deep learning foundation</li>
       </ul>
       <p style="font-weight: 500;" data-i18n="bio.affil_label">My current affiliations include:</p>
       <ul style="margin: 0 0 18px 22px;">
         <li data-i18n="bio.affil1">FoRT-ML Group at University of Southern California (<a href="https://spkreddy.org/group/">USC FoRT-ML Group</a>)</li>
-        <li data-i18n="bio.affil_cmal">Computing &amp; Memory Architecture Lab at Seoul National University, Visiting (<a href="https://cmalab.snu.ac.kr/">CMAL</a>)</li>
-        <li data-i18n="bio.affil2">Large-Scale Machine Learning Systems Lab at Inha University (<a href="https://sites.google.com/view/lmls-lab">LMLS</a>)</li>
+        <li data-i18n="bio.affil_scip">SCIP Lab at University of Southern California (<a href="https://scip-lab.usc.edu/">SCIP Lab</a>)</li>
+        <li data-i18n="bio.affil2">Large-Scale Machine Learning Systems Lab at Inha University (<a href="https://lmls-lab.github.io/">LMLS</a>)</li>
       </ul>
     </section>
 
@@ -215,6 +223,10 @@
           aria-controls="news-table" aria-expanded="false">Show More</button>
       </div>
       <table class="news-table" id="news-table">
+        <tr>
+          <td class="news-date" data-i18n="news.date.aug26">Aug, 2026</td>
+          <td class="news-item" data-i18n="news.item.lg_chicago"><span class="news-label">LG · Official Invitation</span> Officially selected and invited by LG to visit Chicago for discussions on Efficient AI, with all travel expenses fully covered. The visit will include a dinner with the CTO and an opportunity to hear directly about LG's vision and long-term goals for AI.</td>
+        </tr>
         <tr>
           <td class="news-date" data-i18n="news.date.aug26">Aug, 2026</td>
           <td class="news-item" data-i18n="news.item.emnlp26"><span class="news-label">EMNLP 2026 Main</span> Two first-author papers were accepted to the main conference:
@@ -343,59 +355,32 @@
         <div class="edu-item">
           <div class="edu-main">
             <div class="edu-school" data-i18n="edu.t3">State University of New York at Stony Brook</div>
-            <div class="edu-degree" data-i18n="edu.d3">B.S. in Computer Science (AI specialization) &amp; Applied Mathematics &middot; 2-year military service leave<br>Advisor: <a href="https://chaochen.github.io/index.html">Prof. Chao Chen</a></div>
+            <div class="edu-degree" data-i18n="edu.d3"><ul class="edu-degree-list"><li>B.S. in Computer Science (AI specialization)</li><li>B.S. in Applied Mathematics</li><li>2-year military service leave</li></ul>Advisor: <a href="https://chaochen.github.io/index.html">Prof. Chao Chen</a></div>
           </div>
           <div class="edu-date">01.2018 &ndash; 05.2025</div>
         </div>
       </div>
     </section>
 
-    <!-- ========== Academic Services ========== -->
-    <section class="news" id="projects">
-      <h2 data-i18n="svc.h">Academic Services</h2>
-      <table class="news-table">
-        <tr>
-          <td class="news-date">2026</td>
-          <td class="news-item">Reviewer, Conference on Neural Information Processing Systems (NeurIPS) <a href="https://odi2026.github.io/" target="_blank" rel="noopener noreferrer">ODI Workshop</a></td>
-        </tr>
-        <tr>
-          <td class="news-date">2026</td>
-          <td class="news-item">Reviewer, Conference on Neural Information Processing Systems (NeurIPS) <a href="https://opt-ml.org/" target="_blank" rel="noopener noreferrer">OPT Workshop</a></td>
-        </tr>
-        <tr>
-          <td class="news-date">2026</td>
-          <td class="news-item">Reviewer, Conference on Neural Information Processing Systems (NeurIPS) Position Track</td>
-        </tr>
-        <tr>
-          <td class="news-date">2025</td>
-          <td class="news-item">Reviewer, Conference on Parsimony and Learning (CPAL)</td>
-        </tr>
-        <tr>
-          <td class="news-date">2025</td>
-          <td class="news-item">Reviewer, International Joint Conference on Neural Networks (IJCNN)</td>
-        </tr>
-        <tr>
-          <td class="news-date">2020</td>
-          <td class="news-item">Teaching Assistant, CSE 216: Programming Abstractions, Stony Brook University</td>
-        </tr>
-        <tr>
-          <td class="news-date">2019</td>
-          <td class="news-item">Teaching Assistant, CSE 114: Introduction to Object-Oriented Programming, Stony Brook University</td>
-        </tr>
-      </table>
-    </section>
-
-    <!-- ========== Awards ========== -->
+    <!-- ========== Awards & Achievements ========== -->
     <section class="news">
-      <h2 data-i18n="awards.h">Awards</h2>
+      <h2 data-i18n="awards.h">Awards &amp; Achievements</h2>
       <table class="news-table">
+        <tr>
+          <td class="news-date">Aug, 2026</td>
+          <td class="news-item" data-i18n="awards.lg">Officially selected and invited by LG for a fully funded Efficient AI visit to Chicago</td>
+        </tr>
         <tr>
           <td class="news-date">Mar, 2026</td>
           <td class="news-item">USC GSG Travel Award for ICASSP 2026</td>
         </tr>
         <tr>
           <td class="news-date">Nov, 2025</td>
-          <td class="news-item"><strong>Best Paper Award</strong> at International Conference on Neural Information Processing (ICONIP) 2025</td>
+          <td class="news-item" data-i18n="awards.grant">$6,000 Research Grant awarded by the Brian Impact Foundation for optimization research</td>
+        </tr>
+        <tr>
+          <td class="news-date">Nov, 2025</td>
+          <td class="news-item">Best Paper Award at International Conference on Neural Information Processing (ICONIP) 2025</td>
         </tr>
         <tr>
           <td class="news-date">Apr, 2025</td>
@@ -435,6 +420,42 @@
         </tr>
       </table>
     </section>
+
+    <!-- ========== Academic Services ========== -->
+    <section class="news" id="projects">
+      <h2 data-i18n="svc.h">Academic Services</h2>
+      <table class="news-table">
+        <tr>
+          <td class="news-date">2026</td>
+          <td class="news-item">Reviewer, Conference on Neural Information Processing Systems (NeurIPS) <a href="https://odi2026.github.io/" target="_blank" rel="noopener noreferrer">ODI Workshop</a></td>
+        </tr>
+        <tr>
+          <td class="news-date">2026</td>
+          <td class="news-item">Reviewer, Conference on Neural Information Processing Systems (NeurIPS) <a href="https://opt-ml.org/" target="_blank" rel="noopener noreferrer">OPT Workshop</a></td>
+        </tr>
+        <tr>
+          <td class="news-date">2026</td>
+          <td class="news-item">Reviewer, Conference on Neural Information Processing Systems (NeurIPS) Position Track</td>
+        </tr>
+        <tr>
+          <td class="news-date">2025</td>
+          <td class="news-item">Reviewer, Conference on Parsimony and Learning (CPAL)</td>
+        </tr>
+        <tr>
+          <td class="news-date">2025</td>
+          <td class="news-item">Reviewer, International Joint Conference on Neural Networks (IJCNN)</td>
+        </tr>
+        <tr>
+          <td class="news-date">2020</td>
+          <td class="news-item">Teaching Assistant, CSE 216: Programming Abstractions, Stony Brook University</td>
+        </tr>
+        <tr>
+          <td class="news-date">2019</td>
+          <td class="news-item">Teaching Assistant, CSE 114: Introduction to Object-Oriented Programming, Stony Brook University</td>
+        </tr>
+      </table>
+    </section>
+
   </div>
 
   <!-- ========== Footer ========== -->
@@ -518,6 +539,25 @@
 
       setupToggle("news-table", "news-toggle");
       setupToggle("bio-table", "bio-toggle");
+
+      const bioMoreButton = document.getElementById("bio-more-toggle");
+      const bioLessButton = document.getElementById("bio-less-toggle");
+      const bioMoreContent = document.getElementById("bio-more-content");
+
+      if (bioMoreButton && bioLessButton && bioMoreContent) {
+        bioMoreButton.addEventListener("click", () => {
+          bioMoreButton.hidden = true;
+          bioMoreContent.hidden = false;
+          bioMoreButton.setAttribute("aria-expanded", "true");
+        });
+
+        bioLessButton.addEventListener("click", () => {
+          bioMoreContent.hidden = true;
+          bioMoreButton.hidden = false;
+          bioMoreButton.setAttribute("aria-expanded", "false");
+          bioMoreButton.focus();
+        });
+      }
     });
   </script>
 
@@ -525,6 +565,6 @@
   <script src="ambient-network.js?v=20260821f"></script>
 
   <!-- ========== i18n (KR / EN) ========== -->
-  <script src="i18n.js?v=20260823k"></script>
+  <script src="i18n.js?v=20260830x"></script>
 </body>
 </html>
