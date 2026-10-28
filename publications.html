@@ -7,13 +7,14 @@
   <meta name="description" content="Publications by Vincent-Daniel Yun on model compression, agents, and optimization: LLM depth pruning, pruning robustness, and efficient training." />
   <meta name="google" content="notranslate" />
   <link rel="canonical" href="https://www.worldwidedaniel.com/publications" />
-  <link rel="stylesheet" href="style.css?v=20261004a" />
+  <link rel="stylesheet" href="style.css?v=20261028vision" />
+  <link rel="stylesheet" href="publications.css?v=20261028b" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body>
+<body class="publications-page">
   <!-- ========== Navbar ========== -->
   <nav class="navbar">
     <div class="nav-container">
@@ -22,7 +23,7 @@
         <ul class="nav-links" id="nav-links">
           <li><a href="/" data-i18n="nav.home">Home</a></li>
           <li><a href="/publications" class="active" data-i18n="nav.publications">Publications</a></li>
-          <li><a href="/eai-project" data-i18n="nav.eai">E-AI Project</a></li>
+          <li><a href="/eai-project" data-i18n="nav.eai">Research Vision</a></li>
           <li><a href="/gallery" data-i18n="nav.gallery">Gallery</a></li>
           <li><a href="/contact" data-i18n="nav.contact">Contact</a></li>
         </ul>
@@ -37,232 +38,233 @@
     </div>
   </nav>
 
-  <div class="container">
-    <section class="publications">
+  <main class="container publications-container">
+    <section class="publications" aria-labelledby="publications-title">
       <header class="pub-header">
-        <h2 class="pub-page-title" data-i18n="pub.h">Publications</h2>
+        <h1 class="pub-page-title" id="publications-title" data-i18n="pub.h">Publications</h1>
         <p class="pub-note">
           <span data-i18n="pub.note">* denotes equal contribution.</span>
           <a href="https://scholar.google.com/citations?user=mlfYKfgAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
         </p>
       </header>
       <section class="pub-year" aria-labelledby="pub-year-2026">
-        <h3 class="pub-year-title" id="pub-year-2026">2026</h3>
-        <ol class="pub-year-list">
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title"><a href="https://arxiv.org/abs/2605.15491" target="_blank" rel="noopener noreferrer">Ghosted Layers: Unconstrained Activation Alignment for Recovering Layer-Pruned LLMs</a></h4>
-              <div class="pub-authors"><strong>VD Yun</strong>, J Jo, SP Karimireddy, S Lee</div>
-              <div class="pub-venue">NeurIPS 2026 Main Conference</div>
-              <div class="pub-links">
-                <a class="pub-link" href="https://arxiv.org/abs/2605.15491" target="_blank" rel="noopener noreferrer">Paper</a>
-              </div>
-            </div>
-          </li>
-
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title"><a href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=ko&amp;user=mlfYKfgAAAAJ&amp;citation_for_view=mlfYKfgAAAAJ:pyW8ca7W8N0C" target="_blank" rel="noopener noreferrer">Robust Multi-Agent LLMs under Byzantine Faults</a></h4>
-              <div class="pub-authors">H Lee*, <strong>VD Yun*</strong>, D Panagou, SP Karimireddy</div>
-              <div class="pub-venue">EMNLP 2026 Main Conference &middot; also at ICML 2026 Agents in the Wild</div>
-              <div class="pub-links">
-                <a class="pub-link" href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=ko&amp;user=mlfYKfgAAAAJ&amp;citation_for_view=mlfYKfgAAAAJ:pyW8ca7W8N0C" target="_blank" rel="noopener noreferrer">Paper</a>
-              </div>
-            </div>
-          </li>
-
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title"><a href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=ko&amp;user=mlfYKfgAAAAJ&amp;sortby=pubdate&amp;citation_for_view=mlfYKfgAAAAJ:NhqRSupF_l8C" target="_blank" rel="noopener noreferrer">Locality-Aware Redundancy Pruning for LLM Depth Compression</a></h4>
-              <div class="pub-authors"><strong>VD Yun*</strong>, Y Kim*, W Lim*, YJ Heo, M Kim, S Lee</div>
-              <div class="pub-venue">EMNLP 2026 Main Conference</div>
-              <div class="pub-links">
-                <a class="pub-link" href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=ko&amp;user=mlfYKfgAAAAJ&amp;sortby=pubdate&amp;citation_for_view=mlfYKfgAAAAJ:NhqRSupF_l8C" target="_blank" rel="noopener noreferrer">Paper</a>
-              </div>
-            </div>
-          </li>
-
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title"><a href="https://arxiv.org/abs/2505.02369" target="_blank" rel="noopener noreferrer">Sharpness-Aware Minimization with Z-Score Gradient Filtering</a></h4>
-              <div class="pub-authors"><strong>VD Yun</strong></div>
-              <div class="pub-venue">IEEE ICASSP 2026 &middot; also at NeurIPS 2025 OPT</div>
-              <div class="pub-links">
-                <a class="pub-link" href="https://arxiv.org/abs/2505.02369" target="_blank" rel="noopener noreferrer">Paper</a>
-                <a class="pub-link" href="https://2026.ieeeicassp.org/" target="_blank" rel="noopener noreferrer">Conference</a>
-              </div>
-            </div>
-          </li>
-
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title">On How Muon Reshapes Skill Learning Dynamics</h4>
-              <div class="pub-authors">AR Aranda, <strong>VD Yun</strong>, V Sharan, B Vasudeva</div>
-              <div class="pub-venue">ICML 2026 &middot; High-dimensional Learning Dynamics (HiLD)</div>
-            </div>
-          </li>
-
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title">Rethinking Layer Redundancy: Calibration Matters More Than Search in LLM Depth Pruning</h4>
-              <div class="pub-authors">M Kim*, <strong>VD Yun*</strong>, Y Kim*, S Cho, W Lim, S Lee</div>
-              <div class="pub-venue">Under review, 2026</div>
-            </div>
-          </li>
-
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title">Spectrum-Shaping Regularization for Neural Network Training Robust to Low-Rank Pruning</h4>
-              <div class="pub-authors">J Jo, <strong>VD Yun</strong>, S Lee</div>
-              <div class="pub-venue">Under review, 2026</div>
-            </div>
-          </li>
-
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title">Weight Concentration Regularization for Improving Pruning Robustness Under High Sparsity</h4>
-              <div class="pub-authors"><strong>VD Yun</strong>, J Jo, S Lee</div>
-              <div class="pub-venue">Under review, 2026</div>
-            </div>
-          </li>
-
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title">Asynchronous Sharpness-Aware Minimization for Fast and Accurate Deep Learning</h4>
-              <div class="pub-authors">J Jo, J Lim, <strong>VD Yun</strong>, S Lee</div>
-              <div class="pub-venue">Under review, 2026</div>
-            </div>
-          </li>
-
-        </ol>
+        <h2 class="pub-year-title" id="pub-year-2026">2026</h2>
+        <div class="pub-year-content">
+          <section class="pub-category" aria-labelledby="pub-2026-conference">
+            <h3 class="pub-category-title" id="pub-2026-conference" data-i18n="pub.category.conference">Conference Papers</h3>
+            <ul class="pub-year-list" role="list">
+              <li class="pub-item">
+                <div class="pub-details">
+                  <h4 class="pub-title"><a href="https://arxiv.org/abs/2605.15491" target="_blank" rel="noopener noreferrer">Ghosted Layers: Unconstrained Activation Alignment for Recovering Layer-Pruned LLMs</a></h4>
+                  <div class="pub-authors"><strong>VD Yun</strong>, J Jo, SP Karimireddy, S Lee</div>
+                  <div class="pub-venue"><span class="pub-venue-badge">NeurIPS 2026 Main Conference</span></div>
+                  <div class="pub-links">
+                    <a class="pub-link" href="https://arxiv.org/abs/2605.15491" target="_blank" rel="noopener noreferrer">Paper</a>
+                  </div>
+                </div>
+              </li>
+              <li class="pub-item">
+                <div class="pub-details">
+                  <h4 class="pub-title"><a href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=ko&amp;user=mlfYKfgAAAAJ&amp;citation_for_view=mlfYKfgAAAAJ:pyW8ca7W8N0C" target="_blank" rel="noopener noreferrer">Robust Multi-Agent LLMs under Byzantine Faults</a></h4>
+                  <div class="pub-authors">H Lee*, <strong>VD Yun*</strong>, D Panagou, SP Karimireddy</div>
+                  <div class="pub-venue"><span class="pub-venue-badge">EMNLP 2026 Main Conference</span> <span class="pub-venue-detail">&middot; also at ICML 2026 Agents in the Wild Workshop</span></div>
+                  <div class="pub-links">
+                    <a class="pub-link" href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=ko&amp;user=mlfYKfgAAAAJ&amp;citation_for_view=mlfYKfgAAAAJ:pyW8ca7W8N0C" target="_blank" rel="noopener noreferrer">Paper</a>
+                  </div>
+                </div>
+              </li>
+              <li class="pub-item">
+                <div class="pub-details">
+                  <h4 class="pub-title"><a href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=ko&amp;user=mlfYKfgAAAAJ&amp;sortby=pubdate&amp;citation_for_view=mlfYKfgAAAAJ:NhqRSupF_l8C" target="_blank" rel="noopener noreferrer">Locality-Aware Redundancy Pruning for LLM Depth Compression</a></h4>
+                  <div class="pub-authors"><strong>VD Yun*</strong>, Y Kim*, W Lim*, YJ Heo, M Kim, S Lee</div>
+                  <div class="pub-venue"><span class="pub-venue-badge">EMNLP 2026 Main Conference</span></div>
+                  <div class="pub-links">
+                    <a class="pub-link" href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=ko&amp;user=mlfYKfgAAAAJ&amp;sortby=pubdate&amp;citation_for_view=mlfYKfgAAAAJ:NhqRSupF_l8C" target="_blank" rel="noopener noreferrer">Paper</a>
+                  </div>
+                </div>
+              </li>
+              <li class="pub-item">
+                <div class="pub-details">
+                  <h4 class="pub-title"><a href="https://arxiv.org/abs/2505.02369" target="_blank" rel="noopener noreferrer">Sharpness-Aware Minimization with Z-Score Gradient Filtering</a></h4>
+                  <div class="pub-authors"><strong>VD Yun</strong></div>
+                  <div class="pub-venue"><span class="pub-venue-badge">IEEE ICASSP 2026</span> <span class="pub-venue-detail">&middot; also at NeurIPS 2025 OPT Workshop</span></div>
+                  <div class="pub-links">
+                    <a class="pub-link" href="https://arxiv.org/abs/2505.02369" target="_blank" rel="noopener noreferrer">Paper</a>
+                    <a class="pub-link" href="https://2026.ieeeicassp.org/" target="_blank" rel="noopener noreferrer">Conference</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </section>
+          <section class="pub-category" aria-labelledby="pub-2026-workshop">
+            <h3 class="pub-category-title" id="pub-2026-workshop" data-i18n="pub.category.workshop">Workshop Papers</h3>
+            <ul class="pub-year-list" role="list">
+              <li class="pub-item">
+                <div class="pub-details">
+                  <h4 class="pub-title">On How Muon Reshapes Skill Learning Dynamics</h4>
+                  <div class="pub-authors">AR Aranda, <strong>VD Yun</strong>, V Sharan, B Vasudeva</div>
+                  <div class="pub-venue"><span class="pub-venue-badge">ICML 2026 Workshop</span> <span class="pub-venue-detail">&middot; High-dimensional Learning Dynamics (HiLD)</span></div>
+                </div>
+              </li>
+            </ul>
+          </section>
+          <section class="pub-category" aria-labelledby="pub-2026-preprint">
+            <h3 class="pub-category-title" id="pub-2026-preprint" data-i18n="pub.category.preprint">Preprints</h3>
+            <ul class="pub-year-list" role="list">
+              <li class="pub-item">
+                <div class="pub-details">
+                  <h4 class="pub-title"><a href="https://arxiv.org/abs/2609.32259" target="_blank" rel="noopener noreferrer">Prefill-Free Cross-Family KV Cache Transfer for Heterogeneous Multi-Agent LLMs</a></h4>
+                  <div class="pub-authors"><strong>VD Yun*</strong>, W Lim*, H Yoo, S Yoo, M Annavaram, SP Karimireddy</div>
+                  <div class="pub-venue"><span class="pub-venue-badge">arXiv &middot; 2026</span></div>
+                  <div class="pub-links">
+                    <a class="pub-link" href="https://arxiv.org/abs/2609.32259" target="_blank" rel="noopener noreferrer">Paper</a>
+                  </div>
+                </div>
+              </li>
+              <li class="pub-item">
+                <div class="pub-details">
+                  <h4 class="pub-title"><a href="https://arxiv.org/abs/2608.02691" target="_blank" rel="noopener noreferrer">Output-Aware Rotation for INT2 KV-Cache Quantization</a></h4>
+                  <div class="pub-authors"><strong>VD Yun*</strong>, W Lim*, M Cheong, S Lee, M Annavaram, SP Karimireddy, S Yoo</div>
+                  <div class="pub-venue"><span class="pub-venue-badge">arXiv &middot; 2026</span></div>
+                  <div class="pub-links">
+                    <a class="pub-link" href="https://arxiv.org/abs/2608.02691" target="_blank" rel="noopener noreferrer">Paper</a>
+                  </div>
+                </div>
+              </li>
+              <li class="pub-item">
+                <div class="pub-details">
+                  <h4 class="pub-title"><a href="https://arxiv.org/abs/2610.19121" target="_blank" rel="noopener noreferrer">Unlocking Structured Pruning for Reasoning Language Models via Attention-Preserving MLP Trimming</a></h4>
+                  <div class="pub-authors">W Lim*, H Yoo*, <strong>VD Yun*</strong>, S Yoo</div>
+                  <div class="pub-venue"><span class="pub-venue-badge">arXiv &middot; 2026</span></div>
+                  <div class="pub-links">
+                    <a class="pub-link" href="https://arxiv.org/abs/2610.19121" target="_blank" rel="noopener noreferrer">Paper</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </section>
+        </div>
       </section>
 
       <section class="pub-year" aria-labelledby="pub-year-2025">
-        <h3 class="pub-year-title" id="pub-year-2025">2025</h3>
-        <ol class="pub-year-list">
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title"><a href="https://arxiv.org/abs/2305.10947" target="_blank" rel="noopener noreferrer">Revisiting 16-bit Neural Network Training: A Practical Approach for Resource-Limited Learning</a></h4>
-              <div class="pub-authors"><strong>J Yun</strong>, S Choi, F Rameau, B Kang, Z Fu</div>
-              <div class="pub-venue">ICONIP 2025 &middot; &#129351; Best Paper Award</div>
-              <div class="pub-links">
-                <a class="pub-link" href="https://arxiv.org/abs/2305.10947" target="_blank" rel="noopener noreferrer">Paper</a>
-              </div>
-            </div>
-          </li>
-
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title"><a href="https://arxiv.org/pdf/2508.07142?" target="_blank" rel="noopener noreferrer">Why Does Stochastic Gradient Descent Slow Down in Low-Precision Training?</a></h4>
-              <div class="pub-authors"><strong>VD Yun</strong></div>
-              <div class="pub-venue">NeurIPS 2025 &middot; OPT</div>
-              <div class="pub-links">
-                <a class="pub-link" href="https://arxiv.org/pdf/2508.07142?" target="_blank" rel="noopener noreferrer">Paper</a>
-                <a class="pub-link" href="https://opt-ml.org/" target="_blank" rel="noopener noreferrer">Workshop</a>
-              </div>
-            </div>
-          </li>
-
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title"><a href="https://openreview.net/pdf?id=d4e2FnDNl3" target="_blank" rel="noopener noreferrer">Hyperparameter-Free Auto-Scaled Gradient Normalization via Global Standard Deviation Dynamics</a></h4>
-              <div class="pub-authors"><strong>VD Yun</strong></div>
-              <div class="pub-venue">NeurIPS 2025 &middot; OPT</div>
-              <div class="pub-links">
-                <a class="pub-link" href="https://openreview.net/pdf?id=d4e2FnDNl3" target="_blank" rel="noopener noreferrer">Paper</a>
-                <a class="pub-link" href="https://opt-ml.org/" target="_blank" rel="noopener noreferrer">Workshop</a>
-              </div>
-            </div>
-          </li>
-
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title"><a href="https://arxiv.org/abs/2505.04468" target="_blank" rel="noopener noreferrer">Fast Fourier Transform-Based Spectral and Temporal Gradient Filtering for Differential Privacy</a></h4>
-              <div class="pub-authors">H Shin*, <strong>VD Yun*</strong>, K Jung*, S Yun*</div>
-              <div class="pub-venue">ACM CIKM 2025 &middot; Human-Centric AI</div>
-              <div class="pub-links">
-                <a class="pub-link" href="https://arxiv.org/abs/2505.04468" target="_blank" rel="noopener noreferrer">Paper</a>
-                <a class="pub-link" href="https://xai.kaist.ac.kr/Workshop/hcai2025/#call" target="_blank" rel="noopener noreferrer">Workshop</a>
-              </div>
-            </div>
-          </li>
-
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title">Stochastic Gradient Sampling for Enhancing Neural Networks Training</h4>
-              <div class="pub-authors"><strong>J Yun</strong></div>
-              <div class="pub-venue">Neural Computing and Applications, 2025</div>
-            </div>
-          </li>
-
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title"><a href="https://link.springer.com/chapter/10.1007/978-981-96-8912-5_12" target="_blank" rel="noopener noreferrer">ZNorm: Z-Score Gradient Normalization Accelerating Skip-Connected Network Training Without Architectural Modification</a></h4>
-              <div class="pub-authors"><strong>J Yun</strong></div>
-              <div class="pub-venue">AAAI 2025 &middot; AI for Research and Scalable, Efficient Systems</div>
-              <div class="pub-links">
-                <a class="pub-link" href="https://link.springer.com/chapter/10.1007/978-981-96-8912-5_12" target="_blank" rel="noopener noreferrer">Paper</a>
-                <a class="pub-link" href="https://seasworkshop.github.io/aaai25/" target="_blank" rel="noopener noreferrer">Workshop</a>
-              </div>
-            </div>
-          </li>
-
-        </ol>
+        <h2 class="pub-year-title" id="pub-year-2025">2025</h2>
+        <div class="pub-year-content">
+          <section class="pub-category" aria-labelledby="pub-2025-conference">
+            <h3 class="pub-category-title" id="pub-2025-conference" data-i18n="pub.category.conference">Conference Papers</h3>
+            <ul class="pub-year-list" role="list">
+              <li class="pub-item">
+                <div class="pub-details">
+                  <h4 class="pub-title"><a href="https://arxiv.org/abs/2305.10947" target="_blank" rel="noopener noreferrer">Revisiting 16-bit Neural Network Training: A Practical Approach for Resource-Limited Learning</a></h4>
+                  <div class="pub-authors"><strong>J Yun</strong>, S Choi, F Rameau, B Kang, Z Fu</div>
+                  <div class="pub-venue"><span class="pub-venue-badge">ICONIP 2025</span> <span class="pub-venue-detail">&middot; &#129351; Best Paper Award</span></div>
+                  <div class="pub-links">
+                    <a class="pub-link" href="https://arxiv.org/abs/2305.10947" target="_blank" rel="noopener noreferrer">Paper</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </section>
+          <section class="pub-category" aria-labelledby="pub-2025-journal">
+            <h3 class="pub-category-title" id="pub-2025-journal" data-i18n="pub.category.journal">Journal Articles</h3>
+            <ul class="pub-year-list" role="list">
+              <li class="pub-item">
+                <div class="pub-details">
+                  <h4 class="pub-title">Stochastic Gradient Sampling for Enhancing Neural Networks Training</h4>
+                  <div class="pub-authors"><strong>J Yun</strong></div>
+                  <div class="pub-venue"><span class="pub-venue-badge">Neural Computing and Applications, 2025</span></div>
+                </div>
+              </li>
+            </ul>
+          </section>
+          <section class="pub-category" aria-labelledby="pub-2025-workshop">
+            <h3 class="pub-category-title" id="pub-2025-workshop" data-i18n="pub.category.workshop">Workshop Papers</h3>
+            <ul class="pub-year-list" role="list">
+              <li class="pub-item">
+                <div class="pub-details">
+                  <h4 class="pub-title"><a href="https://arxiv.org/pdf/2508.07142?" target="_blank" rel="noopener noreferrer">Why Does Stochastic Gradient Descent Slow Down in Low-Precision Training?</a></h4>
+                  <div class="pub-authors"><strong>VD Yun</strong></div>
+                  <div class="pub-venue"><span class="pub-venue-badge">NeurIPS 2025 Workshop</span> <span class="pub-venue-detail">&middot; OPT</span></div>
+                  <div class="pub-links">
+                    <a class="pub-link" href="https://arxiv.org/pdf/2508.07142?" target="_blank" rel="noopener noreferrer">Paper</a>
+                    <a class="pub-link" href="https://opt-ml.org/" target="_blank" rel="noopener noreferrer">Workshop</a>
+                  </div>
+                </div>
+              </li>
+              <li class="pub-item">
+                <div class="pub-details">
+                  <h4 class="pub-title"><a href="https://link.springer.com/chapter/10.1007/978-981-96-8912-5_12" target="_blank" rel="noopener noreferrer">ZNorm: Z-Score Gradient Normalization Accelerating Skip-Connected Network Training Without Architectural Modification</a></h4>
+                  <div class="pub-authors"><strong>J Yun</strong></div>
+                  <div class="pub-venue"><span class="pub-venue-badge">AAAI 2025 Workshop</span> <span class="pub-venue-detail">&middot; AI for Research and Scalable, Efficient Systems</span></div>
+                  <div class="pub-links">
+                    <a class="pub-link" href="https://link.springer.com/chapter/10.1007/978-981-96-8912-5_12" target="_blank" rel="noopener noreferrer">Paper</a>
+                    <a class="pub-link" href="https://seasworkshop.github.io/aaai25/" target="_blank" rel="noopener noreferrer">Workshop</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </section>
+        </div>
       </section>
 
       <section class="pub-year" aria-labelledby="pub-year-2024">
-        <h3 class="pub-year-title" id="pub-year-2024">2024</h3>
-        <ol class="pub-year-list">
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title"><a href="https://ieeexplore.ieee.org/abstract/document/10825094" target="_blank" rel="noopener noreferrer">Mitigating Gradient Overlap in Deep Residual Networks with Gradient Normalization for Improved Non-Convex Optimization</a></h4>
-              <div class="pub-authors"><strong>J Yun</strong></div>
-              <div class="pub-venue">IEEE BigData 2024 &middot; BPOD</div>
-              <div class="pub-links">
-                <a class="pub-link" href="https://ieeexplore.ieee.org/abstract/document/10825094" target="_blank" rel="noopener noreferrer">Paper</a>
-                <a class="pub-link" href="https://bdal.umbc.edu/bpod-2024/" target="_blank" rel="noopener noreferrer">Workshop</a>
-              </div>
-            </div>
-          </li>
-
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title"><a href="https://arxiv.org/pdf/2405.09802" target="_blank" rel="noopener noreferrer">Analysis and Predictive Modeling of Solar Coronal Holes Using Computer Vision and ARIMA-LSTM Networks</a></h4>
-              <div class="pub-authors"><strong>J Yun</strong>, J Shin</div>
-              <div class="pub-venue">SPAICE 2024 &middot; ESA / IAA, AI in and for Space</div>
-              <div class="pub-links">
-                <a class="pub-link" href="https://arxiv.org/pdf/2405.09802" target="_blank" rel="noopener noreferrer">Paper</a>
-                <a class="pub-link" href="https://spaice.esa.int/2024/" target="_blank" rel="noopener noreferrer">Conference</a>
-              </div>
-            </div>
-          </li>
-
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title"><a href="https://ieeexplore.ieee.org/abstract/document/10650301" target="_blank" rel="noopener noreferrer">Robust Neural Pruning with Gradient Sampling Optimization for Residual Neural Networks</a></h4>
-              <div class="pub-authors"><strong>J Yun</strong></div>
-              <div class="pub-venue">IJCNN 2024 &middot; Oral</div>
-              <div class="pub-links">
-                <a class="pub-link" href="https://ieeexplore.ieee.org/abstract/document/10650301" target="_blank" rel="noopener noreferrer">Paper</a>
-              </div>
-            </div>
-          </li>
-
-          <li class="pub-item">
-            <div class="pub-details">
-              <h4 class="pub-title"><a href="https://openaccess.thecvf.com/content/CVPR2024W/CVMI/papers/Yun_Uncertainty_Estimation_for_Tumor_Prediction_with_Unlabeled_Data_CVPRW_2024_paper.pdf" target="_blank" rel="noopener noreferrer">Uncertainty Estimation for Tumor Prediction with Unlabeled Data</a></h4>
-              <div class="pub-authors"><strong>J Yun</strong>, S Abousamra, C Li, R Gupta, T Kurc, D Samaras, A Van Dyke, et al.</div>
-              <div class="pub-venue">IEEE/CVF CVPR 2024 &middot; CVMI</div>
-              <div class="pub-links">
-                <a class="pub-link" href="https://openaccess.thecvf.com/content/CVPR2024W/CVMI/papers/Yun_Uncertainty_Estimation_for_Tumor_Prediction_with_Unlabeled_Data_CVPRW_2024_paper.pdf" target="_blank" rel="noopener noreferrer">Paper</a>
-              </div>
-            </div>
-          </li>
-
-        </ol>
+        <h2 class="pub-year-title" id="pub-year-2024">2024</h2>
+        <div class="pub-year-content">
+          <section class="pub-category" aria-labelledby="pub-2024-conference">
+            <h3 class="pub-category-title" id="pub-2024-conference" data-i18n="pub.category.conference">Conference Papers</h3>
+            <ul class="pub-year-list" role="list">
+              <li class="pub-item">
+                <div class="pub-details">
+                  <h4 class="pub-title"><a href="https://arxiv.org/pdf/2405.09802" target="_blank" rel="noopener noreferrer">Analysis and Predictive Modeling of Solar Coronal Holes Using Computer Vision and ARIMA-LSTM Networks</a></h4>
+                  <div class="pub-authors"><strong>J Yun</strong>, J Shin</div>
+                  <div class="pub-venue"><span class="pub-venue-badge">SPAICE 2024</span> <span class="pub-venue-detail">&middot; ESA / IAA, AI in and for Space</span></div>
+                  <div class="pub-links">
+                    <a class="pub-link" href="https://arxiv.org/pdf/2405.09802" target="_blank" rel="noopener noreferrer">Paper</a>
+                    <a class="pub-link" href="https://spaice.esa.int/2024/" target="_blank" rel="noopener noreferrer">Conference</a>
+                  </div>
+                </div>
+              </li>
+              <li class="pub-item">
+                <div class="pub-details">
+                  <h4 class="pub-title"><a href="https://ieeexplore.ieee.org/abstract/document/10650301" target="_blank" rel="noopener noreferrer">Robust Neural Pruning with Gradient Sampling Optimization for Residual Neural Networks</a></h4>
+                  <div class="pub-authors"><strong>J Yun</strong></div>
+                  <div class="pub-venue"><span class="pub-venue-badge">IJCNN 2024</span> <span class="pub-venue-detail">&middot; Oral</span></div>
+                  <div class="pub-links">
+                    <a class="pub-link" href="https://ieeexplore.ieee.org/abstract/document/10650301" target="_blank" rel="noopener noreferrer">Paper</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </section>
+          <section class="pub-category" aria-labelledby="pub-2024-workshop">
+            <h3 class="pub-category-title" id="pub-2024-workshop" data-i18n="pub.category.workshop">Workshop Papers</h3>
+            <ul class="pub-year-list" role="list">
+              <li class="pub-item">
+                <div class="pub-details">
+                  <h4 class="pub-title"><a href="https://ieeexplore.ieee.org/abstract/document/10825094" target="_blank" rel="noopener noreferrer">Mitigating Gradient Overlap in Deep Residual Networks with Gradient Normalization for Improved Non-Convex Optimization</a></h4>
+                  <div class="pub-authors"><strong>J Yun</strong></div>
+                  <div class="pub-venue"><span class="pub-venue-badge">IEEE BigData 2024 Workshop</span> <span class="pub-venue-detail">&middot; BPOD</span></div>
+                  <div class="pub-links">
+                    <a class="pub-link" href="https://ieeexplore.ieee.org/abstract/document/10825094" target="_blank" rel="noopener noreferrer">Paper</a>
+                    <a class="pub-link" href="https://bdal.umbc.edu/bpod-2024/" target="_blank" rel="noopener noreferrer">Workshop</a>
+                  </div>
+                </div>
+              </li>
+              <li class="pub-item">
+                <div class="pub-details">
+                  <h4 class="pub-title"><a href="https://openaccess.thecvf.com/content/CVPR2024W/CVMI/papers/Yun_Uncertainty_Estimation_for_Tumor_Prediction_with_Unlabeled_Data_CVPRW_2024_paper.pdf" target="_blank" rel="noopener noreferrer">Uncertainty Estimation for Tumor Prediction with Unlabeled Data</a></h4>
+                  <div class="pub-authors"><strong>J Yun</strong>, S Abousamra, C Li, R Gupta, T Kurc, D Samaras, A Van Dyke, et al.</div>
+                  <div class="pub-venue"><span class="pub-venue-badge">IEEE/CVF CVPR 2024 Workshop</span> <span class="pub-venue-detail">&middot; CVMI</span></div>
+                  <div class="pub-links">
+                    <a class="pub-link" href="https://openaccess.thecvf.com/content/CVPR2024W/CVMI/papers/Yun_Uncertainty_Estimation_for_Tumor_Prediction_with_Unlabeled_Data_CVPRW_2024_paper.pdf" target="_blank" rel="noopener noreferrer">Paper</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </section>
+        </div>
       </section>
     </section>
-  </div>
+  </main>
 
   <!-- ========== Footer ========== -->
   <footer class="site-footer">
@@ -302,6 +304,6 @@
   </script>
 
   <!-- ========== i18n (KR / EN) ========== -->
-  <script src="i18n.js?v=20260830ab"></script>
+  <script src="i18n.js?v=20261028vision"></script>
 </body>
 </html>

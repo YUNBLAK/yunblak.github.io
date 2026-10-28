@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>E-AI Project | Vincent-Daniel Yun</title>
-  <meta name="description" content="E-AI (Efficient & Robust AI): building lightweight, fast, and reliable AI through LLM compression, pruning, and robust multi-agent systems." />
+  <title>Research Vision | Vincent-Daniel Yun</title>
+  <meta name="description" content="Research vision: efficient and robust AI through heterogeneous multi-agent communication, KV-cache compression, and reasoning-preserving model pruning." />
   <meta name="google" content="notranslate" />
   <link rel="canonical" href="https://www.worldwidedaniel.com/eai-project" />
-  <link rel="stylesheet" href="style.css?v=20260830p" />
+  <link rel="stylesheet" href="style.css?v=20261028vision" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
         <ul class="nav-links" id="nav-links">
           <li><a href="/" data-i18n="nav.home">Home</a></li>
           <li><a href="/publications" data-i18n="nav.publications">Publications</a></li>
-          <li><a href="/eai-project" class="active" data-i18n="nav.eai">E-AI Project</a></li>
+          <li><a href="/eai-project" class="active" data-i18n="nav.eai">Research Vision</a></li>
           <li><a href="/gallery" data-i18n="nav.gallery">Gallery</a></li>
           <li><a href="/contact" data-i18n="nav.contact">Contact</a></li>
         </ul>
@@ -37,172 +37,126 @@
     </div>
   </nav>
 
-  <div class="container">
-    <!-- ===== Masthead ===== -->
-    <section class="ef-mast">
-      <div class="ef-kicker" data-i18n="eai.hero_badge">E-AI &middot; Efficient AI</div>
-      <h1 class="ef-headline" data-i18n="eai.hero_title">Efficient and Robust AI System Project</h1>
-      <p class="ef-standfirst" data-i18n="eai.hero_tag">
-        Building lightweight, fast, and reliable AI that can stand beside people when seconds matter.
-      </p>
+  <main class="container research-vision">
+    <header class="ef-mast">
+      <div class="ef-kicker" data-i18n="eai.hero_badge">Research Vision</div>
+      <h1 class="ef-headline" data-i18n="eai.hero_title">A Vision for Efficient &amp; Robust AI</h1>
+      <p class="ef-standfirst" data-i18n="eai.hero_tag">Building lightweight, fast, and reliable AI that can stand beside people when seconds matter.</p>
       <div class="ef-byline">Vincent-Daniel Yun &middot; University of Southern California</div>
+    </header>
+
+    <section class="ef-lede" aria-label="Research vision">
+      <p class="ef-dropcap" data-i18n="eai.vision_p1">Modern AI systems are becoming more capable, but using them in the real world still demands substantial computation, memory, and communication. These costs matter most when resources are limited and decisions cannot wait.</p>
+      <p data-i18n="eai.vision_p2">My research vision is to make intelligent systems <strong>efficient enough to deploy and reliable enough to work together</strong>. This means reducing computation and memory within individual models, making communication between heterogeneous agents faster, and keeping collaboration resilient when some agents fail.</p>
+      <p data-i18n="eai.vision_p3">The long-term goal is compact yet capable AI that can support people in time-sensitive settings, including disaster response. Model compression and dependable multi-agent collaboration are complementary steps toward that vision.</p>
+      <blockquote class="ef-pullquote" data-i18n="eai.vision_quote">Efficient models. Reliable collaboration. AI that can help when every second counts.</blockquote>
     </section>
 
-    <!-- ===== Lede / Vision ===== -->
-    <section class="ef-lede">
-      <p class="ef-dropcap" data-i18n="eai.vision_p1">
-        Modern AI is powerful but heavy. State-of-the-art models are enormous and their inference is slow,
-        still far from human intuition, and far too slow and unreliable to trust in urgent, high-stakes moments.
-      </p>
-      <p data-i18n="eai.vision_p2">
-        Two obstacles stand between today's models and AI we can trust in the field. Individually, each model is too
-        large and too slow to run where it is actually needed. Collectively, when many models or agents work together,
-        a single faulty or adversarial member can quietly derail the whole system. <strong>E-AI</strong> attacks both
-        making every model lightweight and fast while keeping teams of agents reliable even when some of them fail.
-      </p>
-      <p data-i18n="eai.vision_p3">
-        I started the <strong>E-AI (Efficient-AI)</strong> project to build compact yet powerful AI that can assist
-        people in disaster scenarios, responding to dangerous accidents quickly and reliably when every second counts.
-      </p>
-      <blockquote class="ef-pullquote" data-i18n="eai.vision_quote">
-        E-AI is the central theme of all my research. Every project I work on is a step toward making it real.
-      </blockquote>
-    </section>
+    <div class="ef-sectionlabel"><span data-i18n="eai.research_h">Research toward this vision</span></div>
+    <p class="ef-sectionintro" data-i18n="eai.research_sub">Two connected directions: efficient, robust communication between LLM agents, and smaller models that retain their reasoning ability.</p>
 
-    <!-- ===== Research ===== -->
-    <div class="ef-sectionlabel"><span data-i18n="eai.research_h">Research under E-AI</span></div>
-    <p class="ef-sectionintro" data-i18n="eai.research_sub">
-      The work splits into two threads: keeping teams of LLM agents robust when individual agents fail, and shrinking
-      and accelerating the models themselves without losing what makes them powerful.
-    </p>
+    <h2 class="ef-track"><span class="ef-track-no">I</span><span class="ef-track-name" data-i18n="eai.track1">Efficient &amp; Robust Multi-Agent Systems</span></h2>
 
-    <!-- Track I -->
-    <div class="ef-track">
-      <span class="ef-track-no">I</span>
-      <span class="ef-track-name" data-i18n="eai.track1">Robust Multi-Agent Systems</span>
-    </div>
-
-    <!-- 01 Robust Multi-Agent LLMs -->
-    <article class="ef-feature">
-      <div class="ef-feature-media">
-        <img src="image/ef-multiagent.png" alt="Self-Anchored Consensus (SAC) pipeline overview on an (F+1)-robust network" />
-      </div>
+    <article class="ef-feature" id="heterofold">
+      <figure class="ef-feature-media">
+        <a href="https://arxiv.org/html/2609.32259v2#S2.F3" target="_blank" rel="noopener noreferrer"><img src="image/ef-heterofold.svg" alt="HeteroFold token and layer alignment, KV mapping, and output-aware calibration pipeline" loading="lazy" decoding="async" /></a>
+        <figcaption data-i18n="eai.figure_note">Method overview from the paper. Select to view the full figure.</figcaption>
+      </figure>
       <div class="ef-feature-text">
         <div class="ef-feature-no">01</div>
-        <div class="ef-venue-badge">Accepted &middot; EMNLP 2026 Main</div>
-        <h3 class="ef-feature-title" data-i18n="eai.c0_t">Robust Multi-Agent LLMs under Byzantine Faults</h3>
-        <p class="ef-feature-desc" data-i18n="eai.c0_d">
-          When LLM agents collaborate over a network, a few unreliable or adversarial ("Byzantine") agents can mislead
-          the rest and corrupt the group's answer. Self-Anchored Consensus (SAC) is a fully decentralized
-          filter-and-refine protocol where agents iteratively share, evaluate, and filter each other's messages
-          with graph conditions that guarantee honest agents keep reliable information flowing, even under
-          adversarial attacks.
-        </p>
-        <a class="ef-feature-link" href="https://arxiv.org/abs/2605.09076" target="_blank" data-i18n="eai.readpaper">Read the paper &rarr;</a>
+        <div class="ef-venue-badge">Preprint · 2026</div>
+        <h3 class="ef-feature-title" data-i18n="eai.c6_t">Prefill-Free Cross-Family KV Cache Transfer for Heterogeneous Multi-Agent LLMs</h3>
+        <p class="ef-feature-desc" data-i18n="eai.c6_d">Heterogeneous LLM agents often process the same shared context repeatedly. HeteroFold transfers a sender’s KV cache directly to a receiver from another model family, aligning tokens and layers and calibrating the transferred cache to preserve receiver behavior. Both models remain frozen, and the receiver can decode without repeating prefill. This makes communication between different agent models more efficient.</p>
+        <a class="ef-feature-link" href="https://arxiv.org/abs/2609.32259" target="_blank" rel="noopener noreferrer" data-i18n="eai.readpaper">Read the paper &rarr;</a>
       </div>
     </article>
 
-    <!-- Track II -->
-    <div class="ef-track">
-      <span class="ef-track-no">II</span>
-      <span class="ef-track-name" data-i18n="eai.track2">Efficient Models &amp; Compression</span>
-    </div>
-
-    <!-- 02 Output-Aware Rotation for INT2 KV-Cache Quantization -->
-    <article class="ef-feature reverse">
-      <div class="ef-feature-media">
-        <img src="image/ef-optr.png" alt="OptR output-aware INT2 KV-cache quantization pipeline" />
-      </div>
+    <article class="ef-feature reverse" id="robust-agents">
+      <figure class="ef-feature-media">
+        <img src="image/ef-multiagent.png" alt="Self-Anchored Consensus pipeline on a robust agent network" loading="lazy" decoding="async" />
+      </figure>
       <div class="ef-feature-text">
         <div class="ef-feature-no">02</div>
-        <h3 class="ef-feature-title" data-i18n="eai.c5_t">Output-Aware Rotation for INT2 KV-Cache Quantization</h3>
-        <p class="ef-feature-desc" data-i18n="eai.c5_d">
-          INT2 KV-cache quantization saves substantial memory, but existing rotation methods optimize proxy errors
-          before the full attention output is formed. OptR instead learns per-head orthogonal corrections that
-          minimize post-projection attention-output error, while an attention-equivalent key reparameterization
-          reduces channel-wise outliers. It improves reasoning, coding, and long-context retrieval while preserving
-          paged KV-cache compatibility with negligible serving overhead.
-        </p>
-        <a class="ef-feature-link" href="https://arxiv.org/pdf/2608.02691" target="_blank" data-i18n="eai.readpaper">Read the paper &rarr;</a>
+        <div class="ef-venue-badge">EMNLP 2026 Main · Oral</div>
+        <h3 class="ef-feature-title" data-i18n="eai.c0_t">Robust Multi-Agent LLMs under Byzantine Faults</h3>
+        <p class="ef-feature-desc" data-i18n="eai.c0_d">When LLM agents collaborate, unreliable or adversarial agents can corrupt the group’s answer. Self-Anchored Consensus (SAC) is a decentralized filter-and-refine protocol: agents exchange, evaluate, and filter one another’s messages. The work identifies graph conditions that allow honest agents to keep reliable information flowing under Byzantine faults, making collective reasoning more resilient.</p>
+        <a class="ef-feature-link" href="https://arxiv.org/abs/2605.09076" target="_blank" rel="noopener noreferrer" data-i18n="eai.readpaper">Read the paper &rarr;</a>
       </div>
     </article>
 
-    <!-- 03 Ghosted Layers -->
-    <article class="ef-feature">
-      <div class="ef-feature-media">
-        <img src="image/ef-ghosted.png" alt="Ghosted Layers architecture diagram" />
-      </div>
+    <h2 class="ef-track"><span class="ef-track-no">II</span><span class="ef-track-name" data-i18n="eai.track2">Efficient Models &amp; Compression</span></h2>
+
+    <article class="ef-feature" id="optr">
+      <figure class="ef-feature-media">
+        <img src="image/ef-optr.png" alt="OptR output-aware INT2 KV-cache quantization pipeline" loading="lazy" decoding="async" />
+      </figure>
       <div class="ef-feature-text">
         <div class="ef-feature-no">03</div>
-        <h3 class="ef-feature-title" data-i18n="eai.c1_t">Ghosted Layers: Recovering Layer-Pruned LLMs</h3>
-        <p class="ef-feature-desc" data-i18n="eai.c1_d">
-          Layer pruning removes whole Transformer blocks to shrink an LLM, but creates a mismatch at the pruning
-          boundary that hurts accuracy. Ghosted Layers is a training-free module that solves a closed-form
-          activation-alignment problem to recover the lost information while keeping the speedup of pruning
-          while restoring quality.
-        </p>
-        <a class="ef-feature-link" href="https://arxiv.org/abs/2605.15491" target="_blank" data-i18n="eai.readpaper">Read the paper &rarr;</a>
+        <div class="ef-venue-badge">Preprint · 2026</div>
+        <h3 class="ef-feature-title" data-i18n="eai.c5_t">Output-Aware Rotation for INT2 KV-Cache Quantization</h3>
+        <p class="ef-feature-desc" data-i18n="eai.c5_d">INT2 quantization makes the KV cache much smaller, but minimizing cache reconstruction error alone does not preserve the model’s output. OptR learns per-head rotations that minimize attention-output error after the output projection. An attention-equivalent key reparameterization reduces channel-wise offsets. The method improves reasoning, coding, and long-context retrieval while retaining compatibility with paged KV caches.</p>
+        <a class="ef-feature-link" href="https://arxiv.org/abs/2608.02691" target="_blank" rel="noopener noreferrer" data-i18n="eai.readpaper">Read the paper &rarr;</a>
       </div>
     </article>
 
-    <!-- 04 LoRP -->
-    <article class="ef-feature reverse">
-      <div class="ef-feature-media">
-        <img src="image/ef-lorp.png" alt="Inter-layer similarity heatmaps across LLM architectures" />
-      </div>
+    <article class="ef-feature reverse" id="layertrim">
+      <figure class="ef-feature-media">
+        <a href="https://arxiv.org/html/2610.19121v1#S3.F3" target="_blank" rel="noopener noreferrer"><img src="image/ef-layertrim.svg" alt="LayerTrim selects redundant decoder layers and trims MLP features while preserving attention and decoder depth" loading="lazy" decoding="async" /></a>
+        <figcaption data-i18n="eai.figure_note">Method overview from the paper. Select to view the full figure.</figcaption>
+      </figure>
       <div class="ef-feature-text">
         <div class="ef-feature-no">04</div>
-        <div class="ef-venue-badge">Accepted &middot; EMNLP 2026 Main</div>
-        <h3 class="ef-feature-title" data-i18n="eai.c2_t">Locality-Aware Redundancy Pruning (LoRP)</h3>
-        <p class="ef-feature-desc" data-i18n="eai.c2_d">
-          Where redundancy lives inside an LLM depends on its architecture. It can be localized or spread
-          globally (think Llama vs. Qwen). LoRP measures inter-layer similarity to compute a Representation
-          Locality Score, then prunes each model according to its own redundancy structure instead of a
-          one-size-fits-all rule.
-        </p>
-        <a class="ef-feature-link" href="https://arxiv.org/abs/2605.27786" target="_blank" data-i18n="eai.readpaper">Read the paper &rarr;</a>
+        <div class="ef-venue-badge">Preprint · 2026</div>
+        <h3 class="ef-feature-title" data-i18n="eai.c7_t">Unlocking Structured Pruning for Reasoning Language Models via Attention-Preserving MLP Trimming</h3>
+        <p class="ef-feature-desc" data-i18n="eai.c7_d">Removing whole decoder layers can severely damage long-form reasoning. LayerTrim identifies redundant layers and selectively removes MLP features while preserving attention and decoder depth. It requires neither gradients nor recovery training. By retaining the structures needed for reasoning, the method reduces inference cost and memory use while better preserving reasoning ability than the evaluated structured-pruning baselines.</p>
+        <a class="ef-feature-link" href="https://arxiv.org/abs/2610.19121" target="_blank" rel="noopener noreferrer" data-i18n="eai.readpaper">Read the paper &rarr;</a>
       </div>
     </article>
 
-    <!-- 05 WCR -->
-    <article class="ef-feature">
-      <div class="ef-feature-media">
-        <img src="image/ef-wcr.png" alt="3D weight-magnitude landscape before and after concentration" />
-      </div>
+    <article class="ef-feature" id="ghosted-layers">
+      <figure class="ef-feature-media">
+        <img src="image/ef-ghosted.png" alt="Ghosted Layers activation alignment at a pruning boundary" loading="lazy" decoding="async" />
+      </figure>
       <div class="ef-feature-text">
         <div class="ef-feature-no">05</div>
-        <h3 class="ef-feature-title" data-i18n="eai.c3_t">Weight Concentration Regularization (WCR)</h3>
-        <p class="ef-feature-desc" data-i18n="eai.c3_d">
-          Under aggressive sparsity, naive pruning destroys accuracy because important weights are spread thin.
-          WCR is a training-time regularizer that concentrates a model's energy onto a small set of informative
-          parameters, so magnitude pruning can safely remove the rest and make models far more robust to
-          high-sparsity compression.
-        </p>
-        <a class="ef-feature-link" href="https://arxiv.org/abs/2511.14282" target="_blank" data-i18n="eai.readpaper">Read the paper &rarr;</a>
+        <div class="ef-venue-badge">NeurIPS 2026 Main</div>
+        <h3 class="ef-feature-title" data-i18n="eai.c1_t">Ghosted Layers: Unconstrained Activation Alignment for Recovering Layer-Pruned LLMs</h3>
+        <p class="ef-feature-desc" data-i18n="eai.c1_d">Removing Transformer blocks creates a mismatch between the hidden states reaching surviving layers and the inputs those layers were trained to process. Ghosted Layers uses a small calibration set to solve a closed-form activation-alignment problem. This training-free recovery module improves accuracy and perplexity while preserving the efficiency gains of layer pruning.</p>
+        <a class="ef-feature-link" href="https://arxiv.org/abs/2605.15491" target="_blank" rel="noopener noreferrer" data-i18n="eai.readpaper">Read the paper &rarr;</a>
       </div>
     </article>
 
-    <!-- 06 Rethinking Layer Redundancy -->
-    <article class="ef-feature reverse">
-      <div class="ef-feature-media">
-        <img src="image/ef-rethink.png" alt="Pruned layer patterns across calibration configurations" />
-      </div>
+    <article class="ef-feature reverse" id="lorp">
+      <figure class="ef-feature-media">
+        <img src="image/ef-lorp.png" alt="Inter-layer representation similarity across LLM architectures" loading="lazy" decoding="async" />
+      </figure>
       <div class="ef-feature-text">
         <div class="ef-feature-no">06</div>
-        <h3 class="ef-feature-title" data-i18n="eai.c4_t">Rethinking Layer Redundancy: Calibration over Search</h3>
-        <p class="ef-feature-desc" data-i18n="eai.c4_d">
-          Most depth-pruning methods chase clever search algorithms to find removable layers. We show the opposite:
-          under a fixed calibration set, complex search barely beats simple one-shot pruning. It is the
-          calibration configuration that really shapes which layers are redundant. A call to prioritize data
-          over search.
-        </p>
-        <a class="ef-feature-link" href="https://arxiv.org/abs/2604.24938" target="_blank" data-i18n="eai.readpaper">Read the paper &rarr;</a>
+        <div class="ef-venue-badge">EMNLP 2026 Main</div>
+        <h3 class="ef-feature-title" data-i18n="eai.c2_t">Locality-Aware Redundancy Pruning for LLM Depth Compression</h3>
+        <p class="ef-feature-desc" data-i18n="eai.c2_d">Redundancy is distributed differently across LLM architectures: it may be concentrated in nearby layers or spread throughout the model. LoRP measures inter-layer similarity and computes a Representation Locality Score, then adapts depth pruning to each model’s redundancy structure. This connects the choice of pruning strategy to the representations a model actually learns.</p>
+        <a class="ef-feature-link" href="https://arxiv.org/abs/2605.27786" target="_blank" rel="noopener noreferrer" data-i18n="eai.readpaper">Read the paper &rarr;</a>
       </div>
     </article>
 
-    <!-- ===== Cite / BibTeX ===== -->
-    <section class="ef-cite">
+    <p class="ef-all-publications"><a href="/publications" data-i18n="eai.all_publications">View all publications &rarr;</a></p>
+
+    <section class="ef-cite" aria-label="Citations">
       <div class="ef-sectionlabel"><span data-i18n="eai.cite_h">Cite &middot; BibTeX</span></div>
+
+      <div class="ef-bib">
+        <div class="ef-bib-head">
+          <span>Prefill-Free KV Cache Transfer (HeteroFold)</span>
+          <button class="ef-copy" type="button" data-i18n="eai.copy">Copy</button>
+        </div>
+        <pre>@article{yun2026heterofold,
+  title   = {Prefill-Free Cross-Family KV Cache Transfer for Heterogeneous Multi-Agent LLMs},
+  author  = {Yun, Vincent-Daniel and Lim, Woosang and Yoo, Haneul and Yoo, Sungjoo and Annavaram, Murali and Karimireddy, Sai Praneeth},
+  journal = {arXiv preprint arXiv:2609.32259},
+  year    = {2026},
+  url     = {https://arxiv.org/abs/2609.32259}
+}</pre>
+      </div>
 
       <div class="ef-bib">
         <div class="ef-bib-head">
@@ -213,7 +167,36 @@
   title   = {Robust Multi-Agent LLMs under Byzantine Faults},
   author  = {Lee, Haejoon and Yun, Vincent-Daniel and Panagou, Dimitra and Karimireddy, Sai Praneeth},
   booktitle = {Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing},
-  year    = {2026}
+  year    = {2026},
+  url     = {https://arxiv.org/abs/2605.09076}
+}</pre>
+      </div>
+
+      <div class="ef-bib">
+        <div class="ef-bib-head">
+          <span>Output-Aware Rotation (OptR)</span>
+          <button class="ef-copy" type="button" data-i18n="eai.copy">Copy</button>
+        </div>
+        <pre>@article{yun2026outputaware,
+  title   = {Output-Aware Rotation for INT2 KV-Cache Quantization},
+  author  = {Yun, Vincent-Daniel and Lim, Woosang and Cheong, Minsoo and Lee, Sunwoo and Annavaram, Murali and Karimireddy, Sai Praneeth and Yoo, Sungjoo},
+  journal = {arXiv preprint arXiv:2608.02691},
+  year    = {2026},
+  url     = {https://arxiv.org/abs/2608.02691}
+}</pre>
+      </div>
+
+      <div class="ef-bib">
+        <div class="ef-bib-head">
+          <span>Attention-Preserving MLP Trimming (LayerTrim)</span>
+          <button class="ef-copy" type="button" data-i18n="eai.copy">Copy</button>
+        </div>
+        <pre>@article{lim2026layertrim,
+  title   = {Unlocking Structured Pruning for Reasoning Language Models via Attention-Preserving MLP Trimming},
+  author  = {Lim, Woosang and Yoo, Haneul and Yun, Vincent-Daniel and Yoo, Sungjoo},
+  journal = {arXiv preprint arXiv:2610.19121},
+  year    = {2026},
+  url     = {https://arxiv.org/abs/2610.19121}
 }</pre>
       </div>
 
@@ -222,11 +205,12 @@
           <span>Ghosted Layers</span>
           <button class="ef-copy" type="button" data-i18n="eai.copy">Copy</button>
         </div>
-        <pre>@article{yun2026ghosted,
+        <pre>@inproceedings{yun2026ghosted,
   title   = {Ghosted Layers: Unconstrained Activation Alignment for Recovering Layer-Pruned LLMs},
   author  = {Yun, Vincent-Daniel and Jo, Junhyuk and Karimireddy, Sai Praneeth and Lee, Sunwoo},
-  journal = {arXiv preprint arXiv:2605.15491},
-  year    = {2026}
+  booktitle = {Advances in Neural Information Processing Systems},
+  year    = {2026},
+  url     = {https://arxiv.org/abs/2605.15491}
 }</pre>
       </div>
 
@@ -239,50 +223,12 @@
   title   = {Locality-Aware Redundancy Pruning for LLM Depth Compression},
   author  = {Yun, Vincent-Daniel and Kim, Youngrae and Lim, Woosang and Heo, Youngjin and Kim, Minkyu and Lee, Sunwoo},
   booktitle = {Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing},
-  year    = {2026}
-}</pre>
-      </div>
-
-      <div class="ef-bib">
-        <div class="ef-bib-head">
-          <span>Weight Concentration Regularization (WCR)</span>
-          <button class="ef-copy" type="button" data-i18n="eai.copy">Copy</button>
-        </div>
-        <pre>@article{yun2026wcr,
-  title   = {Weight Concentration Regularization for Improving Pruning Robustness Under High Sparsity},
-  author  = {Yun, Vincent-Daniel and Jo, Junhyuk and Lee, Sunwoo},
-  journal = {arXiv preprint arXiv:2511.14282},
-  year    = {2026}
-}</pre>
-      </div>
-
-      <div class="ef-bib">
-        <div class="ef-bib-head">
-          <span>Rethinking Layer Redundancy</span>
-          <button class="ef-copy" type="button" data-i18n="eai.copy">Copy</button>
-        </div>
-        <pre>@article{kim2026rethinking,
-  title   = {Rethinking Layer Redundancy: Calibration Matters More Than Search in LLM Depth Pruning},
-  author  = {Kim, Minkyu and Yun, Vincent-Daniel and Kim, Youngrae and Cho, Suin and Lim, Woosang and Lee, Sunwoo},
-  journal = {arXiv preprint arXiv:2604.24938},
-  year    = {2026}
-}</pre>
-      </div>
-
-      <div class="ef-bib">
-        <div class="ef-bib-head">
-          <span>Output-Aware Rotation for INT2 KV-Cache Quantization</span>
-          <button class="ef-copy" type="button" data-i18n="eai.copy">Copy</button>
-        </div>
-        <pre>@article{yun2026outputaware,
-  title   = {Output-Aware Rotation for INT2 KV-Cache Quantization},
-  author  = {Yun, Vincent-Daniel and Lim, Woosang and Cheong, Minsoo and Lee, Sunwoo and Annavaram, Murali and Karimireddy, Sai Praneeth and Yoo, Sungjoo},
-  journal = {arXiv preprint arXiv:2608.02691},
-  year    = {2026}
+  year    = {2026},
+  url     = {https://arxiv.org/abs/2605.27786}
 }</pre>
       </div>
     </section>
-  </div>
+  </main>
 
   <!-- ========== Footer ========== -->
   <footer class="site-footer">
@@ -338,6 +284,6 @@
   </script>
 
   <!-- ========== i18n (KR / EN) ========== -->
-  <script src="i18n.js?v=20260830ab"></script>
+  <script src="i18n.js?v=20261028vision"></script>
 </body>
 </html>

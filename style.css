@@ -233,6 +233,8 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 24px;
 }
 
 .nav-brand {
@@ -267,6 +269,7 @@ a:hover {
   font-weight: 400;
   padding: 4px 2px;
   position: relative;
+  white-space: nowrap;
 }
 
 .nav-links a:hover,
@@ -289,6 +292,7 @@ a:hover {
   display: flex;
   align-items: center;
   gap: 20px;
+  margin-left: auto;
 }
 
 .nav-hamburger {
@@ -1177,7 +1181,7 @@ section h2::after {
 }
 
 /* =========================
-   E-AI Project page (magazine / editorial)
+   Research Vision page (magazine / editorial)
    ========================= */
 
 /* Masthead */
@@ -1257,6 +1261,13 @@ section h2::after {
   line-height: 0.78;
   padding: 6px 14px 0 0;
   color: #2f6f9f;
+}
+
+html[lang="ko"] .ef-dropcap::first-letter {
+  float: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
 }
 
 .ef-pullquote {
@@ -1340,7 +1351,7 @@ section h2::after {
 
 .ef-feature {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 44px;
   align-items: center;
   padding: 40px 0;
@@ -1357,6 +1368,26 @@ section h2::after {
   display: block;
   width: 100%;
   height: auto;
+}
+
+.ef-feature-media figcaption {
+  margin-top: 12px;
+  color: #59636d;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.ef-feature-media a:focus-visible,
+.ef-feature-link:focus-visible,
+.ef-all-publications a:focus-visible {
+  outline: 2px solid #2f6f9f;
+  outline-offset: 4px;
+}
+
+.ef-all-publications {
+  margin-top: 24px;
+  text-align: center;
+  font-weight: 500;
 }
 
 .ef-feature.reverse .ef-feature-media {
@@ -1612,6 +1643,28 @@ section h2::after {
   .news-date {
     width: 90px;
     font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .nav-container {
+    gap: 12px;
+    padding-inline: 16px;
+  }
+
+  .nav-brand {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.9rem;
+  }
+
+  .nav-logo {
+    flex-shrink: 0;
+  }
+
+  .nav-right {
+    flex-shrink: 0;
+    gap: 8px;
   }
 }
 
