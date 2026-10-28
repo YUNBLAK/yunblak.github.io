@@ -1,36 +1,18 @@
 /* Publication archive: years in the margin, papers grouped by publication type. */
 .publications-page {
-  --pub-text: #202329;
-  --pub-muted: #606670;
-  --pub-accent: #2f6f9f;
-  --pub-venue: #526d89;
-  --pub-badge-text: #245780;
-  --pub-badge-bg: #eaf2fa;
+  --pub-text: var(--site-text);
+  --pub-muted: var(--site-muted);
+  --pub-accent: var(--site-accent);
+  --pub-venue: var(--site-muted);
+  --pub-badge-text: var(--site-accent);
+  --pub-badge-bg: var(--site-surface);
   --pub-badge-border: #bfd4e6;
-  --pub-line: #e1e4e8;
-  --pub-band: #f5f6f8;
-  background: #fff;
-  color: var(--pub-text);
+  --pub-line: var(--site-border);
+  --pub-band: var(--site-surface);
 }
 
 [data-theme="dark"] .publications-page {
-  --pub-text: #e9eaee;
-  --pub-muted: #b5b8c2;
-  --pub-accent: #a5b4fc;
-  --pub-venue: #b4bde3;
-  --pub-badge-text: #d0dfff;
-  --pub-badge-bg: #202e49;
-  --pub-badge-border: #415b81;
-  --pub-line: #2b2e38;
-  --pub-band: #191c24;
-  background: #101216;
-  color: var(--pub-text);
-  font-weight: 400;
-}
-
-.publications-page .nav-container,
-.publications-page .publications-container {
-  max-width: 1040px;
+  --pub-badge-border: #346785;
 }
 
 .publications-page .publications-container {
@@ -235,27 +217,8 @@
   outline-offset: 4px;
 }
 
-[data-theme="dark"] .publications-page .navbar {
-  background: rgba(16, 18, 22, 0.96);
-  border-bottom-color: var(--pub-line);
-}
-
-.publications-page .site-footer {
-  border-color: var(--pub-line);
-  color: var(--pub-muted);
-}
-
-/* Give the site's navigation its own row on smaller desktop widths. */
+/* Leave room for the shared navigation when it wraps to two rows. */
 @media (min-width: 769px) and (max-width: 1000px) {
-  .publications-page .nav-container {
-    flex-wrap: wrap;
-    gap: 10px 24px;
-  }
-
-  .publications-page .nav-right {
-    margin-left: auto;
-  }
-
   .publications-page .pub-year-title {
     top: 128px;
   }
@@ -263,7 +226,8 @@
 
 @media (max-width: 600px) {
   .publications-page .publications-container {
-    padding: 36px 20px 52px;
+    padding-top: 36px;
+    padding-bottom: 52px;
   }
 
   .publications-page .pub-header {
@@ -297,18 +261,4 @@
     font-size: 1rem;
   }
 
-  .publications-page .nav-container {
-    gap: 12px;
-    padding-inline: 16px;
-  }
-
-  .publications-page .nav-brand {
-    min-width: 0;
-    font-size: 0.9rem;
-  }
-
-  .publications-page .nav-right {
-    flex-shrink: 0;
-    gap: 8px;
-  }
 }
